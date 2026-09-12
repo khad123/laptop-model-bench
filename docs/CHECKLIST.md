@@ -15,8 +15,8 @@ Status legend:
 - [x] Add benchmark protocol
 - [x] Freeze v1 model list
 - [x] Freeze primary quantization for every base model
-- [ ] Freeze v1 task set
-- [ ] Freeze scoring weights / leaderboard rules
+- [~] Freeze v1 task set category by category
+- [ ] Freeze final scoring weights / leaderboard rules
 
 ## Phase 1 — Inventory + speed
 
@@ -51,50 +51,76 @@ Runner implementation notes:
 - CPU usage: child `wait4()` user/system time, reported as process CPU % and normalized four-thread utilization.
 - Raw per-model output: `results/raw/<run-id>/`.
 - Summary: timestamped CSV/JSON plus `results/phase1-latest.*`.
-- Load timing is a best-effort separate load probe, not a guaranteed cold-cache load measurement.
-- Real 12-model Phase 1 run completed successfully; noisy entries were validation-rerun before moving on.
+- Phase 1 is frozen.
 
 ## Phase 2 — Reasoning + knowledge
 
-- [x] Choose compact reasoning task source (original project-authored v0.1 set)
+- [x] Choose compact project-authored reasoning task source
 - [x] Add arithmetic / multi-step reasoning set
 - [x] Add ARC-style reasoning set
 - [x] Add compact MMLU-style knowledge set
 - [x] Add deterministic scorer
-- [~] Validate answer extraction and model/template compatibility
-- [ ] Review task difficulty / balance after pilot model
-- [ ] Freeze Phase 2 v1 task set
+- [x] Validate answer extraction and model/template compatibility
+- [x] Balance A/B/C/D answer positions
+- [x] Review task difficulty after pilot/full runs
+- [x] Freeze final Phase 2 v0.3 task set
+- [x] Run all 12 model/quant entries
 
 Phase 2 implementation notes:
 
 - Entry point: `./capability.sh`
-- Development task file: `tasks/phase2_v0.1.json`
+- Frozen task file: `tasks/phase2_v0.3.json`
 - 32 objective multiple-choice tasks: 20 reasoning + 12 knowledge.
-- Default pool: seven primary model quants only.
-- Runtime: local `llama-server` with native chat template via `/v1/chat/completions`.
-- Deterministic profile: 4 threads, CPU-only, context 4096, temperature 0, seed 42, prompt cache disabled.
+- Direct-choice grammar constrains output to A/B/C/D.
+- Runtime: local `llama-server`, 4 threads, CPU-only, context 4096, temperature 0, seed 42, prompt cache disabled, `reasoning_effort=none`.
 - `phase2_score`: equal-weight mean of reasoning accuracy and knowledge accuracy.
-- Raw per-task responses are retained for audit before the task set is frozen.
+- Final 12-model v0.3 run completed with 100% parse rate.
 
 ## Phase 3 — Coding
 
-- [ ] Select small HumanEval+/MBPP+ subset
-- [ ] Build safe local execution harness
-- [ ] Add pass/fail scorer
-- [ ] Save generated code and test output
-- [ ] Define timeout/resource limits
+- [x] Define compact HumanEval+/MBPP+-style project-authored task set
+- [x] Build safe local execution harness
+- [x] Add deterministic pass/fail scorer
+- [x] Save generated code and test output
+- [x] Define timeout/resource limits
+- [x] Validate Bubblewrap network isolation and failure detection
+- [x] Run single-model pilot
+- [x] Audit pilot failures against generated code
+- [x] Run all 12 model/quant entries
+- [x] Freeze Phase 3 v0.1 behavior for v1 benchmark
+
+Phase 3 implementation notes:
+
+- Entry point: `./coding.sh`
+- Task file: `tasks/phase3_v0.1.json`
+- 12 Python function-generation tasks with hidden deterministic tests.
+- Model-generated Python executes inside Bubblewrap with network disabled and CPU/RAM/time limits.
+- Full run completed: 12 models × 12 tasks = 144 evaluations with no infrastructure errors.
 
 ## Phase 4 — MiniSWE
 
-- [ ] Define MiniSWE task format
-- [ ] Create task 01
-- [ ] Create task 02
-- [ ] Create task 03
-- [ ] Create task 04
-- [ ] Create task 05
-- [ ] Expand toward 10 tasks if runtime remains practical
-- [ ] Build patch/apply/test harness
-- [ ] Score solved / partially solved / failed
+- [x] Define MiniSWE task format
+- [x] Create task 01
+- [x] Create task 02
+- [x] Create task 03
+- [x] Create task 04
+- [x] Create task 05
+- [ ] Expand toward 10 tasks if the pilot shows more breadth is useful
+- [x] Build patch/apply/test harness
+- [x] Score solved / partially solved / failed
+- [x] Add partial hidden-check score
+- [~] Validate patch parsing and task difficulty with a pilot model
+- [ ] Run all 12 model/quant entries
+- [ ] Freeze Phase 4 task set
+
+Phase 4 implementation notes:
+
+- Entry point: `./miniswe.sh`
+- Development task file: `tasks/phase4_v0.1.json`
+- Five tiny multi-file Python repositories with issue descriptions and hidden tests.
+- Models return complete replacements only for files they change using `<file path="...">` blocks.
+- Hidden tests run in Bubblewrap with network disabled and resource limits.
+- `task_score` is hidden checks passed; `phase4_score` is the mean task score. Solved/partial/failed counts are retained.
 
 ## Phase 5 — Instruction following
 
@@ -126,19 +152,17 @@ Phase 2 implementation notes:
 
 ## Phase 8 — Quantization
 
-- [ ] K2 Q4_K_M vs Q6_K speed/resource/quality comparison
-- [ ] Qwen3.5-2B Q4_K_M vs IQ4_XS speed
-- [ ] Qwen3.5-2B Q4_K_M vs IQ4_XS RAM
-- [ ] Qwen3.5-2B Q4_K_M vs IQ4_XS quality
-- [ ] SmolLM3 Q4_K_M vs IQ4_XS
-- [ ] Gemma 3 1B Q4_K_M vs IQ4_XS
-- [ ] Llama 3.2 1B Q4_K_M vs IQ4_XS
+- [ ] K2 Q4_K_M vs Q6_K combined comparison
+- [ ] Qwen3.5-2B Q4_K_M vs IQ4_XS combined comparison
+- [ ] SmolLM3 Q4_K_M vs IQ4_XS combined comparison
+- [ ] Gemma 3 1B Q4_K_M vs IQ4_XS combined comparison
+- [ ] Llama 3.2 1B Q4_K_M vs IQ4_XS combined comparison
 - [ ] Decide whether additional same-base quant comparisons are useful
 
 ## Phase 9 — Results
 
-- [ ] Define JSON result schema
-- [ ] Export CSV summary
+- [ ] Define final JSON result schema
+- [ ] Export consolidated CSV summary
 - [ ] Generate per-model report
 - [ ] Generate category leaderboards
 - [ ] Generate overall laptop recommendation
@@ -156,11 +180,11 @@ Phase 2 implementation notes:
 
 ## Current immediate next steps
 
-1. Pull the new Phase 2 files on the target laptop.
-2. Run `./capability.sh --dry-run` and confirm all seven primary model entries plus all 32 tasks resolve.
-3. Smoke-test one task with `./capability.sh --only qwen35-0.8b-q4km --task arith-01`.
-4. Run the full 32-task suite on Qwen3.5-0.8B and inspect parse rate/raw outputs.
-5. If parsing and task behavior are sound, run the seven-model primary capability pool.
-6. Review difficulty/balance, then freeze a Phase 2 v1 task set before treating capability scores as final.
+1. Pull the Phase 4 files on the laptop.
+2. Run `./miniswe.sh --dry-run --include-comparisons` and confirm all 12 models plus five MiniSWE tasks resolve.
+3. Smoke-test `swe-01` with Qwen3.5-2B Q4_K_M.
+4. If patch parsing and hidden tests behave correctly, run all five tasks on Qwen3.5-2B Q4_K_M.
+5. Review the pilot for difficulty/formatting artifacts.
+6. If clean, run all 12 model/quant entries and freeze Phase 4.
 
-See [`MODEL_REGISTRY.md`](MODEL_REGISTRY.md), [`PHASE1_RUNNER.md`](PHASE1_RUNNER.md), and [`PHASE2_RUNNER.md`](PHASE2_RUNNER.md).
+See [`MODEL_REGISTRY.md`](MODEL_REGISTRY.md), [`PHASE1_RUNNER.md`](PHASE1_RUNNER.md), [`PHASE2_RUNNER.md`](PHASE2_RUNNER.md), and [`PHASE4_RUNNER.md`](PHASE4_RUNNER.md).
