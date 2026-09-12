@@ -1,0 +1,172 @@
+{
+  "benchmark_version": "phase5-v0.1",
+  "status": "development",
+  "description": "Project-authored deterministic instruction-following benchmark covering strict formatting, required/forbidden content, ordering, and JSON/schema compliance.",
+  "system_prompt": "Follow the user's instructions exactly. Return only the requested answer with no explanation, preamble, Markdown fence, or extra commentary unless the user explicitly requests it.",
+  "tasks": [
+    {
+      "id": "if-01",
+      "category": "strict_format",
+      "prompt": "Output exactly this single word and nothing else: READY",
+      "checks": [
+        {"type": "equals", "value": "READY"}
+      ]
+    },
+    {
+      "id": "if-02",
+      "category": "strict_format",
+      "prompt": "Output exactly: alpha|beta|gamma",
+      "checks": [
+        {"type": "equals", "value": "alpha|beta|gamma"}
+      ]
+    },
+    {
+      "id": "if-03",
+      "category": "strict_format",
+      "prompt": "Return exactly three lines. Line 1: red. Line 2: green. Line 3: blue. No bullets, numbering, or extra text.",
+      "checks": [
+        {"type": "equals", "value": "red\ngreen\nblue"}
+      ]
+    },
+    {
+      "id": "if-04",
+      "category": "strict_format",
+      "prompt": "Return exactly this two-line CSV and nothing else:\nname,score\nAda,95",
+      "checks": [
+        {"type": "equals", "value": "name,score\nAda,95"}
+      ]
+    },
+    {
+      "id": "if-05",
+      "category": "required_forbidden",
+      "prompt": "Write exactly one line that contains the uppercase tokens ALPHA and OMEGA exactly once each. Do not use the token BETA.",
+      "checks": [
+        {"type": "line_count", "value": 1},
+        {"type": "count", "text": "ALPHA", "value": 1},
+        {"type": "count", "text": "OMEGA", "value": 1},
+        {"type": "not_contains", "text": "BETA"}
+      ]
+    },
+    {
+      "id": "if-06",
+      "category": "required_forbidden",
+      "prompt": "Write one lowercase sentence containing the word kernel. Do not use the word linux. Do not use uppercase letters.",
+      "checks": [
+        {"type": "line_count", "value": 1},
+        {"type": "contains", "text": "kernel"},
+        {"type": "not_contains_ci", "text": "linux"},
+        {"type": "regex_fullmatch", "pattern": "[^A-Z\\n]+"}
+      ]
+    },
+    {
+      "id": "if-07",
+      "category": "required_forbidden",
+      "prompt": "Write exactly six space-separated words. One word must be orbit. Use no punctuation.",
+      "checks": [
+        {"type": "word_count", "value": 6},
+        {"type": "contains_word", "text": "orbit"},
+        {"type": "regex_fullmatch", "pattern": "[A-Za-z]+(?: [A-Za-z]+){5}"}
+      ]
+    },
+    {
+      "id": "if-08",
+      "category": "required_forbidden",
+      "prompt": "Output exactly one line that starts with START:, contains the token MID exactly once, and ends with :END. Do not use brackets.",
+      "checks": [
+        {"type": "line_count", "value": 1},
+        {"type": "starts_with", "value": "START:"},
+        {"type": "ends_with", "value": ":END"},
+        {"type": "count", "text": "MID", "value": 1},
+        {"type": "not_contains", "text": "["},
+        {"type": "not_contains", "text": "]"}
+      ]
+    },
+    {
+      "id": "if-09",
+      "category": "ordering",
+      "prompt": "Return these four tokens in this exact order, separated only by ' -> ': first, second, third, fourth.",
+      "checks": [
+        {"type": "equals", "value": "first -> second -> third -> fourth"}
+      ]
+    },
+    {
+      "id": "if-10",
+      "category": "ordering",
+      "prompt": "Output exactly three lines in this order: [A] prepare, [B] build, [C] test. No other text.",
+      "checks": [
+        {"type": "equals", "value": "[A] prepare\n[B] build\n[C] test"}
+      ]
+    },
+    {
+      "id": "if-11",
+      "category": "ordering",
+      "prompt": "Output only these digits in this exact order with one space between each: 3 1 4 2",
+      "checks": [
+        {"type": "equals", "value": "3 1 4 2"}
+      ]
+    },
+    {
+      "id": "if-12",
+      "category": "ordering",
+      "prompt": "Write one line containing the exact uppercase tokens BEGIN, MIDDLE, and END, each exactly once and in that order. Other lowercase words are allowed.",
+      "checks": [
+        {"type": "line_count", "value": 1},
+        {"type": "count", "text": "BEGIN", "value": 1},
+        {"type": "count", "text": "MIDDLE", "value": 1},
+        {"type": "count", "text": "END", "value": 1},
+        {"type": "ordered", "values": ["BEGIN", "MIDDLE", "END"]}
+      ]
+    },
+    {
+      "id": "if-13",
+      "category": "json_schema",
+      "prompt": "Return only valid JSON, no Markdown. It must be an object with exactly these keys and values: name is \"Ada\", active is true, count is 3.",
+      "checks": [
+        {"type": "json_valid"},
+        {"type": "json_object"},
+        {"type": "json_keys_exact", "keys": ["name", "active", "count"]},
+        {"type": "json_value", "path": ["name"], "value": "Ada"},
+        {"type": "json_value", "path": ["active"], "value": true},
+        {"type": "json_value", "path": ["count"], "value": 3}
+      ]
+    },
+    {
+      "id": "if-14",
+      "category": "json_schema",
+      "prompt": "Return only valid JSON. Use exactly two keys: items and total. items must be the array [\"red\", \"green\", \"blue\"] in that order, and total must be the integer 3. No extra keys.",
+      "checks": [
+        {"type": "json_valid"},
+        {"type": "json_object"},
+        {"type": "json_keys_exact", "keys": ["items", "total"]},
+        {"type": "json_value", "path": ["items"], "value": ["red", "green", "blue"]},
+        {"type": "json_value", "path": ["total"], "value": 3}
+      ]
+    },
+    {
+      "id": "if-15",
+      "category": "json_schema",
+      "prompt": "Return only valid JSON with exactly one top-level key named user. user must be an object with exactly id and tags. id must be integer 7. tags must be [\"dev\", \"local\"] in that order.",
+      "checks": [
+        {"type": "json_valid"},
+        {"type": "json_object"},
+        {"type": "json_keys_exact", "keys": ["user"]},
+        {"type": "json_nested_keys_exact", "path": ["user"], "keys": ["id", "tags"]},
+        {"type": "json_value", "path": ["user", "id"], "value": 7},
+        {"type": "json_value", "path": ["user", "tags"], "value": ["dev", "local"]}
+      ]
+    },
+    {
+      "id": "if-16",
+      "category": "json_schema",
+      "prompt": "Return only valid JSON with exactly three keys: status, retries, message. status must be \"ok\", retries must be integer 0, and message must be an empty string. No extra keys.",
+      "checks": [
+        {"type": "json_valid"},
+        {"type": "json_object"},
+        {"type": "json_keys_exact", "keys": ["status", "retries", "message"]},
+        {"type": "json_value", "path": ["status"], "value": "ok"},
+        {"type": "json_value", "path": ["retries"], "value": 0},
+        {"type": "json_value", "path": ["message"], "value": ""}
+      ]
+    }
+  ]
+}
