@@ -1,0 +1,108 @@
+{
+  "benchmark_version": "phase6-v0.1",
+  "status": "development",
+  "description": "Project-authored deterministic mini tool/agent benchmark using runtime-neutral JSON actions and local mock tools.",
+  "system_prompt": "You are an agent with local tools. On every turn output exactly one JSON object and nothing else. To call a tool use {\"action\":\"tool\",\"name\":\"TOOL_NAME\",\"arguments\":{...}}. If required information is missing, use {\"action\":\"ask\",\"field\":\"FIELD_NAME\"}. When the task is complete, use {\"action\":\"final\",\"answer\":VALUE}. Do not guess tool results. Do not use Markdown or explanations.",
+  "tasks": [
+    {
+      "id": "agent-01",
+      "category": "single_tool",
+      "prompt": "Use the available tools to get the current mock temperature for Rabat. In the final action, answer with only the numeric Celsius value.",
+      "tools": ["weather_lookup"],
+      "expected_steps": [
+        {"action": "tool", "name": "weather_lookup", "arguments": {"city": "Rabat"}},
+        {"action": "final", "answer": 24}
+      ]
+    },
+    {
+      "id": "agent-02",
+      "category": "single_tool",
+      "prompt": "Use the available tool to add 17 and 25. In the final action, answer with only the numeric result.",
+      "tools": ["calculator_add"],
+      "expected_steps": [
+        {"action": "tool", "name": "calculator_add", "arguments": {"a": 17, "b": 25}},
+        {"action": "final", "answer": 42}
+      ]
+    },
+    {
+      "id": "agent-03",
+      "category": "single_tool",
+      "prompt": "Look up order A104 with the available tool. In the final action, answer with only its status string.",
+      "tools": ["order_lookup"],
+      "expected_steps": [
+        {"action": "tool", "name": "order_lookup", "arguments": {"order_id": "A104"}},
+        {"action": "final", "answer": "shipped"}
+      ]
+    },
+    {
+      "id": "agent-04",
+      "category": "disambiguation",
+      "prompt": "Find the customer whose email is ada@example.test. Choose the correct lookup tool. In the final action, answer with only the customer ID.",
+      "tools": ["customer_lookup_by_email", "customer_lookup_by_id"],
+      "expected_steps": [
+        {"action": "tool", "name": "customer_lookup_by_email", "arguments": {"email": "ada@example.test"}},
+        {"action": "final", "answer": "C7"}
+      ]
+    },
+    {
+      "id": "agent-05",
+      "category": "disambiguation",
+      "prompt": "Find the exact stock count for SKU P100. Choose the correct inventory tool. In the final action, answer with only the integer stock count.",
+      "tools": ["inventory_by_sku", "inventory_search_name"],
+      "expected_steps": [
+        {"action": "tool", "name": "inventory_by_sku", "arguments": {"sku": "P100"}},
+        {"action": "final", "answer": 12}
+      ]
+    },
+    {
+      "id": "agent-06",
+      "category": "disambiguation",
+      "prompt": "Convert 20 USD to EUR using the most appropriate available tool. In the final action, answer with only the numeric converted amount.",
+      "tools": ["exchange_rate", "currency_convert"],
+      "expected_steps": [
+        {"action": "tool", "name": "currency_convert", "arguments": {"amount": 20, "from_currency": "USD", "to_currency": "EUR"}},
+        {"action": "final", "answer": 18}
+      ]
+    },
+    {
+      "id": "agent-07",
+      "category": "missing_argument",
+      "prompt": "The user says: 'What's the weather?' Use the available tool if possible, but do not invent missing information.",
+      "tools": ["weather_lookup"],
+      "expected_steps": [
+        {"action": "ask", "field": "city"}
+      ]
+    },
+    {
+      "id": "agent-08",
+      "category": "missing_argument",
+      "prompt": "The user says: 'Check my order status.' Use the available tool if possible, but do not invent missing information.",
+      "tools": ["order_lookup"],
+      "expected_steps": [
+        {"action": "ask", "field": "order_id"}
+      ]
+    },
+    {
+      "id": "agent-09",
+      "category": "multi_step",
+      "prompt": "Find the unit price of SKU P100, then use a calculator tool to compute the total for 3 units. Do not calculate the multiplication yourself. In the final action, answer with only the numeric total.",
+      "tools": ["inventory_by_sku", "calculator_multiply"],
+      "expected_steps": [
+        {"action": "tool", "name": "inventory_by_sku", "arguments": {"sku": "P100"}},
+        {"action": "tool", "name": "calculator_multiply", "arguments": {"a": 7.5, "b": 3}},
+        {"action": "final", "answer": 22.5}
+      ]
+    },
+    {
+      "id": "agent-10",
+      "category": "multi_step",
+      "prompt": "Find the customer ID for ada@example.test, then look up that customer's open orders. In the final action, answer with the order IDs as a JSON array in the same order returned by the tool.",
+      "tools": ["customer_lookup_by_email", "orders_by_customer"],
+      "expected_steps": [
+        {"action": "tool", "name": "customer_lookup_by_email", "arguments": {"email": "ada@example.test"}},
+        {"action": "tool", "name": "orders_by_customer", "arguments": {"customer_id": "C7", "status": "open"}},
+        {"action": "final", "answer": ["O12", "O19"]}
+      ]
+    }
+  ]
+}
