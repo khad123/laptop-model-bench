@@ -65,13 +65,29 @@ results/phase1-latest.json
 results/phase1-latest.csv
 ```
 
-The summary records model identity, exact local file size, HF snapshot/blob identity, prompt speed, generation speed, llama.cpp checkout/build metadata, host metadata, wall time, peak RSS, and failure/warning state.
+The summary records model identity, exact local file size, HF snapshot/blob identity, prompt speed, generation speed, llama.cpp checkout/build metadata, host metadata, wall time, peak RSS, CPU usage, and failure/warning state.
 
 ## Peak RAM method
 
 On Linux the runner launches `llama-bench` as a child process and collects that exact child's `ru_maxrss` through `wait4()`. The CSV/JSON field is `peak_rss_kb`, with a derived `peak_rss_gib` value.
 
 This is the benchmark process's peak resident set size, not total system RAM consumption. It is suitable for repeatable same-machine model comparisons and does not require root access or sampling `/proc` in a loop.
+
+## CPU usage method
+
+The same Linux `wait4()` result provides user CPU time (`ru_utime`) and system CPU time (`ru_stime`) for the exact `llama-bench` child process. The runner stores:
+
+- `cpu_user_seconds`
+- `cpu_system_seconds`
+- `cpu_total_seconds`
+- `avg_cpu_percent`
+- `cpu_thread_util_percent`
+
+`avg_cpu_percent` follows the common process convention where **100% means one logical CPU fully busy**. A four-thread benchmark can therefore approach 400%.
+
+`cpu_thread_util_percent` divides that value by the configured benchmark thread count. With the standard four-thread profile, 100% means the four allowed benchmark threads were fully occupied on average. This normalized value is useful when comparing how efficiently models keep the fixed four-thread CPU budget busy.
+
+The load probe records matching `load_probe_*` CPU fields separately.
 
 ## Load-time probe
 
