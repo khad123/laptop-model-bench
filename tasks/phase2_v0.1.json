@@ -1,0 +1,264 @@
+{
+  "benchmark_version": "phase2-v0.1",
+  "status": "development",
+  "description": "Original compact multiple-choice reasoning and knowledge suite for Laptop Model Bench. Items are project-authored rather than copied from ARC/MMLU.",
+  "system_prompt": "You are taking a deterministic multiple-choice benchmark. Answer the question without tools or external access.",
+  "tasks": [
+    {
+      "id": "arith-01",
+      "domain": "reasoning",
+      "category": "arithmetic",
+      "question": "What is 17 × 6 - 14?",
+      "choices": {"A": "78", "B": "88", "C": "92", "D": "102"},
+      "answer": "B"
+    },
+    {
+      "id": "arith-02",
+      "domain": "reasoning",
+      "category": "arithmetic",
+      "question": "What is three quarters of 48, plus 5?",
+      "choices": {"A": "36", "B": "39", "C": "41", "D": "45"},
+      "answer": "C"
+    },
+    {
+      "id": "arith-03",
+      "domain": "reasoning",
+      "category": "arithmetic",
+      "question": "An item costs $80 and is discounted by 15%. What is the sale price?",
+      "choices": {"A": "$12", "B": "$65", "C": "$68", "D": "$72"},
+      "answer": "C"
+    },
+    {
+      "id": "arith-04",
+      "domain": "reasoning",
+      "category": "multi_step",
+      "question": "A bus starts with 12 passengers. Seven get on, five get off, then eight get on. How many passengers are on the bus?",
+      "choices": {"A": "18", "B": "20", "C": "22", "D": "24"},
+      "answer": "C"
+    },
+    {
+      "id": "arith-05",
+      "domain": "reasoning",
+      "category": "multi_step",
+      "question": "Three identical printers print 120 pages in 4 minutes. At the same rate, how many pages do five printers print in 10 minutes?",
+      "choices": {"A": "300", "B": "400", "C": "500", "D": "600"},
+      "answer": "C"
+    },
+    {
+      "id": "arith-06",
+      "domain": "reasoning",
+      "category": "multi_step",
+      "question": "Red and blue marbles are in a 3:5 ratio. There are 40 marbles total. How many are red?",
+      "choices": {"A": "12", "B": "15", "C": "18", "D": "25"},
+      "answer": "B"
+    },
+    {
+      "id": "arith-07",
+      "domain": "reasoning",
+      "category": "pattern",
+      "question": "What number comes next in the sequence 2, 6, 12, 20, 30, ?",
+      "choices": {"A": "36", "B": "40", "C": "42", "D": "44"},
+      "answer": "C"
+    },
+    {
+      "id": "arith-08",
+      "domain": "reasoning",
+      "category": "arithmetic",
+      "question": "What is the average of 8, 12, 15, and 5?",
+      "choices": {"A": "9", "B": "10", "C": "11", "D": "12"},
+      "answer": "B"
+    },
+    {
+      "id": "arith-09",
+      "domain": "reasoning",
+      "category": "multi_step",
+      "question": "A car travels at 72 km/h for 2.5 hours. How far does it travel?",
+      "choices": {"A": "144 km", "B": "160 km", "C": "180 km", "D": "200 km"},
+      "answer": "C"
+    },
+    {
+      "id": "arith-10",
+      "domain": "reasoning",
+      "category": "algebra",
+      "question": "If 3x + 7 = 28, what is x?",
+      "choices": {"A": "5", "B": "6", "C": "7", "D": "9"},
+      "answer": "C"
+    },
+    {
+      "id": "arc-01",
+      "domain": "reasoning",
+      "category": "logic_science",
+      "question": "A red box is heavier than a blue box, and the blue box is heavier than a green box. Which box is heaviest?",
+      "choices": {"A": "Red", "B": "Blue", "C": "Green", "D": "They weigh the same"},
+      "answer": "A"
+    },
+    {
+      "id": "arc-02",
+      "domain": "reasoning",
+      "category": "logic_science",
+      "question": "All mips are zogs. No zogs are tars. Which statement must be true?",
+      "choices": {"A": "Some mips are tars", "B": "No mips are tars", "C": "All tars are mips", "D": "Some zogs are tars"},
+      "answer": "B"
+    },
+    {
+      "id": "arc-03",
+      "domain": "reasoning",
+      "category": "logic_science",
+      "question": "A student wants to test whether fertilizer affects plant growth. Which factor should be deliberately changed between the groups?",
+      "choices": {"A": "Amount of fertilizer", "B": "Amount of water", "C": "Hours of light", "D": "Type of pot"},
+      "answer": "A"
+    },
+    {
+      "id": "arc-04",
+      "domain": "reasoning",
+      "category": "logic_science",
+      "question": "Ice melts into liquid water. What kind of change is this?",
+      "choices": {"A": "Chemical change", "B": "Nuclear change", "C": "Physical change", "D": "Biological change"},
+      "answer": "C"
+    },
+    {
+      "id": "arc-05",
+      "domain": "reasoning",
+      "category": "logic_science",
+      "question": "A simple circuit contains a battery, a bulb, and an open switch. What happens to the bulb?",
+      "choices": {"A": "It lights normally", "B": "It flashes once", "C": "It stays off", "D": "It becomes brighter"},
+      "answer": "C"
+    },
+    {
+      "id": "arc-06",
+      "domain": "reasoning",
+      "category": "logic_science",
+      "question": "A solid object has a density of 0.8 g/cm³ and is placed in water with density 1.0 g/cm³. What will it tend to do?",
+      "choices": {"A": "Float", "B": "Sink", "C": "Dissolve immediately", "D": "Gain mass"},
+      "answer": "A"
+    },
+    {
+      "id": "arc-07",
+      "domain": "reasoning",
+      "category": "logic_science",
+      "question": "Why does the Moon appear to have phases when viewed from Earth?",
+      "choices": {"A": "Earth's shadow always covers part of it", "B": "We see different portions of its sunlit half", "C": "The Moon changes shape each month", "D": "Clouds cover different parts of it"},
+      "answer": "B"
+    },
+    {
+      "id": "arc-08",
+      "domain": "reasoning",
+      "category": "logic_science",
+      "question": "In the food chain grass → rabbit → fox, the rabbit population sharply decreases. What is the most direct likely effect on foxes?",
+      "choices": {"A": "Their food supply decreases", "B": "Their food supply increases", "C": "They become producers", "D": "They stop needing energy"},
+      "answer": "A"
+    },
+    {
+      "id": "arc-09",
+      "domain": "reasoning",
+      "category": "logic_science",
+      "question": "A metal spoon becomes hot after sitting in hot soup. Which process mainly transfers heat through the spoon?",
+      "choices": {"A": "Conduction", "B": "Evaporation", "C": "Reflection", "D": "Condensation"},
+      "answer": "A"
+    },
+    {
+      "id": "arc-10",
+      "domain": "reasoning",
+      "category": "logic_science",
+      "question": "On a sunny day, when is a vertical object's shadow usually shortest?",
+      "choices": {"A": "Near sunrise", "B": "Around solar noon", "C": "Near sunset", "D": "At midnight"},
+      "answer": "B"
+    },
+    {
+      "id": "know-stem-01",
+      "domain": "knowledge",
+      "category": "stem",
+      "question": "What is the SI unit of electrical resistance?",
+      "choices": {"A": "Volt", "B": "Ampere", "C": "Ohm", "D": "Watt"},
+      "answer": "C"
+    },
+    {
+      "id": "know-stem-02",
+      "domain": "knowledge",
+      "category": "stem",
+      "question": "In standard DNA base pairing, adenine pairs with which base?",
+      "choices": {"A": "Cytosine", "B": "Guanine", "C": "Thymine", "D": "Uracil"},
+      "answer": "C"
+    },
+    {
+      "id": "know-stem-03",
+      "domain": "knowledge",
+      "category": "stem",
+      "question": "Which planet is the largest in the Solar System?",
+      "choices": {"A": "Earth", "B": "Jupiter", "C": "Saturn", "D": "Neptune"},
+      "answer": "B"
+    },
+    {
+      "id": "know-comp-01",
+      "domain": "knowledge",
+      "category": "computing",
+      "question": "What is the usual time complexity of binary search on a sorted array?",
+      "choices": {"A": "O(1)", "B": "O(log n)", "C": "O(n)", "D": "O(n²)"},
+      "answer": "B"
+    },
+    {
+      "id": "know-comp-02",
+      "domain": "knowledge",
+      "category": "computing",
+      "question": "Which HTTP status code conventionally means 'Not Found'?",
+      "choices": {"A": "200", "B": "301", "C": "404", "D": "500"},
+      "answer": "C"
+    },
+    {
+      "id": "know-comp-03",
+      "domain": "knowledge",
+      "category": "computing",
+      "question": "Which SQL keyword is used to retrieve rows from a table?",
+      "choices": {"A": "SELECT", "B": "UPDATE", "C": "DELETE", "D": "DROP"},
+      "answer": "A"
+    },
+    {
+      "id": "know-hum-01",
+      "domain": "knowledge",
+      "category": "humanities",
+      "question": "Who wrote the novel '1984'?",
+      "choices": {"A": "George Orwell", "B": "Aldous Huxley", "C": "Virginia Woolf", "D": "Ernest Hemingway"},
+      "answer": "A"
+    },
+    {
+      "id": "know-hum-02",
+      "domain": "knowledge",
+      "category": "humanities",
+      "question": "The Renaissance is generally considered to have begun in which present-day country?",
+      "choices": {"A": "Italy", "B": "Norway", "C": "Canada", "D": "Japan"},
+      "answer": "A"
+    },
+    {
+      "id": "know-hum-03",
+      "domain": "knowledge",
+      "category": "humanities",
+      "question": "In which year was Magna Carta first sealed in England?",
+      "choices": {"A": "1066", "B": "1215", "C": "1492", "D": "1776"},
+      "answer": "B"
+    },
+    {
+      "id": "know-social-01",
+      "domain": "knowledge",
+      "category": "social_science",
+      "question": "In economics, what is opportunity cost?",
+      "choices": {"A": "Only the money paid for a choice", "B": "The value of the next-best alternative given up", "C": "Any unexpected tax", "D": "The total value of all possible choices"},
+      "answer": "B"
+    },
+    {
+      "id": "know-social-02",
+      "domain": "knowledge",
+      "category": "social_science",
+      "question": "What does inflation usually describe?",
+      "choices": {"A": "A sustained general rise in prices", "B": "A permanent fall in population", "C": "An increase in physical land area", "D": "A decrease in all wages"},
+      "answer": "A"
+    },
+    {
+      "id": "know-social-03",
+      "domain": "knowledge",
+      "category": "social_science",
+      "question": "What is the main idea of separation of powers in government?",
+      "choices": {"A": "All authority belongs to one office", "B": "Government powers are divided among different branches", "C": "Courts control all elections", "D": "Only local governments may make laws"},
+      "answer": "B"
+    }
+  ]
+}
