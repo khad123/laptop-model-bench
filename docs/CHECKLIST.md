@@ -34,46 +34,47 @@ Status legend:
 - [x] Identify/exclude Ollama Llama 3.2 duplicate from primary leaderboard
 - [x] Identify/exclude Qwen mmproj files as non-standalone models
 - [x] Build automated llama-bench runner
-- [ ] Save raw benchmark output from the real laptop run
-- [ ] Measure prompt processing speed
-- [ ] Measure generation speed
-- [ ] Measure load time
-- [ ] Measure on-disk size in the real run summary
+- [x] Save raw benchmark output from the real laptop run
+- [x] Measure prompt processing speed
+- [x] Measure generation speed
+- [x] Measure load time
+- [x] Measure on-disk size in the real run summary
 - [x] Investigate reliable peak-RAM measurement
-- [ ] Record peak RAM from the real laptop run
-- [ ] Re-run K2 baseline under final protocol
+- [x] Record peak RAM from the real laptop run
+- [x] Re-run K2 baseline under final protocol
 
 Runner implementation notes:
 
 - Entry point: `./bench.sh`
 - Local HF cache only; missing models fail without redownloading.
 - Peak RSS: exact child `wait4().ru_maxrss` on Linux.
+- CPU usage: child `wait4()` user/system time, reported as process CPU % and normalized four-thread utilization.
 - Raw per-model output: `results/raw/<run-id>/`.
 - Summary: timestamped CSV/JSON plus `results/phase1-latest.*`.
 - Load timing is a best-effort separate load probe, not a guaranteed cold-cache load measurement.
-
-Known pre-project K2 results (not yet official):
-
-### K2-Horizon-0.9B Q4_K_M
-
-- Prompt processing: ~96.96 tok/s
-- Generation: ~22.93 tok/s
-- Threads: 4
-
-### K2-Horizon-0.9B Q6_K
-
-- Prompt processing: ~60.42 tok/s
-- Generation: ~18.45 tok/s
-- Threads: 4
+- Real 12-model Phase 1 run completed successfully; noisy entries were validation-rerun before moving on.
 
 ## Phase 2 — Reasoning + knowledge
 
-- [ ] Choose compact reasoning task source
-- [ ] Add arithmetic / multi-step reasoning set
-- [ ] Add ARC-style reasoning set
-- [ ] Add compact MMLU-style set
-- [ ] Add deterministic scorer
-- [ ] Validate answer extraction
+- [x] Choose compact reasoning task source (original project-authored v0.1 set)
+- [x] Add arithmetic / multi-step reasoning set
+- [x] Add ARC-style reasoning set
+- [x] Add compact MMLU-style knowledge set
+- [x] Add deterministic scorer
+- [~] Validate answer extraction and model/template compatibility
+- [ ] Review task difficulty / balance after pilot model
+- [ ] Freeze Phase 2 v1 task set
+
+Phase 2 implementation notes:
+
+- Entry point: `./capability.sh`
+- Development task file: `tasks/phase2_v0.1.json`
+- 32 objective multiple-choice tasks: 20 reasoning + 12 knowledge.
+- Default pool: seven primary model quants only.
+- Runtime: local `llama-server` with native chat template via `/v1/chat/completions`.
+- Deterministic profile: 4 threads, CPU-only, context 4096, temperature 0, seed 42, prompt cache disabled.
+- `phase2_score`: equal-weight mean of reasoning accuracy and knowledge accuracy.
+- Raw per-task responses are retained for audit before the task set is frozen.
 
 ## Phase 3 — Coding
 
@@ -146,7 +147,7 @@ Known pre-project K2 results (not yet official):
 
 ## Phase 10 — Polish
 
-- [x] Single-command runner
+- [x] Single-command speed runner
 - [x] System metadata capture
 - [ ] Documentation for adding models
 - [ ] Documentation for adding tasks
@@ -155,11 +156,11 @@ Known pre-project K2 results (not yet official):
 
 ## Current immediate next steps
 
-1. Run `./bench.sh --dry-run` on the target laptop and confirm all frozen registry entries resolve locally.
-2. Run `./bench.sh` and inspect the generated Phase 1 CSV/JSON plus raw evidence.
-3. Re-run/sanity-check K2 Q4_K_M and Q6_K under the automated protocol.
-4. Mark the real Phase 1 measurement tasks complete only after the output is stable.
-5. Freeze the v1 capability task set and scoring rules before capability testing begins.
-6. Only then begin reasoning, knowledge, coding, MiniSWE, instruction, tool, and context evaluation.
+1. Pull the new Phase 2 files on the target laptop.
+2. Run `./capability.sh --dry-run` and confirm all seven primary model entries plus all 32 tasks resolve.
+3. Smoke-test one task with `./capability.sh --only qwen35-0.8b-q4km --task arith-01`.
+4. Run the full 32-task suite on Qwen3.5-0.8B and inspect parse rate/raw outputs.
+5. If parsing and task behavior are sound, run the seven-model primary capability pool.
+6. Review difficulty/balance, then freeze a Phase 2 v1 task set before treating capability scores as final.
 
-See [`MODEL_REGISTRY.md`](MODEL_REGISTRY.md) for the frozen v1 model pool and [`PHASE1_RUNNER.md`](PHASE1_RUNNER.md) for runner usage.
+See [`MODEL_REGISTRY.md`](MODEL_REGISTRY.md), [`PHASE1_RUNNER.md`](PHASE1_RUNNER.md), and [`PHASE2_RUNNER.md`](PHASE2_RUNNER.md).
