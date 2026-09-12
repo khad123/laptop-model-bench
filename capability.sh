@@ -399,6 +399,7 @@ def main() -> int:
             "seed": SEED,
             "max_tokens": MAX_TOKENS,
             "cache_prompt": False,
+            "reasoning_effort": "none",
         },
     }
 
@@ -409,7 +410,7 @@ def main() -> int:
     print(f"HF cache: {hf_cache}")
     if not args.dry_run:
         print(f"llama-server: {server}")
-        print(f"Settings: threads={THREADS}, ngl=0, ctx={CONTEXT}, temp={TEMPERATURE}, seed={SEED}")
+        print(f"Settings: threads={THREADS}, ngl=0, ctx={CONTEXT}, temp={TEMPERATURE}, seed={SEED}, reasoning=none")
 
     resolved = []
     preflight_failed = False
@@ -498,6 +499,7 @@ def main() -> int:
                         "max_tokens": MAX_TOKENS,
                         "stream": False,
                         "cache_prompt": False,
+                        "reasoning_effort": "none",
                     }
                     status, response = http_json(
                         f"http://127.0.0.1:{port}/v1/chat/completions",
