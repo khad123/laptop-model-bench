@@ -30,6 +30,7 @@ CONTEXT = 4096
 TEMPERATURE = 0.0
 SEED = 42
 MAX_TOKENS = 32
+CHOICE_GRAMMAR = 'root ::= "A" | "B" | "C" | "D"'
 SERVER_START_TIMEOUT = 180
 REQUEST_TIMEOUT = 120
 
@@ -296,7 +297,7 @@ def write_outputs(results_dir: Path, run_id: str, meta: dict, rows: list[dict], 
     results_dir.mkdir(parents=True, exist_ok=True)
     json_path = results_dir / f"phase2-{run_id}.json"
     csv_path = results_dir / f"phase2-{run_id}.csv"
-    payload = {"schema_version": "phase2.v0.1", "run": meta, "models": summaries, "results": rows}
+    payload = {"schema_version": "phase2.v0.2", "run": meta, "models": summaries, "results": rows}
     text = json.dumps(payload, indent=2, sort_keys=True) + "\n"
     json_path.write_text(text, encoding="utf-8")
     (results_dir / "phase2-latest.json").write_text(text, encoding="utf-8")
@@ -400,6 +401,7 @@ def main() -> int:
             "max_tokens": MAX_TOKENS,
             "cache_prompt": False,
             "reasoning_effort": "none",
+            "grammar": CHOICE_GRAMMAR,
         },
     }
 
@@ -410,7 +412,7 @@ def main() -> int:
     print(f"HF cache: {hf_cache}")
     if not args.dry_run:
         print(f"llama-server: {server}")
-        print(f"Settings: threads={THREADS}, ngl=0, ctx={CONTEXT}, temp={TEMPERATURE}, seed={SEED}, reasoning=none")
+        print(f"Settings: threads={THREADS}, ngl=0, ctx={CONTEXT}, temp={TEMPERATURE}, seed={SEED}, reasoning=none, grammar=ABCD")
 
     resolved = []
     preflight_failed = False
@@ -500,6 +502,7 @@ def main() -> int:
                         "stream": False,
                         "cache_prompt": False,
                         "reasoning_effort": "none",
+                        "grammar": CHOICE_GRAMMAR,
                     }
                     status, response = http_json(
                         f"http://127.0.0.1:{port}/v1/chat/completions",

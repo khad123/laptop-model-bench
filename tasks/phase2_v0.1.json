@@ -1,5 +1,5 @@
 {
-  "benchmark_version": "phase2-v0.1",
+  "benchmark_version": "phase2-v0.2",
   "status": "development",
   "description": "Original compact multiple-choice reasoning and knowledge suite for Laptop Model Bench. Items are project-authored rather than copied from ARC/MMLU.",
   "system_prompt": "You are taking a deterministic multiple-choice benchmark. Answer the question without tools or external access.",
