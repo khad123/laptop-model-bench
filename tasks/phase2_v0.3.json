@@ -1,0 +1,50 @@
+{
+  "benchmark_version": "phase2-v0.3",
+  "status": "development",
+  "description": "Original compact multiple-choice reasoning and knowledge suite for Laptop Model Bench. v0.3 balances correct answer positions within each domain and raises knowledge difficulty while preserving 32 tasks. Items are project-authored rather than copied from ARC/MMLU.",
+  "system_prompt": "You are taking a deterministic multiple-choice benchmark. Answer the question without tools or external access.",
+  "task_design": {
+    "reasoning_items": 20,
+    "knowledge_items": 12,
+    "answer_position_balance": {
+      "overall": {"A": 8, "B": 8, "C": 8, "D": 8},
+      "reasoning": {"A": 5, "B": 5, "C": 5, "D": 5},
+      "knowledge": {"A": 3, "B": 3, "C": 3, "D": 3}
+    },
+    "notes": "Choice order is intentionally balanced to reduce answer-position bias. Six knowledge items were replaced with moderately harder project-authored items."
+  },
+  "tasks": [
+    {"id":"arith-01","domain":"reasoning","category":"arithmetic","question":"What is 17 × 6 - 14?","choices":{"A":"78","B":"92","C":"102","D":"88"},"answer":"D"},
+    {"id":"arith-02","domain":"reasoning","category":"arithmetic","question":"What is three quarters of 48, plus 5?","choices":{"A":"36","B":"41","C":"39","D":"45"},"answer":"B"},
+    {"id":"arith-03","domain":"reasoning","category":"arithmetic","question":"An item costs $80 and is discounted by 15%. What is the sale price?","choices":{"A":"$68","B":"$12","C":"$65","D":"$72"},"answer":"A"},
+    {"id":"arith-04","domain":"reasoning","category":"multi_step","question":"A bus starts with 12 passengers. Seven get on, five get off, then eight get on. How many passengers are on the bus?","choices":{"A":"18","B":"20","C":"22","D":"24"},"answer":"C"},
+    {"id":"arith-05","domain":"reasoning","category":"multi_step","question":"Three identical printers print 120 pages in 4 minutes. At the same rate, how many pages do five printers print in 10 minutes?","choices":{"A":"300","B":"400","C":"500","D":"600"},"answer":"C"},
+    {"id":"arith-06","domain":"reasoning","category":"multi_step","question":"Red and blue marbles are in a 3:5 ratio. There are 40 marbles total. How many are red?","choices":{"A":"15","B":"12","C":"18","D":"25"},"answer":"A"},
+    {"id":"arith-07","domain":"reasoning","category":"pattern","question":"What number comes next in the sequence 2, 6, 12, 20, 30, ?","choices":{"A":"36","B":"40","C":"44","D":"42"},"answer":"D"},
+    {"id":"arith-08","domain":"reasoning","category":"arithmetic","question":"What is the average of 8, 12, 15, and 5?","choices":{"A":"9","B":"10","C":"11","D":"12"},"answer":"B"},
+    {"id":"arith-09","domain":"reasoning","category":"multi_step","question":"A car travels at 72 km/h for 2.5 hours. How far does it travel?","choices":{"A":"180 km","B":"144 km","C":"160 km","D":"200 km"},"answer":"A"},
+    {"id":"arith-10","domain":"reasoning","category":"algebra","question":"If 3x + 7 = 28, what is x?","choices":{"A":"5","B":"6","C":"9","D":"7"},"answer":"D"},
+    {"id":"arc-01","domain":"reasoning","category":"logic_science","question":"A red box is heavier than a blue box, and the blue box is heavier than a green box. Which box is heaviest?","choices":{"A":"Blue","B":"Green","C":"Red","D":"They weigh the same"},"answer":"C"},
+    {"id":"arc-02","domain":"reasoning","category":"logic_science","question":"All mips are zogs. No zogs are tars. Which statement must be true?","choices":{"A":"Some mips are tars","B":"No mips are tars","C":"All tars are mips","D":"Some zogs are tars"},"answer":"B"},
+    {"id":"arc-03","domain":"reasoning","category":"logic_science","question":"A student wants to test whether fertilizer affects plant growth. Which factor should be deliberately changed between the groups?","choices":{"A":"Amount of water","B":"Hours of light","C":"Type of pot","D":"Amount of fertilizer"},"answer":"D"},
+    {"id":"arc-04","domain":"reasoning","category":"logic_science","question":"Ice melts into liquid water. What kind of change is this?","choices":{"A":"Physical change","B":"Chemical change","C":"Nuclear change","D":"Biological change"},"answer":"A"},
+    {"id":"arc-05","domain":"reasoning","category":"logic_science","question":"A simple circuit contains a battery, a bulb, and an open switch. What happens to the bulb?","choices":{"A":"It lights normally","B":"It flashes once","C":"It stays off","D":"It becomes brighter"},"answer":"C"},
+    {"id":"arc-06","domain":"reasoning","category":"logic_science","question":"A solid object has a density of 0.8 g/cm³ and is placed in water with density 1.0 g/cm³. What will it tend to do?","choices":{"A":"Sink","B":"Float","C":"Dissolve immediately","D":"Gain mass"},"answer":"B"},
+    {"id":"arc-07","domain":"reasoning","category":"logic_science","question":"Why does the Moon appear to have phases when viewed from Earth?","choices":{"A":"We see different portions of its sunlit half","B":"Earth's shadow always covers part of it","C":"The Moon changes shape each month","D":"Clouds cover different parts of it"},"answer":"A"},
+    {"id":"arc-08","domain":"reasoning","category":"logic_science","question":"In the food chain grass → rabbit → fox, the rabbit population sharply decreases. What is the most direct likely effect on foxes?","choices":{"A":"Their food supply increases","B":"They become producers","C":"They stop needing energy","D":"Their food supply decreases"},"answer":"D"},
+    {"id":"arc-09","domain":"reasoning","category":"logic_science","question":"A metal spoon becomes hot after sitting in hot soup. Which process mainly transfers heat through the spoon?","choices":{"A":"Evaporation","B":"Reflection","C":"Conduction","D":"Condensation"},"answer":"C"},
+    {"id":"arc-10","domain":"reasoning","category":"logic_science","question":"On a sunny day, when is a vertical object's shadow usually shortest?","choices":{"A":"Near sunrise","B":"Around solar noon","C":"Near sunset","D":"At midnight"},"answer":"B"},
+    {"id":"know-stem-01","domain":"knowledge","category":"stem","question":"At constant temperature, if the pressure of a fixed amount of ideal gas doubles, what happens to its volume?","choices":{"A":"It doubles","B":"It stays the same","C":"It halves","D":"It quadruples"},"answer":"C"},
+    {"id":"know-stem-02","domain":"knowledge","category":"stem","question":"During meiosis, crossing over between homologous chromosomes primarily occurs during which stage?","choices":{"A":"Metaphase I","B":"Anaphase II","C":"Telophase II","D":"Prophase I"},"answer":"D"},
+    {"id":"know-stem-03","domain":"knowledge","category":"stem","question":"Which planet is the largest in the Solar System?","choices":{"A":"Jupiter","B":"Earth","C":"Saturn","D":"Neptune"},"answer":"A"},
+    {"id":"know-comp-01","domain":"knowledge","category":"computing","question":"Which database normal form specifically removes transitive dependencies of non-key attributes on a key?","choices":{"A":"First normal form (1NF)","B":"Third normal form (3NF)","C":"Second normal form (2NF)","D":"Boyce-Codd normal form (BCNF)"},"answer":"B"},
+    {"id":"know-comp-02","domain":"knowledge","category":"computing","question":"In the standard TCP three-way handshake, which flags are normally set in the server's reply to the client's initial SYN?","choices":{"A":"ACK only","B":"SYN only","C":"FIN and ACK","D":"SYN and ACK"},"answer":"D"},
+    {"id":"know-comp-03","domain":"knowledge","category":"computing","question":"Which SQL keyword is used to retrieve rows from a table?","choices":{"A":"SELECT","B":"UPDATE","C":"DELETE","D":"DROP"},"answer":"A"},
+    {"id":"know-hum-01","domain":"knowledge","category":"humanities","question":"Who wrote the novel '1984'?","choices":{"A":"Aldous Huxley","B":"Virginia Woolf","C":"George Orwell","D":"Ernest Hemingway"},"answer":"C"},
+    {"id":"know-hum-02","domain":"knowledge","category":"humanities","question":"The Peace of Westphalia in 1648 is most closely associated with ending which major European conflict?","choices":{"A":"Hundred Years' War","B":"Thirty Years' War","C":"War of the Roses","D":"Crimean War"},"answer":"B"},
+    {"id":"know-hum-03","domain":"knowledge","category":"humanities","question":"In which year was Magna Carta first sealed in England?","choices":{"A":"1066","B":"1492","C":"1215","D":"1776"},"answer":"C"},
+    {"id":"know-social-01","domain":"knowledge","category":"social_science","question":"A country has a comparative advantage in producing a good when it can produce that good at what?","choices":{"A":"A lower opportunity cost than another country","B":"A higher money price than another country","C":"A larger population than another country","D":"A higher absolute labor requirement"},"answer":"A"},
+    {"id":"know-social-02","domain":"knowledge","category":"social_science","question":"What does inflation usually describe?","choices":{"A":"A permanent fall in population","B":"An increase in physical land area","C":"A decrease in all wages","D":"A sustained general rise in prices"},"answer":"D"},
+    {"id":"know-social-03","domain":"knowledge","category":"social_science","question":"What is the main idea of separation of powers in government?","choices":{"A":"All authority belongs to one office","B":"Government powers are divided among different branches","C":"Courts control all elections","D":"Only local governments may make laws"},"answer":"B"}
+  ]
+}
