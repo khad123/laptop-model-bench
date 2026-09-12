@@ -122,25 +122,41 @@ def resolve_model(row: dict, hf_cache: Path) -> tuple[Path, int, str, str]:
     raise FileNotFoundError(f"no local {row['quant']} GGUF under {root / 'snapshots'}")
 
 
-def run_child(cmd: list[str], stdout_path: Path, stderr_path: Path) -> dict:
+def run_child(cmd: list[str], stdout_path: Path, stderr_path: Path, threads: int) -> dict:
     env = os.environ.copy()
     env["HF_HUB_OFFLINE"] = "1"
     env["TRANSFORMERS_OFFLINE"] = "1"
     env.setdefault("LC_ALL", "C")
     started = time.perf_counter()
     rss_kb = None
+    user_s = None
+    system_s = None
+
     with stdout_path.open("wb") as out, stderr_path.open("wb") as err:
         proc = subprocess.Popen(cmd, stdout=out, stderr=err, env=env)
         if hasattr(os, "wait4"):
             _, status, usage = os.wait4(proc.pid, 0)
             proc.returncode = os.waitstatus_to_exitcode(status)
             rss_kb = int(usage.ru_maxrss / 1024) if sys.platform == "darwin" else int(usage.ru_maxrss)
+            user_s = float(usage.ru_utime)
+            system_s = float(usage.ru_stime)
         else:
             proc.wait()
+
+    wall_s = time.perf_counter() - started
+    cpu_total_s = (user_s + system_s) if user_s is not None and system_s is not None else None
+    avg_cpu_percent = (cpu_total_s / wall_s * 100.0) if cpu_total_s is not None and wall_s > 0 else None
+    thread_util_percent = (avg_cpu_percent / threads) if avg_cpu_percent is not None and threads > 0 else None
+
     return {
         "exit_code": int(proc.returncode or 0),
-        "wall_seconds": round(time.perf_counter() - started, 6),
+        "wall_seconds": round(wall_s, 6),
         "peak_rss_kb": rss_kb,
+        "cpu_user_seconds": round(user_s, 6) if user_s is not None else None,
+        "cpu_system_seconds": round(system_s, 6) if system_s is not None else None,
+        "cpu_total_seconds": round(cpu_total_s, 6) if cpu_total_s is not None else None,
+        "avg_cpu_percent": round(avg_cpu_percent, 3) if avg_cpu_percent is not None else None,
+        "cpu_thread_util_percent": round(thread_util_percent, 3) if thread_util_percent is not None else None,
     }
 
 
@@ -223,8 +239,11 @@ def write_summaries(results_dir: Path, run_id: str, meta: dict, rows: list[dict]
         "hf_snapshot", "hf_blob_id", "threads", "n_gpu_layers", "prompt_tokens", "generation_tokens",
         "repetitions", "pp_tokens_per_s", "pp_stddev_tokens_per_s", "tg_tokens_per_s",
         "tg_stddev_tokens_per_s", "bench_wall_seconds", "peak_rss_kb", "peak_rss_gib",
-        "load_probe_wall_seconds", "load_probe_peak_rss_kb", "llama_build_commit", "llama_build_number",
-        "cpu_info", "backends", "raw_bench_json", "raw_bench_stderr", "raw_meta_json"
+        "cpu_user_seconds", "cpu_system_seconds", "cpu_total_seconds", "avg_cpu_percent",
+        "cpu_thread_util_percent", "load_probe_wall_seconds", "load_probe_peak_rss_kb",
+        "load_probe_cpu_user_seconds", "load_probe_cpu_system_seconds", "load_probe_cpu_total_seconds",
+        "load_probe_avg_cpu_percent", "load_probe_cpu_thread_util_percent", "llama_build_commit",
+        "llama_build_number", "cpu_info", "backends", "raw_bench_json", "raw_bench_stderr", "raw_meta_json"
     ]
     extra = sorted({k for r in rows for k in r if k not in fields})
     for out in (csv_path, results_dir / "phase1-latest.csv"):
@@ -290,6 +309,7 @@ def main() -> int:
         "llama_cpp_git_commit": command_text(["git", "-C", str(llama_cpp_dir), "rev-parse", "HEAD"]),
         "llama_bench": str(bench),
         "llama_bench_version": None if args.dry_run else command_text([str(bench), "--version"]),
+        "cpu_percent_definition": "100% = one fully busy logical CPU; cpu_thread_util_percent normalizes avg_cpu_percent by benchmark thread count",
         "settings": {
             "threads": THREADS, "n_gpu_layers": 0, "protocol_context": CONTEXT,
             "prompt_tokens": PP_TOKENS, "generation_tokens": TG_TOKENS,
@@ -345,11 +365,16 @@ def main() -> int:
         cmd = [str(bench), "-m", str(model_path), "-t", str(THREADS), "-ngl", "0",
                "-p", str(PP_TOKENS), "-n", str(TG_TOKENS), "-r", str(REPETITIONS), "-o", "json"]
         print("  running:", shlex.join(cmd))
-        usage = run_child(cmd, bench_json, bench_err)
+        usage = run_child(cmd, bench_json, bench_err, THREADS)
         row.update({
             "bench_exit_code": usage["exit_code"], "bench_wall_seconds": usage["wall_seconds"],
             "peak_rss_kb": usage["peak_rss_kb"],
             "peak_rss_gib": round(usage["peak_rss_kb"] / 1024**2, 6) if usage["peak_rss_kb"] is not None else None,
+            "cpu_user_seconds": usage["cpu_user_seconds"],
+            "cpu_system_seconds": usage["cpu_system_seconds"],
+            "cpu_total_seconds": usage["cpu_total_seconds"],
+            "avg_cpu_percent": usage["avg_cpu_percent"],
+            "cpu_thread_util_percent": usage["cpu_thread_util_percent"],
             "raw_bench_json": rel(bench_json), "raw_bench_stderr": rel(bench_err), "raw_meta_json": rel(meta_json),
         })
         if usage["exit_code"] != 0:
@@ -372,11 +397,16 @@ def main() -> int:
                         "-p", "1", "-n", "0", "-r", "1", "-o", "json"]
             if supports_no_warmup:
                 load_cmd.insert(1, "--no-warmup")
-            load_usage = run_child(load_cmd, load_json, load_err)
+            load_usage = run_child(load_cmd, load_json, load_err, THREADS)
             row.update({
                 "load_probe_exit_code": load_usage["exit_code"],
                 "load_probe_wall_seconds": load_usage["wall_seconds"],
                 "load_probe_peak_rss_kb": load_usage["peak_rss_kb"],
+                "load_probe_cpu_user_seconds": load_usage["cpu_user_seconds"],
+                "load_probe_cpu_system_seconds": load_usage["cpu_system_seconds"],
+                "load_probe_cpu_total_seconds": load_usage["cpu_total_seconds"],
+                "load_probe_avg_cpu_percent": load_usage["avg_cpu_percent"],
+                "load_probe_cpu_thread_util_percent": load_usage["cpu_thread_util_percent"],
                 "load_probe_no_warmup": supports_no_warmup,
                 "raw_load_json": rel(load_json), "raw_load_stderr": rel(load_err),
             })
@@ -389,7 +419,8 @@ def main() -> int:
         }, indent=2, sort_keys=True) + "\n", encoding="utf-8")
         results.append(row)
         if row["status"] in ("ok", "ok_with_warnings"):
-            print(f"[{row['status']}] {entry['id']}: pp={row['pp_tokens_per_s']:.2f} tok/s, tg={row['tg_tokens_per_s']:.2f} tok/s, peak_rss={row['peak_rss_gib']:.2f} GiB")
+            cpu_text = f", cpu={row['avg_cpu_percent']:.1f}% ({row['cpu_thread_util_percent']:.1f}% of {THREADS}T)" if row.get("avg_cpu_percent") is not None else ""
+            print(f"[{row['status']}] {entry['id']}: pp={row['pp_tokens_per_s']:.2f} tok/s, tg={row['tg_tokens_per_s']:.2f} tok/s, peak_rss={row['peak_rss_gib']:.2f} GiB{cpu_text}")
         else:
             print(f"[failed] {entry['id']}: {row['error']}")
         write_summaries(results_dir, run_id, meta, results)
