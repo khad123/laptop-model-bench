@@ -1,0 +1,170 @@
+{
+  "benchmark_version": "phase3-v0.1",
+  "status": "development",
+  "description": "Compact project-authored Python coding suite inspired by HumanEval+/MBPP+ task structure. Prompts are shown to the model; structured tests remain hidden from the model and are executed locally in a sandbox.",
+  "system_prompt": "You are taking a deterministic Python coding benchmark. Return only valid Python 3 code. Define the requested function exactly. Do not use files, network access, subprocesses, input, eval, exec, or external packages.",
+  "tasks": [
+    {
+      "id": "code-01",
+      "category": "basic",
+      "function": "clamp",
+      "prompt": "Implement `clamp(value, low, high)`. Assume low <= high. Return low if value is below low, high if value is above high, otherwise return value.",
+      "tests": [
+        {"args": [-5, 0, 10], "expected": 0},
+        {"args": [5, 0, 10], "expected": 5},
+        {"args": [15, 0, 10], "expected": 10},
+        {"args": [3, 3, 3], "expected": 3},
+        {"args": [-2, -5, -1], "expected": -2}
+      ]
+    },
+    {
+      "id": "code-02",
+      "category": "sequences",
+      "function": "dedupe_preserve_order",
+      "prompt": "Implement `dedupe_preserve_order(items)`. Return a new list containing only the first occurrence of each item, preserving the original order. Inputs contain hashable values.",
+      "tests": [
+        {"args": [[]], "expected": []},
+        {"args": [[1, 2, 1, 3, 2]], "expected": [1, 2, 3]},
+        {"args": [["a", "b", "a"]], "expected": ["a", "b"]},
+        {"args": [[1, 1, 1]], "expected": [1]},
+        {"args": [[3, 2, 3, 1, 2]], "expected": [3, 2, 1]}
+      ]
+    },
+    {
+      "id": "code-03",
+      "category": "strings",
+      "function": "is_palindrome_text",
+      "prompt": "Implement `is_palindrome_text(text)`. Return True when the letters and digits in text form a palindrome after ignoring case and all non-alphanumeric characters; otherwise return False.",
+      "tests": [
+        {"args": ["RaceCar"], "expected": true},
+        {"args": ["A man, a plan, a canal: Panama!"], "expected": true},
+        {"args": ["hello"], "expected": false},
+        {"args": [""], "expected": true},
+        {"args": ["12321"], "expected": true},
+        {"args": ["No 'x' in Nixon"], "expected": true}
+      ]
+    },
+    {
+      "id": "code-04",
+      "category": "sequences",
+      "function": "second_largest_distinct",
+      "prompt": "Implement `second_largest_distinct(nums)`. Return the second-largest distinct value. Return None when fewer than two distinct values exist.",
+      "tests": [
+        {"args": [[1, 2, 3]], "expected": 2},
+        {"args": [[5, 5, 4]], "expected": 4},
+        {"args": [[7]], "expected": null},
+        {"args": [[]], "expected": null},
+        {"args": [[-1, -3, -2]], "expected": -2},
+        {"args": [[4, 4, 4]], "expected": null}
+      ]
+    },
+    {
+      "id": "code-05",
+      "category": "sequences",
+      "function": "rotate_right",
+      "prompt": "Implement `rotate_right(items, k)`. Return a new list rotated right by non-negative integer k positions. k may exceed the list length. An empty input returns an empty list.",
+      "tests": [
+        {"args": [[1, 2, 3, 4], 1], "expected": [4, 1, 2, 3]},
+        {"args": [[1, 2, 3, 4], 0], "expected": [1, 2, 3, 4]},
+        {"args": [[1, 2, 3, 4], 6], "expected": [3, 4, 1, 2]},
+        {"args": [[], 5], "expected": []},
+        {"args": [["a", "b", "c"], 3], "expected": ["a", "b", "c"]}
+      ]
+    },
+    {
+      "id": "code-06",
+      "category": "algorithms",
+      "function": "balanced_brackets",
+      "prompt": "Implement `balanced_brackets(text)`. Consider (), [], and {} brackets; ignore all other characters. Return True only if every opening bracket is closed by the matching type in the correct nesting order.",
+      "tests": [
+        {"args": [""], "expected": true},
+        {"args": ["()[]{}"], "expected": true},
+        {"args": ["([{}])"], "expected": true},
+        {"args": ["(]"], "expected": false},
+        {"args": ["([)]"], "expected": false},
+        {"args": ["abc{[x](y)}"], "expected": true},
+        {"args": ["((("], "expected": false}
+      ]
+    },
+    {
+      "id": "code-07",
+      "category": "algorithms",
+      "function": "merge_intervals",
+      "prompt": "Implement `merge_intervals(intervals)`. Each interval is [start, end] with start <= end. Return intervals sorted by start with overlapping or touching intervals merged. Do not mutate the input.",
+      "tests": [
+        {"args": [[]], "expected": []},
+        {"args": [[[1, 3], [2, 4]]], "expected": [[1, 4]]},
+        {"args": [[[1, 2], [3, 4]]], "expected": [[1, 2], [3, 4]]},
+        {"args": [[[5, 7], [1, 2], [2, 4]]], "expected": [[1, 4], [5, 7]]},
+        {"args": [[[1, 10], [2, 3], [4, 8]]], "expected": [[1, 10]]},
+        {"args": [[[-3, -1], [-2, 2], [5, 5]]], "expected": [[-3, 2], [5, 5]]}
+      ]
+    },
+    {
+      "id": "code-08",
+      "category": "algorithms",
+      "function": "longest_increasing_run",
+      "prompt": "Implement `longest_increasing_run(nums)`. Return the length of the longest contiguous strictly increasing run. Return 0 for an empty list.",
+      "tests": [
+        {"args": [[]], "expected": 0},
+        {"args": [[1]], "expected": 1},
+        {"args": [[1, 2, 3]], "expected": 3},
+        {"args": [[3, 2, 1]], "expected": 1},
+        {"args": [[1, 2, 2, 3, 4]], "expected": 3},
+        {"args": [[1, 3, 2, 4, 6, 5]], "expected": 3}
+      ]
+    },
+    {
+      "id": "code-09",
+      "category": "strings",
+      "function": "word_frequencies",
+      "prompt": "Implement `word_frequencies(text)`. A word is a maximal consecutive sequence of ASCII letters A-Z or a-z. Return a dictionary mapping lowercase words to occurrence counts. Ignore all non-letter characters.",
+      "tests": [
+        {"args": ["Hello, hello world!"], "expected": {"hello": 2, "world": 1}},
+        {"args": [""], "expected": {}},
+        {"args": ["One two TWO three-three"], "expected": {"one": 1, "two": 2, "three": 2}},
+        {"args": ["123 abc ABC_ def"], "expected": {"abc": 2, "def": 1}},
+        {"args": ["Don't stop"], "expected": {"don": 1, "t": 1, "stop": 1}}
+      ]
+    },
+    {
+      "id": "code-10",
+      "category": "algorithms",
+      "function": "two_sum_indices",
+      "prompt": "Implement `two_sum_indices(nums, target)`. Return the lexicographically smallest pair [i, j] with i < j and nums[i] + nums[j] == target. Return [] if no pair exists.",
+      "tests": [
+        {"args": [[2, 7, 11, 15], 9], "expected": [0, 1]},
+        {"args": [[3, 3], 6], "expected": [0, 1]},
+        {"args": [[1, 4, 2, 3], 5], "expected": [0, 1]},
+        {"args": [[1, 2, 3], 10], "expected": []},
+        {"args": [[-1, 0, 1, 2], 1], "expected": [0, 3]}
+      ]
+    },
+    {
+      "id": "code-11",
+      "category": "strings",
+      "function": "run_length_encode",
+      "prompt": "Implement `run_length_encode(text)`. Return consecutive character runs as a list of [character, count] pairs. Preserve characters exactly. An empty string returns [].",
+      "tests": [
+        {"args": [""], "expected": []},
+        {"args": ["aaabbc"], "expected": [["a", 3], ["b", 2], ["c", 1]]},
+        {"args": ["a"], "expected": [["a", 1]]},
+        {"args": ["ababa"], "expected": [["a", 1], ["b", 1], ["a", 1], ["b", 1], ["a", 1]]},
+        {"args": ["11122"], "expected": [["1", 3], ["2", 2]]}
+      ]
+    },
+    {
+      "id": "code-12",
+      "category": "recursion",
+      "function": "flatten_nested_list",
+      "prompt": "Implement `flatten_nested_list(value)`. value is a list whose elements may themselves be nested lists to any depth. Return a new flat list containing all non-list elements from left to right.",
+      "tests": [
+        {"args": [[]], "expected": []},
+        {"args": [[1, [2, [3]], 4]], "expected": [1, 2, 3, 4]},
+        {"args": [[["a"], ["b", ["c"]]]], "expected": ["a", "b", "c"]},
+        {"args": [[[[1]], 2, [], [3, 4]]], "expected": [1, 2, 3, 4]},
+        {"args": [[1, 2, 3]], "expected": [1, 2, 3]}
+      ]
+    }
+  ]
+}
