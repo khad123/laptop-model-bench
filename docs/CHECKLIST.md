@@ -13,22 +13,26 @@ Status legend:
 - [x] Add project plan
 - [x] Add living checklist
 - [x] Add benchmark protocol
-- [ ] Freeze v1 model list
-- [ ] Freeze quantization for every model
+- [x] Freeze v1 model list
+- [x] Freeze primary quantization for every base model
 - [ ] Freeze v1 task set
 - [ ] Freeze scoring weights / leaderboard rules
 
 ## Phase 1 — Inventory + speed
 
-- [ ] Create model registry
-- [ ] Add K2-Horizon-0.9B Q4_K_M
-- [ ] Add Qwen3.5-0.8B Q4_K_M
-- [ ] Add Qwen3.5-2B Q4_K_M
-- [ ] Add Qwen3.5-2B IQ4_XS
-- [ ] Add LFM2.5-1.2B-Instruct Q4_K_M
-- [ ] Add SmolLM3-3B
-- [ ] Add Gemma 3 1B
-- [ ] Add Llama 3.2 1B Instruct
+- [x] Create model registry
+- [x] Add K2-Horizon-0.9B Q4_K_M
+- [x] Add Qwen3.5-0.8B Q4_K_M
+- [x] Add Qwen3.5-2B Q4_K_M
+- [x] Add Qwen3.5-2B IQ4_XS as quant comparison
+- [x] Add LFM2.5-1.2B-Instruct Q4_K_M
+- [x] Add SmolLM3-3B IQ4_XS primary + Q4_K_M comparison
+- [x] Add Gemma 3 1B IQ4_XS primary + Q4_K_M comparison
+- [x] Add Llama 3.2 1B Instruct IQ4_XS primary + Q4_K_M comparison
+- [x] Record K2 Q6_K as quant comparison
+- [x] Identify/exclude old LFM2-1.2B HIP-optimized file from primary leaderboard
+- [x] Identify/exclude Ollama Llama 3.2 duplicate from primary leaderboard
+- [x] Identify/exclude Qwen mmproj files as non-standalone models
 - [ ] Build automated llama-bench runner
 - [ ] Save raw benchmark output
 - [ ] Measure prompt processing speed
@@ -38,10 +42,18 @@ Status legend:
 - [ ] Investigate reliable peak-RAM measurement
 - [ ] Re-run K2 baseline under final protocol
 
-Known pre-project K2 result (not yet official):
+Known pre-project K2 results (not yet official):
+
+### K2-Horizon-0.9B Q4_K_M
 
 - Prompt processing: ~96.96 tok/s
 - Generation: ~22.93 tok/s
+- Threads: 4
+
+### K2-Horizon-0.9B Q6_K
+
+- Prompt processing: ~60.42 tok/s
+- Generation: ~18.45 tok/s
 - Threads: 4
 
 ## Phase 2 — Reasoning + knowledge
@@ -103,9 +115,13 @@ Known pre-project K2 result (not yet official):
 
 ## Phase 8 — Quantization
 
+- [ ] K2 Q4_K_M vs Q6_K speed/resource/quality comparison
 - [ ] Qwen3.5-2B Q4_K_M vs IQ4_XS speed
 - [ ] Qwen3.5-2B Q4_K_M vs IQ4_XS RAM
 - [ ] Qwen3.5-2B Q4_K_M vs IQ4_XS quality
+- [ ] SmolLM3 Q4_K_M vs IQ4_XS
+- [ ] Gemma 3 1B Q4_K_M vs IQ4_XS
+- [ ] Llama 3.2 1B Q4_K_M vs IQ4_XS
 - [ ] Decide whether additional same-base quant comparisons are useful
 
 ## Phase 9 — Results
@@ -129,8 +145,10 @@ Known pre-project K2 result (not yet official):
 
 ## Current immediate next steps
 
-1. Finish downloading the initial model pool.
-2. Record exact quant/file/repository for each model.
-3. Build Phase 1 model registry and automated speed harness.
-4. Run every model through the identical speed test.
-5. Only then begin capability benchmarks.
+1. Build the Phase 1 automated `llama-bench` runner.
+2. Record exact file size, prompt speed, generation speed, and load metadata for every registered entry.
+3. Re-run K2 Q4_K_M and Q6_K under that automated runner.
+4. Freeze the v1 capability task set and scoring rules before capability testing begins.
+5. Only then begin reasoning, knowledge, coding, MiniSWE, instruction, tool, and context evaluation.
+
+See [`MODEL_REGISTRY.md`](MODEL_REGISTRY.md) for the frozen v1 model pool.
