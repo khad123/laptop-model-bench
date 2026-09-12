@@ -33,14 +33,24 @@ Status legend:
 - [x] Identify/exclude old LFM2-1.2B HIP-optimized file from primary leaderboard
 - [x] Identify/exclude Ollama Llama 3.2 duplicate from primary leaderboard
 - [x] Identify/exclude Qwen mmproj files as non-standalone models
-- [ ] Build automated llama-bench runner
-- [ ] Save raw benchmark output
+- [x] Build automated llama-bench runner
+- [ ] Save raw benchmark output from the real laptop run
 - [ ] Measure prompt processing speed
 - [ ] Measure generation speed
 - [ ] Measure load time
-- [ ] Measure on-disk size
-- [ ] Investigate reliable peak-RAM measurement
+- [ ] Measure on-disk size in the real run summary
+- [x] Investigate reliable peak-RAM measurement
+- [ ] Record peak RAM from the real laptop run
 - [ ] Re-run K2 baseline under final protocol
+
+Runner implementation notes:
+
+- Entry point: `./bench.sh`
+- Local HF cache only; missing models fail without redownloading.
+- Peak RSS: exact child `wait4().ru_maxrss` on Linux.
+- Raw per-model output: `results/raw/<run-id>/`.
+- Summary: timestamped CSV/JSON plus `results/phase1-latest.*`.
+- Load timing is a best-effort separate load probe, not a guaranteed cold-cache load measurement.
 
 Known pre-project K2 results (not yet official):
 
@@ -136,8 +146,8 @@ Known pre-project K2 results (not yet official):
 
 ## Phase 10 — Polish
 
-- [ ] Single-command runner
-- [ ] System metadata capture
+- [x] Single-command runner
+- [x] System metadata capture
 - [ ] Documentation for adding models
 - [ ] Documentation for adding tasks
 - [ ] Charts / plots
@@ -145,10 +155,11 @@ Known pre-project K2 results (not yet official):
 
 ## Current immediate next steps
 
-1. Build the Phase 1 automated `llama-bench` runner.
-2. Record exact file size, prompt speed, generation speed, and load metadata for every registered entry.
-3. Re-run K2 Q4_K_M and Q6_K under that automated runner.
-4. Freeze the v1 capability task set and scoring rules before capability testing begins.
-5. Only then begin reasoning, knowledge, coding, MiniSWE, instruction, tool, and context evaluation.
+1. Run `./bench.sh --dry-run` on the target laptop and confirm all frozen registry entries resolve locally.
+2. Run `./bench.sh` and inspect the generated Phase 1 CSV/JSON plus raw evidence.
+3. Re-run/sanity-check K2 Q4_K_M and Q6_K under the automated protocol.
+4. Mark the real Phase 1 measurement tasks complete only after the output is stable.
+5. Freeze the v1 capability task set and scoring rules before capability testing begins.
+6. Only then begin reasoning, knowledge, coding, MiniSWE, instruction, tool, and context evaluation.
 
-See [`MODEL_REGISTRY.md`](MODEL_REGISTRY.md) for the frozen v1 model pool.
+See [`MODEL_REGISTRY.md`](MODEL_REGISTRY.md) for the frozen v1 model pool and [`PHASE1_RUNNER.md`](PHASE1_RUNNER.md) for runner usage.
