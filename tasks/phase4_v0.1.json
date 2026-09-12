@@ -1,0 +1,60 @@
+{
+  "benchmark_version": "phase4-v0.1",
+  "status": "development",
+  "description": "Compact project-authored MiniSWE suite: tiny multi-file Python repositories with issue descriptions and hidden deterministic tests.",
+  "system_prompt": "You are fixing a tiny existing Python repository. Return only complete replacement files using <file path=\"relative/path.py\"> ... </file> blocks. Change only files that need modification. Do not use files, network access, subprocesses, eval, exec, input, or external packages.",
+  "tasks": [
+    {
+      "id": "swe-01",
+      "category": "configuration",
+      "issue": "`build_config` has the wrong precedence. Configuration must be applied in this order: defaults, then file values, then environment values, so environment values win conflicts. It must not mutate DEFAULTS or either input dictionary. Fix the repository.",
+      "files": {
+        "tinyapp/__init__.py": "",
+        "tinyapp/config.py": "DEFAULTS = {\"host\": \"localhost\", \"port\": 8000, \"debug\": False}\n\ndef build_config(file_values=None, env_values=None):\n    config = DEFAULTS.copy()\n    if env_values:\n        config.update(env_values)\n    if file_values:\n        config.update(file_values)\n    return config\n"
+      },
+      "hidden_tests": "import json, sys\nsys.path.insert(0, \"/work\")\nfrom tinyapp.config import DEFAULTS, build_config\n\nresults = []\ndef check(name, condition):\n    results.append((name, bool(condition)))\n\ncheck(\"defaults\", build_config() == {\"host\":\"localhost\",\"port\":8000,\"debug\":False})\nf = {\"port\": 9000, \"debug\": True}\ne = {\"port\": 7000}\nf_before = dict(f); e_before = dict(e); d_before = dict(DEFAULTS)\ncheck(\"precedence\", build_config(f, e)[\"port\"] == 7000)\ncheck(\"file_applies\", build_config(f, e)[\"debug\"] is True)\nbuild_config(f, e)\ncheck(\"inputs_unchanged\", f == f_before and e == e_before)\ncheck(\"defaults_unchanged\", DEFAULTS == d_before)\npassed = sum(ok for _, ok in results)\nprint(json.dumps({\"status\":\"pass\" if passed == len(results) else (\"partial\" if passed else \"fail\"),\"passed\":passed,\"total\":len(results),\"checks\":results}))\nraise SystemExit(0 if passed == len(results) else 1)\n"
+    },
+    {
+      "id": "swe-02",
+      "category": "validation",
+      "issue": "Username validation is too permissive. After trimming surrounding whitespace and lowercasing, a valid username must be 3–20 characters, contain only ASCII letters a-z, digits 0-9, or `_`, must not start or end with `_`, and must not contain `__`. Keep `normalize_username` behavior. Fix `valid_username`.",
+      "files": {
+        "accounts/__init__.py": "",
+        "accounts/validators.py": "def normalize_username(value):\n    return value.strip().lower()\n\ndef valid_username(value):\n    value = normalize_username(value)\n    return len(value) >= 3 and value.replace(\"_\", \"\").isalnum()\n"
+      },
+      "hidden_tests": "import json, sys\nsys.path.insert(0, \"/work\")\nfrom accounts.validators import normalize_username, valid_username\n\ncases = [\n    (\" Alice_7 \", True),\n    (\"ab\", False),\n    (\"a\" * 21, False),\n    (\"_alice\", False),\n    (\"alice_\", False),\n    (\"ali__ce\", False),\n    (\"alice-7\", False),\n    (\"álîce\", False),\n    (\"ABC123\", True),\n]\nresults = []\nfor value, expected in cases:\n    results.append((value, valid_username(value) == expected))\nresults.append((\"normalize\", normalize_username(\"  ALIce_7 \") == \"alice_7\"))\npassed = sum(ok for _, ok in results)\nprint(json.dumps({\"status\":\"pass\" if passed == len(results) else (\"partial\" if passed else \"fail\"),\"passed\":passed,\"total\":len(results),\"checks\":results}, ensure_ascii=False))\nraise SystemExit(0 if passed == len(results) else 1)\n"
+    },
+    {
+      "id": "swe-03",
+      "category": "state_logic",
+      "issue": "`available_stock(records, sku)` computes stock incorrectly. Each record has `sku`, `qty`, and `status`. For the requested SKU: `received` adds qty, `reserved` subtracts qty, and `damaged` contributes nothing. Records for other SKUs and unknown statuses must be ignored. The final result must never be below 0. Do not mutate records.",
+      "files": {
+        "inventory/__init__.py": "",
+        "inventory/models.py": "VALID_STATUSES = {\"received\", \"reserved\", \"damaged\"}\n",
+        "inventory/service.py": "from .models import VALID_STATUSES\n\ndef available_stock(records, sku):\n    total = 0\n    for record in records:\n        if record[\"sku\"] == sku:\n            total += record[\"qty\"]\n    return total\n"
+      },
+      "hidden_tests": "import copy, json, sys\nsys.path.insert(0, \"/work\")\nfrom inventory.service import available_stock\n\nrecords = [\n    {\"sku\":\"A\",\"qty\":10,\"status\":\"received\"},\n    {\"sku\":\"A\",\"qty\":3,\"status\":\"reserved\"},\n    {\"sku\":\"A\",\"qty\":4,\"status\":\"damaged\"},\n    {\"sku\":\"B\",\"qty\":100,\"status\":\"received\"},\n    {\"sku\":\"A\",\"qty\":9,\"status\":\"mystery\"},\n]\nbefore = copy.deepcopy(records)\nchecks = [\n    (\"basic\", available_stock(records, \"A\") == 7),\n    (\"other_sku\", available_stock(records, \"B\") == 100),\n    (\"missing\", available_stock(records, \"C\") == 0),\n    (\"floor_zero\", available_stock([{\"sku\":\"A\",\"qty\":2,\"status\":\"received\"},{\"sku\":\"A\",\"qty\":5,\"status\":\"reserved\"}], \"A\") == 0),\n    (\"unchanged\", records == before),\n]\npassed = sum(ok for _, ok in checks)\nprint(json.dumps({\"status\":\"pass\" if passed == len(checks) else (\"partial\" if passed else \"fail\"),\"passed\":passed,\"total\":len(checks),\"checks\":checks}))\nraise SystemExit(0 if passed == len(checks) else 1)\n"
+    },
+    {
+      "id": "swe-04",
+      "category": "pagination",
+      "issue": "`paginate(items, page, page_size)` should use 1-based page numbers. For example page=1 starts at the first item. Return a new list. If page < 1 or page_size < 1, return []. A page beyond the end also returns []. Fix the implementation without mutating `items`.",
+      "files": {
+        "api/__init__.py": "",
+        "api/pagination.py": "def paginate(items, page, page_size):\n    start = page * page_size\n    end = start + page_size\n    return items[start:end]\n"
+      },
+      "hidden_tests": "import json, sys\nsys.path.insert(0, \"/work\")\nfrom api.pagination import paginate\n\ndata = [1,2,3,4,5]\nbefore = list(data)\nchecks = [\n    (\"page1\", paginate(data,1,2) == [1,2]),\n    (\"page2\", paginate(data,2,2) == [3,4]),\n    (\"last\", paginate(data,3,2) == [5]),\n    (\"beyond\", paginate(data,4,2) == []),\n    (\"invalid_page\", paginate(data,0,2) == []),\n    (\"invalid_size\", paginate(data,1,0) == []),\n    (\"unchanged\", data == before),\n    (\"new_list\", paginate(data,1,10) is not data),\n]\npassed = sum(ok for _, ok in checks)\nprint(json.dumps({\"status\":\"pass\" if passed == len(checks) else (\"partial\" if passed else \"fail\"),\"passed\":passed,\"total\":len(checks),\"checks\":checks}))\nraise SystemExit(0 if passed == len(checks) else 1)\n"
+    },
+    {
+      "id": "swe-05",
+      "category": "business_logic",
+      "issue": "`order_total(lines, coupon_percent=0)` applies coupons incorrectly. Each line has `unit_price` and `quantity`; use `line_total` for each line. `coupon_percent` is a whole-number percentage (10 means 10%). Clamp coupon_percent to the range 0..100, apply it once to the subtotal, and return the final value rounded to 2 decimals. Do not mutate `lines`.",
+      "files": {
+        "store/__init__.py": "",
+        "store/pricing.py": "def line_total(unit_price, quantity):\n    return round(unit_price * quantity, 2)\n",
+        "store/order.py": "from .pricing import line_total\n\ndef order_total(lines, coupon_percent=0):\n    subtotal = sum(line_total(line[\"unit_price\"], line[\"quantity\"]) for line in lines)\n    if coupon_percent:\n        subtotal -= coupon_percent\n    return round(subtotal, 2)\n"
+      },
+      "hidden_tests": "import copy, json, sys\nsys.path.insert(0, \"/work\")\nfrom store.order import order_total\n\nlines = [{\"unit_price\": 12.50, \"quantity\": 2}, {\"unit_price\": 5.00, \"quantity\": 1}]\nbefore = copy.deepcopy(lines)\nchecks = [\n    (\"no_coupon\", order_total(lines) == 30.00),\n    (\"ten_percent\", order_total(lines,10) == 27.00),\n    (\"zero\", order_total(lines,0) == 30.00),\n    (\"over_100\", order_total(lines,150) == 0.00),\n    (\"negative\", order_total(lines,-20) == 30.00),\n    (\"rounding\", order_total([{\"unit_price\": 3.335, \"quantity\": 3}], 10) == 9.01),\n    (\"unchanged\", lines == before),\n]\npassed = sum(ok for _, ok in checks)\nprint(json.dumps({\"status\":\"pass\" if passed == len(checks) else (\"partial\" if passed else \"fail\"),\"passed\":passed,\"total\":len(checks),\"checks\":checks}))\nraise SystemExit(0 if passed == len(checks) else 1)\n"
+    }
+  ]
+}
