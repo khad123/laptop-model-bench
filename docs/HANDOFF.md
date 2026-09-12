@@ -2,76 +2,81 @@
 
 ## Current state
 
-The v1 laptop benchmark model inventory is downloaded and recorded in `docs/MODEL_REGISTRY.md`, including exact local GGUF sizes.
+The v1 laptop model inventory is recorded in `docs/MODEL_REGISTRY.md`, and the benchmark protocol is defined in `docs/BENCHMARK_PROTOCOL.md`.
 
-The benchmark protocol is defined in `docs/BENCHMARK_PROTOCOL.md` and the living work tracker is in `docs/CHECKLIST.md`.
+### Phase 1 — completed on the target laptop
 
-Phase 1 speed/efficiency automation is now implemented:
+The speed/efficiency runner is implemented in `bench.sh` and has now been run against the real 12-entry pool on the target Intel 8th-gen i5 / 8 GB CPU-only laptop.
 
-- `bench.sh` — single-command entry point containing registry parsing, local HF-cache resolution, sequential `llama-bench` execution, metric extraction, peak-RAM capture, load probe, and CSV/JSON output logic.
-- `docs/PHASE1_RUNNER.md` — runner behavior, output format, RAM method, load-probe caveat, and usage.
+Validated Phase 1 measurements now include:
 
-The runner has been syntax-checked and smoke-tested with fake local GGUF cache entries and a fake `llama-bench`, including continue-on-failure behavior. It has **not** yet been run against the real laptop model pool, so no official Phase 1 measurements exist yet.
+- prompt-processing throughput
+- token-generation throughput
+- peak child-process RSS
+- average CPU usage and normalized four-thread utilization
+- best-effort load probe
+- actual local model size / identity
+- raw llama-bench evidence
 
-## Important runtime facts
+All 12 registry entries completed successfully. Noisy entries were rerun, including K2 Q4 and Gemma Q4 validation passes. Phase 1 is considered sufficiently validated to proceed.
 
-- Target laptop: Intel Core i5 8th gen, 8 GB RAM, CPU-only.
+The official runner profile remains:
+
 - llama.cpp fork: `~/Models/llama.cpp-k2`
-- llama.cpp binary directory: `~/Models/llama.cpp-k2/build/bin/`
-- Standard threads: `4`
-- Standard context: `4096`
-- K2-Horizon support requires the current special llama.cpp fork/branch used on this laptop.
-
-## Phase 1 runner defaults
-
-The official default speed run uses:
-
 - 4 CPU threads
 - `-ngl 0`
-- prompt processing: 512 tokens
-- token generation: 128 tokens
+- pp512
+- tg128
 - 5 repetitions
-- local GGUF paths only; no Hugging Face download path
 
-Raw evidence is saved under `results/raw/<run-id>/`. Machine-readable summaries are written to timestamped CSV/JSON files plus `results/phase1-latest.csv` and `results/phase1-latest.json`.
+### Phase 2 — implementation started
 
-Peak RAM is measured from the exact `llama-bench` child process using Linux `wait4().ru_maxrss`.
+Phase 2 measures reasoning and compact general knowledge with deterministic objective scoring.
 
-Load timing is a separate tiny process probe and is intentionally recorded as `load_probe_wall_seconds`, not claimed to be a guaranteed cold-load measurement.
+New files:
 
-## Existing unofficial K2 speed references
+- `capability.sh` — starts local `llama-server`, runs identical multiple-choice tasks, saves raw responses, extracts A/B/C/D, and produces JSON/CSV summaries.
+- `tasks/phase2_v0.1.json` — 32 original development tasks: 20 reasoning + 12 knowledge.
+- `docs/PHASE2_RUNNER.md` — runner rules and validation sequence.
 
-K2-Horizon-0.9B Q4_K_M:
+Default Phase 2 configuration:
 
-- prompt processing: ~96.96 tok/s
-- generation: ~22.93 tok/s
+- primary capability pool only (7 models)
+- 4 CPU threads
+- CPU-only (`-ngl 0`)
+- context 4096
+- temperature 0
+- seed 42
+- max 32 output tokens
+- native chat template via local `/v1/chat/completions`
+- prompt-cache reuse disabled
+- offline local model paths only
 
-K2-Horizon-0.9B Q6_K:
+Phase 2 score is the equal-weight mean of reasoning accuracy and knowledge accuracy. Raw overall accuracy and category sub-scores remain visible.
 
-- prompt processing: ~60.42 tok/s
-- generation: ~18.45 tok/s
+The task set is currently `phase2-v0.1` / development, not frozen v1.0. It must be validated for parsing, model compatibility, difficulty, and balance before freezing.
 
-These must still be re-run by the automated runner before becoming official benchmark results.
+## Immediate next task
 
-## Next task
-
-On the target laptop, from the repository root:
+On the target laptop:
 
 ```bash
-./bench.sh --dry-run
+git pull
+./capability.sh --dry-run
 ```
 
-Confirm all frozen registry entries resolve from the existing Hugging Face cache. Then run:
+If all seven primary models and all 32 tasks preflight correctly, run the smallest smoke test:
 
 ```bash
-./bench.sh
+./capability.sh --only qwen35-0.8b-q4km --task arith-01
 ```
 
-After the run:
+Inspect the terminal score and the raw response under `results/raw/phase2/<run-id>/qwen35-0.8b-q4km/`.
 
-1. Inspect `results/phase1-latest.csv` / `.json`.
-2. Check any failed row's matching files under `results/raw/<run-id>/`.
-3. Sanity-check K2 Q4_K_M and Q6_K against the old unofficial references.
-4. Only mark the Phase 1 measurement tasks complete after the real run is stable.
+If that works, run the full 32-task suite on Qwen3.5-0.8B before launching all seven primary models:
 
-Do not begin capability/intelligence scoring until the Phase 1 runner and real output format/results have been validated on the laptop.
+```bash
+./capability.sh --only qwen35-0.8b-q4km
+```
+
+Do not freeze Phase 2 v1 or launch later coding/MiniSWE/instruction/tool/context phases until Phase 2 extraction and scoring have been validated.
