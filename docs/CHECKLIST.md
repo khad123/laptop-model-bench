@@ -135,22 +135,24 @@ Phase 4 implementation notes:
 - [x] Create JSON/schema tests
 - [x] Implement deterministic checker
 - [x] Add partial per-constraint scoring and category summaries
-- [~] Validate task behavior with a pilot model
-- [ ] Review task difficulty / ambiguity
-- [ ] Run all 12 model/quant entries
-- [ ] Freeze Phase 5 task set
+- [x] Validate task behavior with a pilot model
+- [x] Review task difficulty / ambiguity
+- [x] Run all 12 model/quant entries
+- [x] Freeze Phase 5 v0.1 task set
 
 Phase 5 implementation notes:
 
 - Entry point: `./instruction.sh`
-- Development task file: `tasks/phase5_v0.1.json`
+- Frozen task file: `tasks/phase5_v0.1.json`
 - 16 project-authored deterministic tasks: four each for strict formatting, required/forbidden content, ordering, and JSON/schema compliance.
 - Exact-output tasks intentionally penalize extra prose and Markdown. One final newline is ignored as transport tolerance.
 - `task_score` is constraints passed; `phase5_score` is the mean task score. Full-task solved counts and per-category means are retained.
+- Final run completed: 12 models × 16 tasks = 192 evaluations with no infrastructure errors.
+- Phase 5 winner: K2-Horizon-0.9B Q6_K at 87.50%, followed by Qwen3.5-2B Q4_K_M and IQ4_XS at 83.33%.
 
 ## Phase 6 — Tool / agent benchmark
 
-- [ ] Define local mock tools
+- [~] Define local mock tools
 - [ ] Create simple single-tool tasks
 - [ ] Create similar-tool disambiguation tasks
 - [ ] Create missing-argument tasks
@@ -197,11 +199,9 @@ Phase 5 implementation notes:
 
 ## Current immediate next steps
 
-1. Pull the Phase 5 files on the laptop.
-2. Run `./instruction.sh --dry-run --include-comparisons` and confirm all 12 models plus 16 instruction tasks resolve.
-3. Smoke-test JSON/schema task `if-13` with Qwen3.5-2B Q4_K_M.
-4. If scoring is correct, run all 16 tasks on Qwen3.5-2B Q4_K_M.
-5. Review strict-format and JSON failures for scorer ambiguity.
-6. If clean, run all 12 model/quant entries and freeze Phase 5.
+1. Define a compact local mock-tool protocol for Phase 6 with deterministic JSON calls and no external side effects.
+2. Create single-tool, disambiguation, missing-argument, and multi-step agent tasks.
+3. Implement deterministic scoring for tool selection, arguments, and structured-output validity.
+4. Smoke-test with Qwen3.5-2B Q4_K_M before the all-model run.
 
 See [`MODEL_REGISTRY.md`](MODEL_REGISTRY.md), [`PHASE1_RUNNER.md`](PHASE1_RUNNER.md), [`PHASE2_RUNNER.md`](PHASE2_RUNNER.md), [`PHASE4_RUNNER.md`](PHASE4_RUNNER.md), and [`PHASE5_RUNNER.md`](PHASE5_RUNNER.md).
