@@ -255,18 +255,44 @@ def strip_optional_fence(content: str) -> str:
 
 
 def parse_replacements(text: str, allowed: set[str]) -> dict[str, str]:
-    pattern = re.compile(r'<file\s+path=["\']([^"\']+)["\']\s*>\s*(.*?)\s*</file>', re.IGNORECASE | re.DOTALL)
-    matches = pattern.findall(text)
-    if not matches:
-        raise ValueError("no <file path=\"...\"> replacement blocks found")
+    # Phase 4 measures repository-fixing ability, not strict XML compliance.
+    # A valid opening <file path="..."> is still required, but the final
+    # </file> may be omitted. Phase 5 separately measures strict formatting.
+    opening = re.compile(
+        r'<file\s+path=["\']([^"\']+)["\']\s*>',
+        re.IGNORECASE,
+    )
+    openings = list(opening.finditer(text))
+    if not openings:
+        raise ValueError('no <file path="..."> replacement blocks found')
+
     replacements: dict[str, str] = {}
-    for raw_path, content in matches:
-        path = raw_path.strip()
+
+    for i, match in enumerate(openings):
+        path = match.group(1).strip()
+
         if path not in allowed:
             raise ValueError(f"replacement path not allowed: {path}")
         if path in replacements:
             raise ValueError(f"duplicate replacement path: {path}")
+
+        segment_end = (
+            openings[i + 1].start()
+            if i + 1 < len(openings)
+            else len(text)
+        )
+        segment = text[match.end():segment_end]
+
+        close = re.search(r"</file\s*>", segment, re.IGNORECASE)
+        if close:
+            segment = segment[:close.start()]
+
+        content = segment.strip()
+        if not content:
+            raise ValueError(f"empty replacement file: {path}")
+
         replacements[path] = strip_optional_fence(content)
+
     return replacements
 
 
@@ -396,7 +422,7 @@ def write_outputs(results_dir: Path, run_id: str, meta: dict, rows: list[dict], 
     results_dir.mkdir(parents=True, exist_ok=True)
     json_path = results_dir / f"phase4-{run_id}.json"
     csv_path = results_dir / f"phase4-{run_id}.csv"
-    payload = {"schema_version": "phase4.v0.1", "run": meta, "models": summaries, "results": rows}
+    payload = {"schema_version": "phase4.v0.2", "run": meta, "models": summaries, "results": rows}
     text = json.dumps(payload, indent=2, sort_keys=True) + "\n"
     json_path.write_text(text, encoding="utf-8")
     (results_dir / "phase4-latest.json").write_text(text, encoding="utf-8")
@@ -416,7 +442,7 @@ def write_outputs(results_dir: Path, run_id: str, meta: dict, rows: list[dict], 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Phase 4 compact MiniSWE repository-level benchmark")
     parser.add_argument("--registry", default=str(ROOT / "docs" / "MODEL_REGISTRY.md"))
-    parser.add_argument("--tasks", default=str(ROOT / "tasks" / "phase4_v0.1.json"))
+    parser.add_argument("--tasks", default=str(ROOT / "tasks" / "phase4_v0.2.json"))
     llama_cpp_dir = Path(os.environ.get("LLAMA_CPP_DIR", str(Path.home() / "Models/llama.cpp-k2"))).expanduser()
     parser.add_argument("--llama-server", default=os.environ.get("LLAMA_SERVER", str(llama_cpp_dir / "build/bin/llama-server")))
     parser.add_argument("--hf-cache", default=str(hf_cache_default()))
@@ -465,7 +491,7 @@ def main() -> int:
     raw_root.mkdir(parents=True, exist_ok=True)
     meta = {
         "run_id": run_id, "started_at_utc": now_utc(),
-        "benchmark_version": task_payload.get("benchmark_version", "phase4-v0.1"),
+        "benchmark_version": task_payload.get("benchmark_version", "phase4-v0.2"),
         "task_file": str(task_path), "registry_path": str(registry_path),
         "hostname": platform.node(), "platform": platform.platform(), "kernel": platform.release(),
         "hf_cache": str(hf_cache), "llama_cpp_dir": str(llama_cpp_dir.resolve()),
