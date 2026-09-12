@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Local benchmark outputs
+results/raw/
+results/tmp/
+logs/
+
+# Model files / caches
+*.gguf
+models/
+.cache/
+
+# System/editor
+.DS_Store
+*.swp
+.vscode/
+.idea/
