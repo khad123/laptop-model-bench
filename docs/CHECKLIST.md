@@ -105,31 +105,48 @@ Phase 3 implementation notes:
 - [x] Create task 03
 - [x] Create task 04
 - [x] Create task 05
-- [ ] Expand toward 10 tasks if the pilot shows more breadth is useful
+- [x] Decide five tasks are sufficient for compact v1 MiniSWE coverage
 - [x] Build patch/apply/test harness
 - [x] Score solved / partially solved / failed
 - [x] Add partial hidden-check score
-- [~] Validate patch parsing and task difficulty with a pilot model
-- [ ] Run all 12 model/quant entries
-- [ ] Freeze Phase 4 task set
+- [x] Validate patch parsing and task difficulty with pilot model
+- [x] Correct final-file closing-tag tolerance for repository-fixing focus
+- [x] Correct swe-05 rounding expectation
+- [x] Run all 12 model/quant entries
+- [x] Audit parse/syntax/import failures against raw model output
+- [x] Freeze Phase 4 v0.2 task set and behavior
 
 Phase 4 implementation notes:
 
 - Entry point: `./miniswe.sh`
-- Development task file: `tasks/phase4_v0.1.json`
+- Frozen task file: `tasks/phase4_v0.2.json`
 - Five tiny multi-file Python repositories with issue descriptions and hidden tests.
-- Models return complete replacements only for files they change using `<file path="...">` blocks.
+- Models return complete replacements for changed files; the parser requires valid file-path openings but tolerates a missing final closing tag because strict formatting is measured separately in Phase 5.
 - Hidden tests run in Bubblewrap with network disabled and resource limits.
-- `task_score` is hidden checks passed; `phase4_score` is the mean task score. Solved/partial/failed counts are retained.
+- `task_score` is hidden checks passed; `phase4_score` is the mean task score.
+- Final run completed: 12 models × 5 tasks = 60 evaluations. Remaining parse/syntax/import failures were audited and confirmed to be genuine unusable model outputs or destructive patches rather than infrastructure faults.
 
 ## Phase 5 — Instruction following
 
-- [ ] Define task schema
-- [ ] Create strict formatting tests
-- [ ] Create forbidden/required token tests
-- [ ] Create ordering tests
-- [ ] Create JSON/schema tests
-- [ ] Implement deterministic checker
+- [x] Define task schema
+- [x] Create strict formatting tests
+- [x] Create forbidden/required token tests
+- [x] Create ordering tests
+- [x] Create JSON/schema tests
+- [x] Implement deterministic checker
+- [x] Add partial per-constraint scoring and category summaries
+- [~] Validate task behavior with a pilot model
+- [ ] Review task difficulty / ambiguity
+- [ ] Run all 12 model/quant entries
+- [ ] Freeze Phase 5 task set
+
+Phase 5 implementation notes:
+
+- Entry point: `./instruction.sh`
+- Development task file: `tasks/phase5_v0.1.json`
+- 16 project-authored deterministic tasks: four each for strict formatting, required/forbidden content, ordering, and JSON/schema compliance.
+- Exact-output tasks intentionally penalize extra prose and Markdown. One final newline is ignored as transport tolerance.
+- `task_score` is constraints passed; `phase5_score` is the mean task score. Full-task solved counts and per-category means are retained.
 
 ## Phase 6 — Tool / agent benchmark
 
@@ -180,11 +197,11 @@ Phase 4 implementation notes:
 
 ## Current immediate next steps
 
-1. Pull the Phase 4 files on the laptop.
-2. Run `./miniswe.sh --dry-run --include-comparisons` and confirm all 12 models plus five MiniSWE tasks resolve.
-3. Smoke-test `swe-01` with Qwen3.5-2B Q4_K_M.
-4. If patch parsing and hidden tests behave correctly, run all five tasks on Qwen3.5-2B Q4_K_M.
-5. Review the pilot for difficulty/formatting artifacts.
-6. If clean, run all 12 model/quant entries and freeze Phase 4.
+1. Pull the Phase 5 files on the laptop.
+2. Run `./instruction.sh --dry-run --include-comparisons` and confirm all 12 models plus 16 instruction tasks resolve.
+3. Smoke-test JSON/schema task `if-13` with Qwen3.5-2B Q4_K_M.
+4. If scoring is correct, run all 16 tasks on Qwen3.5-2B Q4_K_M.
+5. Review strict-format and JSON failures for scorer ambiguity.
+6. If clean, run all 12 model/quant entries and freeze Phase 5.
 
-See [`MODEL_REGISTRY.md`](MODEL_REGISTRY.md), [`PHASE1_RUNNER.md`](PHASE1_RUNNER.md), [`PHASE2_RUNNER.md`](PHASE2_RUNNER.md), and [`PHASE4_RUNNER.md`](PHASE4_RUNNER.md).
+See [`MODEL_REGISTRY.md`](MODEL_REGISTRY.md), [`PHASE1_RUNNER.md`](PHASE1_RUNNER.md), [`PHASE2_RUNNER.md`](PHASE2_RUNNER.md), [`PHASE4_RUNNER.md`](PHASE4_RUNNER.md), and [`PHASE5_RUNNER.md`](PHASE5_RUNNER.md).
