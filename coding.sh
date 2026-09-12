@@ -279,10 +279,6 @@ def limit_child() -> None:
     resource.setrlimit(resource.RLIMIT_FSIZE, (4 * 1024 * 1024, 4 * 1024 * 1024))
     resource.setrlimit(resource.RLIMIT_NOFILE, (64, 64))
     resource.setrlimit(resource.RLIMIT_CORE, (0, 0))
-    try:
-        resource.setrlimit(resource.RLIMIT_NPROC, (32, 32))
-    except (ValueError, OSError):
-        pass
 
 
 def bwrap_command(workdir: Path) -> list[str]:
