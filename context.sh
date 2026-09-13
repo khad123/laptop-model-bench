@@ -31,7 +31,7 @@ TEMPERATURE = 0.0
 SEED = 42
 MAX_TOKENS = 64
 SERVER_START_TIMEOUT = 180
-REQUEST_TIMEOUT = 240
+REQUEST_TIMEOUT = 600
 
 
 def now_utc() -> str:
@@ -324,7 +324,7 @@ def write_outputs(results_dir: Path, run_id: str, meta: dict, rows: list[dict], 
     results_dir.mkdir(parents=True, exist_ok=True)
     json_path = results_dir / f"phase7-{run_id}.json"
     csv_path = results_dir / f"phase7-{run_id}.csv"
-    payload = {"schema_version": "phase7.v0.1", "run": meta, "models": summaries, "results": rows}
+    payload = {"schema_version": str(meta.get("benchmark_version", "phase7-v0.2")).replace("-", ".", 1), "run": meta, "models": summaries, "results": rows}
     text = json.dumps(payload, indent=2, sort_keys=True) + "\n"
     json_path.write_text(text, encoding="utf-8")
     (results_dir / "phase7-latest.json").write_text(text, encoding="utf-8")
@@ -343,7 +343,7 @@ def write_outputs(results_dir: Path, run_id: str, meta: dict, rows: list[dict], 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Phase 7 context retrieval benchmark")
     parser.add_argument("--registry", default=str(ROOT / "docs" / "MODEL_REGISTRY.md"))
-    parser.add_argument("--tasks", default=str(ROOT / "tasks" / "phase7_v0.1.json"))
+    parser.add_argument("--tasks", default=str(ROOT / "tasks" / "phase7_v0.2.json"))
     llama_cpp_dir = Path(os.environ.get("LLAMA_CPP_DIR", str(Path.home() / "Models/llama.cpp-k2"))).expanduser()
     parser.add_argument("--llama-server", default=os.environ.get("LLAMA_SERVER", str(llama_cpp_dir / "build/bin/llama-server")))
     parser.add_argument("--hf-cache", default=str(hf_cache_default()))
@@ -391,7 +391,7 @@ def main() -> int:
     meta = {
         "run_id": run_id,
         "started_at_utc": now_utc(),
-        "benchmark_version": task_payload.get("benchmark_version", "phase7-v0.1"),
+        "benchmark_version": task_payload.get("benchmark_version", "phase7-v0.2"),
         "task_file": str(task_path),
         "registry_path": str(registry_path),
         "hostname": platform.node(),
