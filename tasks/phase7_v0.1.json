@@ -1,0 +1,107 @@
+{
+  "benchmark_version": "phase7-v0.1",
+  "status": "development",
+  "description": "Deterministic long-context retrieval and light composition benchmark at approximately 1K, 2K, and 4K prompt-token scales.",
+  "system_prompt": "Use only the supplied reference text. Answer the question with the shortest correct answer you can. Do not invent information.",
+  "tasks": [
+    {
+      "id": "ctx-1k-01",
+      "bucket": "1k",
+      "target_chars": 3600,
+      "mode": "direct",
+      "needles": [{"fraction": 0.12, "text": "Authoritative note: Project Aster's access code is VX-417."}],
+      "question": "What is Project Aster's access code?",
+      "expected_answer": "VX-417"
+    },
+    {
+      "id": "ctx-1k-02",
+      "bucket": "1k",
+      "target_chars": 3600,
+      "mode": "compose",
+      "needles": [
+        {"fraction": 0.42, "text": "Authoritative note: Cedar stores 14 blue modules."},
+        {"fraction": 0.58, "text": "Authoritative note: Cedar stores 9 red modules. For this question, total modules means blue plus red."}
+      ],
+      "question": "How many blue and red modules does Cedar store in total?",
+      "expected_answer": "23"
+    },
+    {
+      "id": "ctx-1k-03",
+      "bucket": "1k",
+      "target_chars": 3600,
+      "mode": "relational",
+      "needles": [
+        {"fraction": 0.78, "text": "Authoritative note: Mira reports directly to Nadir."},
+        {"fraction": 0.90, "text": "Authoritative note: Nadir's office is Atlas."}
+      ],
+      "question": "What is the office of the person Mira reports to?",
+      "expected_answer": "Atlas"
+    },
+    {
+      "id": "ctx-2k-01",
+      "bucket": "2k",
+      "target_chars": 7600,
+      "mode": "direct",
+      "needles": [{"fraction": 0.50, "text": "Authoritative note: Initiative Helix launches from Tangier."}],
+      "question": "From which city does Initiative Helix launch?",
+      "expected_answer": "Tangier"
+    },
+    {
+      "id": "ctx-2k-02",
+      "bucket": "2k",
+      "target_chars": 7600,
+      "mode": "compose",
+      "needles": [
+        {"fraction": 0.15, "text": "Authoritative note: Depot Juniper has 31 sealed crates."},
+        {"fraction": 0.28, "text": "Authoritative note: Depot Juniper has 12 open crates. Total crates means sealed plus open."}
+      ],
+      "question": "How many crates does Depot Juniper have in total?",
+      "expected_answer": "43"
+    },
+    {
+      "id": "ctx-2k-03",
+      "bucket": "2k",
+      "target_chars": 7600,
+      "mode": "relational",
+      "needles": [
+        {"fraction": 0.72, "text": "Authoritative note: Device Lumen is assigned to team Quartz."},
+        {"fraction": 0.91, "text": "Authoritative note: Team Quartz is led by Sanaa."}
+      ],
+      "question": "Who leads the team that Device Lumen is assigned to?",
+      "expected_answer": "Sanaa"
+    },
+    {
+      "id": "ctx-4k-01",
+      "bucket": "4k",
+      "target_chars": 15000,
+      "mode": "direct",
+      "needles": [{"fraction": 0.91, "text": "Authoritative note: Archive Boreal's recovery key is M7-POLAR."}],
+      "question": "What is Archive Boreal's recovery key?",
+      "expected_answer": "M7-POLAR"
+    },
+    {
+      "id": "ctx-4k-02",
+      "bucket": "4k",
+      "target_chars": 15000,
+      "mode": "compose",
+      "needles": [
+        {"fraction": 0.46, "text": "Authoritative note: Depot Solace north wing contains 46 units."},
+        {"fraction": 0.61, "text": "Authoritative note: Depot Solace south wing contains 28 units. Total units means north plus south."}
+      ],
+      "question": "How many units are in Depot Solace's north and south wings combined?",
+      "expected_answer": "74"
+    },
+    {
+      "id": "ctx-4k-03",
+      "bucket": "4k",
+      "target_chars": 15000,
+      "mode": "relational",
+      "needles": [
+        {"fraction": 0.08, "text": "Authoritative note: Ticket R9 is owned by team Ember."},
+        {"fraction": 0.22, "text": "Authoritative note: Team Ember's pager code is 5512."}
+      ],
+      "question": "What pager code belongs to the team that owns Ticket R9?",
+      "expected_answer": "5512"
+    }
+  ]
+}
