@@ -152,18 +152,31 @@ Phase 5 implementation notes:
 
 ## Phase 6 — Tool / agent benchmark
 
-- [~] Define local mock tools
-- [ ] Create simple single-tool tasks
-- [ ] Create similar-tool disambiguation tasks
-- [ ] Create missing-argument tasks
-- [ ] Create multi-step tasks
-- [ ] Score tool choice
-- [ ] Score arguments
-- [ ] Score structured-output validity
+- [x] Define local mock tools
+- [x] Create simple single-tool tasks
+- [x] Create similar-tool disambiguation tasks
+- [x] Create missing-argument tasks
+- [x] Create multi-step tasks
+- [x] Score tool choice
+- [x] Score arguments
+- [x] Score structured-output validity
+- [x] Run Qwen3.5-2B Q4_K_M pilot
+- [x] Run all 12 model/quant entries
+- [x] Freeze Phase 6 v0.1 task set and behavior
+
+Phase 6 implementation notes:
+
+- Entry point: `./agent.sh`
+- Frozen task file: `tasks/phase6_v0.1.json`
+- Ten deterministic BFCL-style local-tool tasks: 3 single-tool, 3 disambiguation, 2 missing-information, and 2 multi-step agent tasks.
+- The model emits strict JSON actions; the runner executes deterministic mock tools locally and feeds tool results back for the next action.
+- Scoring separately records structured-action validity, tool choice, arguments, sequence, and final outcome; the phase score is the mean per-task score.
+- Final run completed: 12 models × 10 tasks = 120 evaluations with no infrastructure errors.
+- Phase 6 winner: Qwen3.5-2B Q4_K_M at 100.00%, followed by Qwen3.5-2B IQ4_XS at 94.00%. K2-Horizon-0.9B Q4_K_M placed third at 54.00%.
 
 ## Phase 7 — Context
 
-- [ ] Create ~1K context tests
+- [~] Create ~1K context tests
 - [ ] Create ~2K context tests
 - [ ] Create ~4K context tests
 - [ ] Measure retrieval accuracy
@@ -199,9 +212,8 @@ Phase 5 implementation notes:
 
 ## Current immediate next steps
 
-1. Define a compact local mock-tool protocol for Phase 6 with deterministic JSON calls and no external side effects.
-2. Create single-tool, disambiguation, missing-argument, and multi-step agent tasks.
-3. Implement deterministic scoring for tool selection, arguments, and structured-output validity.
-4. Smoke-test with Qwen3.5-2B Q4_K_M before the all-model run.
+1. Build Phase 7 context-retrieval tasks at approximately 1K, 2K, and 4K prompt lengths.
+2. Use deterministic hidden facts and lightweight reasoning so the benchmark measures retrieval/use rather than keyword copying alone.
+3. Pilot the context runner on Qwen3.5-2B Q4_K_M, then run all 12 entries if clean.
 
-See [`MODEL_REGISTRY.md`](MODEL_REGISTRY.md), [`PHASE1_RUNNER.md`](PHASE1_RUNNER.md), [`PHASE2_RUNNER.md`](PHASE2_RUNNER.md), [`PHASE4_RUNNER.md`](PHASE4_RUNNER.md), and [`PHASE5_RUNNER.md`](PHASE5_RUNNER.md).
+See [`MODEL_REGISTRY.md`](MODEL_REGISTRY.md), [`PHASE1_RUNNER.md`](PHASE1_RUNNER.md), [`PHASE2_RUNNER.md`](PHASE2_RUNNER.md), [`PHASE4_RUNNER.md`](PHASE4_RUNNER.md), [`PHASE5_RUNNER.md`](PHASE5_RUNNER.md), and [`PHASE6_RUNNER.md`](PHASE6_RUNNER.md).
