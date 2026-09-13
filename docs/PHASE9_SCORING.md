@@ -4,9 +4,13 @@ Phase 9 consolidates the frozen Phase 1–8 data into transparent category leade
 
 The project explicitly does **not** hide the benchmark behind one unexplained composite. Category leaderboards remain first-class outputs; the overall score is an additional decision aid.
 
+## Status
+
+The v1 scoring weights are **frozen** after reviewing the generated ranking and checking several alternate reasonable weighting profiles. Qwen3.5-2B Q4_K_M remains the overall winner under every tested sensitivity profile, so the v1 recommendation is not dependent on one narrow weighting choice.
+
 ## Frozen inputs
 
-The reporting pipeline must use these exact timestamped sources rather than `*-latest` aliases:
+The reporting pipeline uses these exact timestamped sources rather than `*-latest` aliases:
 
 - Phase 1: `results/phase1-20260912T125525Z.json`
 - Phase 2: `results/phase2-20260912T163441Z.json`
@@ -19,9 +23,7 @@ The reporting pipeline must use these exact timestamped sources rather than `*-l
 
 For Phase 7 only, the three SmolLM3-3B IQ4_XS 4K timeout rows in the full run are replaced by the corresponding fresh 4K validation rows. No other Phase 7 rows are replaced.
 
-## Proposed overall laptop score
-
-This weighting is **provisional until the generated ranking is reviewed**.
+## Frozen overall laptop score
 
 ### Capability — 85%
 
@@ -49,14 +51,14 @@ capability_score = weighted capability sum / 85
 | Peak benchmark RSS | 4% | lower is better |
 | Model size on disk | 2% | lower is better |
 
-Efficiency metrics use transparent ratio-to-best normalization across the 12 model+quant entries:
+Efficiency metrics use ratio-to-best normalization across the 12 model+quant entries:
 
 ```text
 higher-is-better score = 100 * value / best_value
 lower-is-better score  = 100 * best_value / value
 ```
 
-This avoids opaque z-scores or dataset-dependent min/max stretching. The resulting efficiency subtotal is also reported on a 0–100 scale.
+The efficiency subtotal is also reported on a 0–100 scale.
 
 ### Composite
 
@@ -64,7 +66,20 @@ This avoids opaque z-scores or dataset-dependent min/max stretching. The resulti
 overall_laptop_score = 0.85 * capability_score + 0.15 * efficiency_score
 ```
 
-The score should be interpreted together with the category tables, not alone.
+The score must be interpreted together with the category tables, not alone.
+
+## Sensitivity review
+
+The frozen score was checked against four alternate profiles in addition to the v1 weights:
+
+1. Equal weighting across the six capability phases plus 15% efficiency.
+2. Equal capability weighting with no efficiency component.
+3. Developer-heavy weighting emphasizing coding, MiniSWE, and agents.
+4. A more general-purpose mix with more reasoning/instruction weight and 10% efficiency.
+
+Qwen3.5-2B Q4_K_M ranks first under every profile. The ordering of places 2–5 changes across profiles, which is why category leaderboards remain important.
+
+The report builder stores the sensitivity profiles and rankings in `results/phase9-consolidated.json` and prints the profile winners to the terminal.
 
 ## Additional leaderboards
 
@@ -79,7 +94,7 @@ Phase 9 generates:
 - **Developer score** — 30% Phase 3 + 40% Phase 4 + 30% Phase 6
 - **Fastest** — 40% normalized prompt speed + 60% normalized generation speed
 - **Quality per GB** — capability score divided by model size in GiB
-- **Overall laptop score** — proposed composite above
+- **Overall laptop score** — frozen composite above
 
 ## Two ranking views
 
@@ -107,4 +122,8 @@ results/phase9-consolidated.csv
 results/phase9-report.md
 ```
 
-The report also prints compact leaderboard summaries to the terminal for review before the final weighting is frozen.
+The final Markdown report contains overall rankings, every category leaderboard, sensitivity results, per-model profiles, the full consolidated table, and a pointer to the Phase 8 quantization analysis.
+
+## Final v1 recommendation
+
+The generated ranking selects **Qwen3.5-2B Q4_K_M** as the best overall model for this 8 GB CPU-only laptop. It combines the strongest MiniSWE and agent results with high instruction/reasoning scores while remaining practically runnable on the target machine.
