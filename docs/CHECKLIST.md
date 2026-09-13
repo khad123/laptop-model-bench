@@ -176,15 +176,30 @@ Phase 6 implementation notes:
 
 ## Phase 7 — Context
 
-- [~] Create ~1K context tests
-- [ ] Create ~2K context tests
-- [ ] Create ~4K context tests
-- [ ] Measure retrieval accuracy
-- [ ] Measure answer quality degradation
+- [x] Create ~1K context tests
+- [x] Create ~2K context tests
+- [x] Create ~4K context tests
+- [x] Measure retrieval accuracy
+- [x] Measure answer quality degradation
+- [x] Pair the same task families across 1K / 2K / 4K to remove question-difficulty confounding
+- [x] Validate measured prompt-token bands
+- [x] Run all 12 model/quant entries
+- [x] Audit and correct infrastructure-only 4K timeouts
+- [x] Freeze Phase 7 v0.2 task set and corrected results
+
+Phase 7 implementation notes:
+
+- Entry point: `./context.sh`
+- Frozen task file: `tasks/phase7_v0.2.json`
+- Nine paired deterministic tasks: the same direct-retrieval, two-fact composition, and relational-retrieval problems are repeated at ~1K, ~2K, and ~4K prompt lengths; only irrelevant filler grows.
+- Runtime: CPU-only, 4 threads, context 8192, temperature 0, seed 42, prompt cache disabled, `reasoning_effort=none`, max output 64.
+- Full v0.2 run `20260913T135829Z` completed 108 evaluations, but SmolLM3 IQ4_XS encountered three 4K infrastructure timeouts after completing 1K/2K.
+- Fresh all-model 4K validation `20260913T171609Z` reproduced every other model's 4K pass/fail pattern exactly; SmolLM3 IQ4_XS changed from timeout to 3/3 PASS. Only those invalid timeout rows are replaced in the frozen result.
+- Corrected Phase 7 winner: SmolLM3-3B IQ4_XS at 100.00% (9/9), followed by Qwen3.5-0.8B Q4_K_M and SmolLM3-3B Q4_K_M at 88.89%.
 
 ## Phase 8 — Quantization
 
-- [ ] K2 Q4_K_M vs Q6_K combined comparison
+- [~] K2 Q4_K_M vs Q6_K combined comparison
 - [ ] Qwen3.5-2B Q4_K_M vs IQ4_XS combined comparison
 - [ ] SmolLM3 Q4_K_M vs IQ4_XS combined comparison
 - [ ] Gemma 3 1B Q4_K_M vs IQ4_XS combined comparison
@@ -212,8 +227,8 @@ Phase 6 implementation notes:
 
 ## Current immediate next steps
 
-1. Build Phase 7 context-retrieval tasks at approximately 1K, 2K, and 4K prompt lengths.
-2. Use deterministic hidden facts and lightweight reasoning so the benchmark measures retrieval/use rather than keyword copying alone.
-3. Pilot the context runner on Qwen3.5-2B Q4_K_M, then run all 12 entries if clean.
+1. Build Phase 8 same-base quantization comparisons using the frozen Phase 1–7 results.
+2. Compare capability deltas together with model size, RAM, prompt-processing speed, and token-generation speed.
+3. Decide the best practical quant for each base model on this 8 GB CPU-only laptop.
 
-See [`MODEL_REGISTRY.md`](MODEL_REGISTRY.md), [`PHASE1_RUNNER.md`](PHASE1_RUNNER.md), [`PHASE2_RUNNER.md`](PHASE2_RUNNER.md), [`PHASE4_RUNNER.md`](PHASE4_RUNNER.md), [`PHASE5_RUNNER.md`](PHASE5_RUNNER.md), and [`PHASE6_RUNNER.md`](PHASE6_RUNNER.md).
+See [`MODEL_REGISTRY.md`](MODEL_REGISTRY.md), [`PHASE1_RUNNER.md`](PHASE1_RUNNER.md), [`PHASE2_RUNNER.md`](PHASE2_RUNNER.md), [`PHASE4_RUNNER.md`](PHASE4_RUNNER.md), [`PHASE5_RUNNER.md`](PHASE5_RUNNER.md), [`PHASE6_RUNNER.md`](PHASE6_RUNNER.md), and [`PHASE7_RUNNER.md`](PHASE7_RUNNER.md).
