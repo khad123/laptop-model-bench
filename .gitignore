@@ -9,6 +9,22 @@ results/raw/
 results/tmp/
 logs/
 
+# Keep only frozen v1 release summaries/charts in Git.
+results/*
+!results/phase1-20260912T125525Z.json
+!results/phase2-20260912T163441Z.json
+!results/phase3-20260912T172204Z.json
+!results/phase4-20260912T185826Z.json
+!results/phase5-20260912T233610Z.json
+!results/phase6-20260913T001137Z.json
+!results/phase7-20260913T135829Z.json
+!results/phase7-20260913T171609Z.json
+!results/phase9-consolidated.json
+!results/phase9-consolidated.csv
+!results/phase9-report.md
+!results/charts/
+!results/charts/*.svg
+
 # Model files / caches
 *.gguf
 models/
