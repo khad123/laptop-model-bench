@@ -15,8 +15,8 @@ Status legend:
 - [x] Add benchmark protocol
 - [x] Freeze v1 model list
 - [x] Freeze primary quantization for every base model
-- [~] Freeze v1 task set category by category
-- [ ] Freeze final scoring weights / leaderboard rules
+- [x] Freeze v1 task set category by category
+- [x] Freeze final scoring weights / leaderboard rules
 
 ## Phase 1 — Inventory + speed
 
@@ -199,36 +199,52 @@ Phase 7 implementation notes:
 
 ## Phase 8 — Quantization
 
-- [~] K2 Q4_K_M vs Q6_K combined comparison
-- [ ] Qwen3.5-2B Q4_K_M vs IQ4_XS combined comparison
-- [ ] SmolLM3 Q4_K_M vs IQ4_XS combined comparison
-- [ ] Gemma 3 1B Q4_K_M vs IQ4_XS combined comparison
-- [ ] Llama 3.2 1B Q4_K_M vs IQ4_XS combined comparison
-- [ ] Decide whether additional same-base quant comparisons are useful
+- [x] K2 Q4_K_M vs Q6_K combined comparison
+- [x] Qwen3.5-2B Q4_K_M vs IQ4_XS combined comparison
+- [x] SmolLM3 Q4_K_M vs IQ4_XS combined comparison
+- [x] Gemma 3 1B Q4_K_M vs IQ4_XS combined comparison
+- [x] Llama 3.2 1B Q4_K_M vs IQ4_XS combined comparison
+- [x] Decide whether additional same-base quant comparisons are useful
+
+Phase 8 implementation notes:
+
+- Analysis document: `docs/PHASE8_QUANTIZATION.md`.
+- No new model inference was required; Phase 8 combines the frozen Phase 1–7 measurements.
+- Recommended v1 quants: K2 Q4_K_M, Qwen3.5-2B Q4_K_M, SmolLM3 IQ4_XS, Gemma 3 1B Q4_K_M, and Llama 3.2 1B Q4_K_M.
+- Additional quant sweeps are deferred to a possible v1.1 because they are not needed to change the v1 decisions.
 
 ## Phase 9 — Results
 
-- [ ] Define final JSON result schema
-- [ ] Export consolidated CSV summary
-- [ ] Generate per-model report
-- [ ] Generate category leaderboards
-- [ ] Generate overall laptop recommendation
-- [ ] Generate quality-per-GB ranking
-- [ ] Generate quantization trade-off ranking
+- [x] Define final JSON result schema
+- [x] Export consolidated CSV summary
+- [x] Generate per-model report
+- [x] Generate category leaderboards
+- [x] Generate overall laptop recommendation
+- [x] Generate quality-per-GB ranking
+- [x] Generate quantization trade-off ranking
+- [x] Freeze final scoring weights after sensitivity review
+
+Phase 9 implementation notes:
+
+- Builder: `scripts/build_phase9_report.py`.
+- Frozen outputs: `results/phase9-consolidated.json`, `results/phase9-consolidated.csv`, and `results/phase9-report.md`.
+- Frozen overall weighting: 85% capability / 15% laptop efficiency, with transparent category and efficiency subweights documented in `docs/PHASE9_SCORING.md`.
+- Qwen3.5-2B Q4_K_M is the robust overall winner across all tested sensitivity profiles.
 
 ## Phase 10 — Polish
 
 - [x] Single-command speed runner
 - [x] System metadata capture
-- [ ] Documentation for adding models
-- [ ] Documentation for adding tasks
-- [ ] Charts / plots
-- [ ] Release v1.0
+- [x] Documentation for adding models
+- [x] Documentation for adding tasks
+- [x] Charts / plots
+- [~] Commit frozen release summaries and charts
+- [ ] Tag and publish v1.0.0
 
 ## Current immediate next steps
 
-1. Build Phase 8 same-base quantization comparisons using the frozen Phase 1–7 results.
-2. Compare capability deltas together with model size, RAM, prompt-processing speed, and token-generation speed.
-3. Decide the best practical quant for each base model on this 8 GB CPU-only laptop.
+1. Commit only the frozen Phase 1–7 source summaries, final Phase 9 artifacts, and generated SVG charts.
+2. Verify the repository is clean and the report can be regenerated from the committed summaries.
+3. Tag the release as `v1.0.0` and publish the final v1 release notes.
 
-See [`MODEL_REGISTRY.md`](MODEL_REGISTRY.md), [`PHASE1_RUNNER.md`](PHASE1_RUNNER.md), [`PHASE2_RUNNER.md`](PHASE2_RUNNER.md), [`PHASE4_RUNNER.md`](PHASE4_RUNNER.md), [`PHASE5_RUNNER.md`](PHASE5_RUNNER.md), [`PHASE6_RUNNER.md`](PHASE6_RUNNER.md), and [`PHASE7_RUNNER.md`](PHASE7_RUNNER.md).
+See [`MODEL_REGISTRY.md`](MODEL_REGISTRY.md), [`PHASE8_QUANTIZATION.md`](PHASE8_QUANTIZATION.md), [`PHASE9_SCORING.md`](PHASE9_SCORING.md), and [`RELEASE_V1.md`](RELEASE_V1.md).
