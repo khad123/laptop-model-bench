@@ -20,6 +20,7 @@ SOURCES = {
     "phase7_correction": RESULTS / "phase7-20260913T171609Z.json",
 }
 
+# Frozen v1 overall weighting: 85% capability, 15% laptop efficiency.
 CAPABILITY_WEIGHTS = {
     "phase2": 12.0,
     "phase3": 15.0,
@@ -33,6 +34,32 @@ EFFICIENCY_WEIGHTS = {
     "tg": 5.0,
     "ram": 4.0,
     "size": 2.0,
+}
+
+# Sensitivity profiles are diagnostics only; they do not replace the frozen v1 score.
+SENSITIVITY_PROFILES = {
+    "frozen_v1": {
+        "phase2": 12.0, "phase3": 15.0, "phase4": 20.0,
+        "phase5": 10.0, "phase6": 20.0, "phase7": 8.0, "efficiency": 15.0,
+    },
+    "equal_capability_plus_efficiency": {
+        "phase2": 85.0 / 6.0, "phase3": 85.0 / 6.0, "phase4": 85.0 / 6.0,
+        "phase5": 85.0 / 6.0, "phase6": 85.0 / 6.0, "phase7": 85.0 / 6.0,
+        "efficiency": 15.0,
+    },
+    "capability_only_equal": {
+        "phase2": 100.0 / 6.0, "phase3": 100.0 / 6.0, "phase4": 100.0 / 6.0,
+        "phase5": 100.0 / 6.0, "phase6": 100.0 / 6.0, "phase7": 100.0 / 6.0,
+        "efficiency": 0.0,
+    },
+    "developer_heavy": {
+        "phase2": 10.0, "phase3": 20.0, "phase4": 25.0,
+        "phase5": 10.0, "phase6": 25.0, "phase7": 5.0, "efficiency": 5.0,
+    },
+    "general_purpose": {
+        "phase2": 20.0, "phase3": 15.0, "phase4": 15.0,
+        "phase5": 15.0, "phase6": 15.0, "phase7": 10.0, "efficiency": 10.0,
+    },
 }
 
 RECOMMENDED_IDS = {
@@ -83,9 +110,9 @@ def corrected_phase7(full: dict[str, Any], correction: dict[str, Any]) -> dict[s
         by_model.setdefault(str(model_id), []).append(float(score))
 
     out = {}
-    for model_id, scores in by_model.items():
-        if scores:
-            out[model_id] = round(sum(scores) / len(scores), 2)
+    for model_id, model_scores in by_model.items():
+        if model_scores:
+            out[model_id] = round(sum(model_scores) / len(model_scores), 2)
     return out
 
 
@@ -117,6 +144,10 @@ def md_table(rows: list[dict[str, Any]], columns: list[tuple[str, str]], limit: 
 
 def ranked(rows: list[dict[str, Any]], key: str, reverse: bool = True) -> list[dict[str, Any]]:
     return sorted(rows, key=lambda r: float(r.get(key, -1e9)), reverse=reverse)
+
+
+def sensitivity_score(row: dict[str, Any], weights: dict[str, float]) -> float:
+    return sum(float(row[key]) * weight for key, weight in weights.items()) / 100.0
 
 
 def main() -> None:
@@ -223,13 +254,31 @@ def main() -> None:
     overall_all = ranked(rows, "overall_laptop_score")
     recommended = ranked([r for r in rows if r["recommended_quant_view"]], "overall_laptop_score")
 
+    sensitivity = {}
+    recommended_by_id = {r["model_id"]: r for r in recommended}
+    for profile_name, weights in SENSITIVITY_PROFILES.items():
+        profile_rows = []
+        for row in recommended:
+            values = {
+                "phase2": row["phase2"], "phase3": row["phase3"], "phase4": row["phase4"],
+                "phase5": row["phase5"], "phase6": row["phase6"], "phase7": row["phase7"],
+                "efficiency": row["efficiency_score"],
+            }
+            profile_rows.append((row["model_id"], round(sensitivity_score(values, weights), 2)))
+        profile_rows.sort(key=lambda x: x[1], reverse=True)
+        sensitivity[profile_name] = profile_rows
+
+    sensitivity_winners = {name: ranking[0][0] for name, ranking in sensitivity.items()}
+    unique_winners = sorted(set(sensitivity_winners.values()))
+    robust_winner = unique_winners[0] if len(unique_winners) == 1 else None
+
     out_json = RESULTS / "phase9-consolidated.json"
     out_csv = RESULTS / "phase9-consolidated.csv"
     out_md = RESULTS / "phase9-report.md"
 
     payload = {
-        "schema_version": "phase9.v0.1-provisional",
-        "status": "provisional-scoring-review",
+        "schema_version": "phase9.v1",
+        "status": "frozen-v1",
         "sources": {k: str(v.relative_to(ROOT)) for k, v in SOURCES.items()},
         "phase7_correction": "Replace only smollm3-3b-iq4xs 4K timeout rows with 20260913T171609Z rows.",
         "weights": {
@@ -238,6 +287,9 @@ def main() -> None:
             "capability_total": capability_weight_total,
             "efficiency_total": efficiency_weight_total,
         },
+        "sensitivity_profiles": SENSITIVITY_PROFILES,
+        "sensitivity_rankings": sensitivity,
+        "robust_winner_across_sensitivity_profiles": robust_winner,
         "models": rows,
         "rankings": {
             "overall_all_entries": [r["model_id"] for r in overall_all],
@@ -262,56 +314,121 @@ def main() -> None:
         w.writerows(rows)
 
     report = [
-        "# Phase 9 provisional report",
+        "# Phase 9 final v1 report",
         "",
-        "> Overall weighting is provisional until reviewed. Category leaderboards remain authoritative standalone views.",
+        "> The overall score is frozen for v1. Category leaderboards remain first-class results and should be read alongside the composite.",
+        "",
+        "## Final recommendation",
+        "",
+        f"**Best overall laptop model: {recommended[0]['model_id']} — {recommended[0]['overall_laptop_score']:.2f}/100.**",
+        "",
+        "The winner remains #1 across all defined sensitivity profiles, so the result is not dependent on one narrow weighting choice." if robust_winner else "Sensitivity profiles produce different winners; use category tables for the intended workload.",
         "",
         "## Overall laptop score — all 12 model+quant entries",
         "",
         md_table(overall_all, [
-            ("model_id", "Model ID"),
-            ("overall_laptop_score", "Overall"),
-            ("capability_score", "Capability"),
-            ("efficiency_score", "Efficiency"),
+            ("model_id", "Model ID"), ("overall_laptop_score", "Overall"),
+            ("capability_score", "Capability"), ("efficiency_score", "Efficiency"),
             ("developer_score", "Developer"),
         ]),
         "",
         "## Overall laptop score — recommended quant per base model",
         "",
         md_table(recommended, [
-            ("model_id", "Model ID"),
-            ("overall_laptop_score", "Overall"),
-            ("capability_score", "Capability"),
-            ("efficiency_score", "Efficiency"),
+            ("model_id", "Model ID"), ("overall_laptop_score", "Overall"),
+            ("capability_score", "Capability"), ("efficiency_score", "Efficiency"),
             ("developer_score", "Developer"),
         ]),
         "",
-        "## Category leaders",
+        "## Category leaderboards",
         "",
-        "### Smartest / reasoning + knowledge",
+        "### Smartest — reasoning + knowledge",
         "",
-        md_table(ranked(rows, "phase2"), [("model_id", "Model ID"), ("phase2", "P2")], 5),
+        md_table(ranked(rows, "phase2"), [("model_id", "Model ID"), ("phase2", "Score")]),
+        "",
+        "### Isolated coding",
+        "",
+        md_table(ranked(rows, "phase3"), [("model_id", "Model ID"), ("phase3", "Score")]),
+        "",
+        "### MiniSWE",
+        "",
+        md_table(ranked(rows, "phase4"), [("model_id", "Model ID"), ("phase4", "Score")]),
+        "",
+        "### Instruction following",
+        "",
+        md_table(ranked(rows, "phase5"), [("model_id", "Model ID"), ("phase5", "Score")]),
+        "",
+        "### Tool / agent",
+        "",
+        md_table(ranked(rows, "phase6"), [("model_id", "Model ID"), ("phase6", "Score")]),
+        "",
+        "### Context",
+        "",
+        md_table(ranked(rows, "phase7"), [("model_id", "Model ID"), ("phase7", "Score")]),
         "",
         "### Developer score",
         "",
         md_table(ranked(rows, "developer_score"), [
             ("model_id", "Model ID"), ("developer_score", "Developer"),
             ("phase3", "Coding"), ("phase4", "MiniSWE"), ("phase6", "Agent")
-        ], 5),
+        ]),
         "",
         "### Fastest",
         "",
         md_table(ranked(rows, "speed_score"), [
             ("model_id", "Model ID"), ("speed_score", "Speed"),
             ("pp_tokens_per_s", "PP tok/s"), ("tg_tokens_per_s", "TG tok/s")
-        ], 5),
+        ]),
         "",
         "### Quality per GiB",
         "",
         md_table(ranked(rows, "quality_per_gib"), [
             ("model_id", "Model ID"), ("quality_per_gib", "Capability/GiB"),
             ("capability_score", "Capability"), ("size_gib", "Size GiB")
-        ], 5),
+        ]),
+        "",
+        "## Sensitivity check",
+        "",
+        "The frozen winner is compared against four alternate, reasonable weighting profiles. These profiles are diagnostic only.",
+        "",
+    ]
+
+    sensitivity_rows = []
+    for profile_name, ranking in sensitivity.items():
+        sensitivity_rows.append({
+            "profile": profile_name,
+            "winner": ranking[0][0],
+            "winner_score": ranking[0][1],
+            "runner_up": ranking[1][0],
+            "runner_up_score": ranking[1][1],
+        })
+    report.extend([
+        md_table(sensitivity_rows, [
+            ("profile", "Profile"), ("winner", "Winner"), ("winner_score", "Winner score"),
+            ("runner_up", "Runner-up"), ("runner_up_score", "Runner-up score")
+        ]),
+        "",
+        "## Per-model profiles",
+        "",
+    ])
+
+    for row in overall_all:
+        report.extend([
+            f"### {row['model_id']}",
+            "",
+            f"- Model: {row['model']} ({row['quant']})",
+            f"- Overall laptop score: {row['overall_laptop_score']:.2f}",
+            f"- Capability: {row['capability_score']:.2f}; efficiency: {row['efficiency_score']:.2f}; developer: {row['developer_score']:.2f}",
+            f"- P2/P3/P4/P5/P6/P7: {row['phase2']:.2f} / {row['phase3']:.2f} / {row['phase4']:.2f} / {row['phase5']:.2f} / {row['phase6']:.2f} / {row['phase7']:.2f}",
+            f"- Speed: {row['pp_tokens_per_s']:.2f} PP tok/s, {row['tg_tokens_per_s']:.2f} TG tok/s",
+            f"- Resource use: {row['peak_rss_gib']:.2f} GiB peak benchmark RSS, {row['size_gib']:.2f} GiB model size",
+            "",
+        ])
+
+    report.extend([
+        "## Quantization trade-offs",
+        "",
+        "See `docs/PHASE8_QUANTIZATION.md` for the five same-base quant comparisons and the recommended v1 quant for each base model.",
         "",
         "## Full consolidated table",
         "",
@@ -323,10 +440,10 @@ def main() -> None:
             ("overall_laptop_score", "Overall")
         ]),
         "",
-    ]
+    ])
     out_md.write_text("\n".join(report), encoding="utf-8")
 
-    print("Phase 9 provisional consolidation complete.")
+    print("Phase 9 final v1 consolidation complete.")
     print(f"JSON: {out_json}")
     print(f"CSV:  {out_csv}")
     print(f"MD:   {out_md}")
@@ -338,17 +455,16 @@ def main() -> None:
         )
     print("\nTOP CATEGORY LEADERS")
     for label, key in [
-        ("Smartest", "phase2"),
-        ("Developer", "developer_score"),
-        ("MiniSWE", "phase4"),
-        ("Agent", "phase6"),
-        ("Instruction", "phase5"),
-        ("Context", "phase7"),
-        ("Fastest", "speed_score"),
-        ("Quality/GiB", "quality_per_gib"),
+        ("Smartest", "phase2"), ("Developer", "developer_score"), ("MiniSWE", "phase4"),
+        ("Agent", "phase6"), ("Instruction", "phase5"), ("Context", "phase7"),
+        ("Fastest", "speed_score"), ("Quality/GiB", "quality_per_gib"),
     ]:
         top = ranked(rows, key)[0]
         print(f"{label:<12}: {top['model_id']:<28} {key}={top[key]:.2f}")
+    print("\nSENSITIVITY WINNERS")
+    for profile_name, ranking in sensitivity.items():
+        print(f"{profile_name:<34}: {ranking[0][0]} ({ranking[0][1]:.2f})")
+    print(f"Robust winner across profiles: {robust_winner or 'none'}")
 
 
 if __name__ == "__main__":
