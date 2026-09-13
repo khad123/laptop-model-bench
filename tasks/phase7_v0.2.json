@@ -1,0 +1,107 @@
+{
+  "benchmark_version": "phase7-v0.2",
+  "status": "development",
+  "description": "Deterministic paired long-context benchmark. The same three task families are repeated at approximately 1K, 2K, and 4K prompt-token scales so length degradation is not confounded by different question difficulty.",
+  "system_prompt": "Use only the supplied reference text. Answer the question with the shortest correct answer you can. Do not invent information.",
+  "tasks": [
+    {
+      "id": "ctx-1k-01",
+      "bucket": "1k",
+      "target_chars": 3600,
+      "mode": "direct",
+      "needles": [{"fraction": 0.91, "text": "Authoritative note: Project Aster's access code is VX-417."}],
+      "question": "What is Project Aster's access code?",
+      "expected_answer": "VX-417"
+    },
+    {
+      "id": "ctx-1k-02",
+      "bucket": "1k",
+      "target_chars": 3600,
+      "mode": "compose",
+      "needles": [
+        {"fraction": 0.42, "text": "Authoritative note: Cedar stores 14 blue modules."},
+        {"fraction": 0.58, "text": "Authoritative note: Cedar stores 9 red modules. For this question, total modules means blue plus red."}
+      ],
+      "question": "How many blue and red modules does Cedar store in total?",
+      "expected_answer": "23"
+    },
+    {
+      "id": "ctx-1k-03",
+      "bucket": "1k",
+      "target_chars": 3600,
+      "mode": "relational",
+      "needles": [
+        {"fraction": 0.08, "text": "Authoritative note: Mira reports directly to Nadir."},
+        {"fraction": 0.22, "text": "Authoritative note: Nadir's office is Atlas."}
+      ],
+      "question": "What is the office of the person Mira reports to?",
+      "expected_answer": "Atlas"
+    },
+    {
+      "id": "ctx-2k-01",
+      "bucket": "2k",
+      "target_chars": 7600,
+      "mode": "direct",
+      "needles": [{"fraction": 0.91, "text": "Authoritative note: Project Aster's access code is VX-417."}],
+      "question": "What is Project Aster's access code?",
+      "expected_answer": "VX-417"
+    },
+    {
+      "id": "ctx-2k-02",
+      "bucket": "2k",
+      "target_chars": 7600,
+      "mode": "compose",
+      "needles": [
+        {"fraction": 0.42, "text": "Authoritative note: Cedar stores 14 blue modules."},
+        {"fraction": 0.58, "text": "Authoritative note: Cedar stores 9 red modules. For this question, total modules means blue plus red."}
+      ],
+      "question": "How many blue and red modules does Cedar store in total?",
+      "expected_answer": "23"
+    },
+    {
+      "id": "ctx-2k-03",
+      "bucket": "2k",
+      "target_chars": 7600,
+      "mode": "relational",
+      "needles": [
+        {"fraction": 0.08, "text": "Authoritative note: Mira reports directly to Nadir."},
+        {"fraction": 0.22, "text": "Authoritative note: Nadir's office is Atlas."}
+      ],
+      "question": "What is the office of the person Mira reports to?",
+      "expected_answer": "Atlas"
+    },
+    {
+      "id": "ctx-4k-01",
+      "bucket": "4k",
+      "target_chars": 15000,
+      "mode": "direct",
+      "needles": [{"fraction": 0.91, "text": "Authoritative note: Project Aster's access code is VX-417."}],
+      "question": "What is Project Aster's access code?",
+      "expected_answer": "VX-417"
+    },
+    {
+      "id": "ctx-4k-02",
+      "bucket": "4k",
+      "target_chars": 15000,
+      "mode": "compose",
+      "needles": [
+        {"fraction": 0.42, "text": "Authoritative note: Cedar stores 14 blue modules."},
+        {"fraction": 0.58, "text": "Authoritative note: Cedar stores 9 red modules. For this question, total modules means blue plus red."}
+      ],
+      "question": "How many blue and red modules does Cedar store in total?",
+      "expected_answer": "23"
+    },
+    {
+      "id": "ctx-4k-03",
+      "bucket": "4k",
+      "target_chars": 15000,
+      "mode": "relational",
+      "needles": [
+        {"fraction": 0.08, "text": "Authoritative note: Mira reports directly to Nadir."},
+        {"fraction": 0.22, "text": "Authoritative note: Nadir's office is Atlas."}
+      ],
+      "question": "What is the office of the person Mira reports to?",
+      "expected_answer": "Atlas"
+    }
+  ]
+}
