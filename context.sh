@@ -529,9 +529,23 @@ def main() -> int:
     print(f"CSV task results: {csv_path}")
     print(f"Raw outputs: {raw_root}")
     print("\nMODEL SUMMARY")
+    def fmt_pct(value):
+        return "n/a" if value is None else f"{value:.1f}%"
+
+    def fmt_num(value):
+        return "n/a" if value is None else f"{value:.1f}"
+
     for s in sorted(summaries, key=lambda x: (x["phase7_score"] is not None, x["phase7_score"] or -1), reverse=True):
         b = s["buckets"]
-        print(f"{s['model_id']:<28} context={s['phase7_score']:6.2f}% solved={s['solved']:2d}/{s['tasks']:2d} 1k={b['1k']:5.1f}% 2k={b['2k']:5.1f}% 4k={b['4k']:5.1f}% drop={s['degradation_1k_to_4k']:5.1f}")
+        score = "n/a" if s["phase7_score"] is None else f"{s['phase7_score']:.2f}%"
+        print(
+            f"{s['model_id']:<28} context={score:>7} "
+            f"solved={s['solved']:2d}/{s['tasks']:2d} "
+            f"1k={fmt_pct(b['1k']):>6} "
+            f"2k={fmt_pct(b['2k']):>6} "
+            f"4k={fmt_pct(b['4k']):>6} "
+            f"drop={fmt_num(s['degradation_1k_to_4k']):>5}"
+        )
     return 2 if infrastructure_failed else 0
 
 
