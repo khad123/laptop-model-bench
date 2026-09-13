@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1160" height="506" viewBox="0 0 1160 506" role="img" aria-labelledby="title desc">
+<title id="title">Speed score</title>
+<desc id="desc">40% normalized prompt processing + 60% normalized generation speed</desc>
+<rect width="100%" height="100%" fill="#ffffff"/>
+<style>
+text{font-family:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#171717}
+.title{font-size:26px;font-weight:700}
+.sub{font-size:14px;fill:#555}
+.label{font-size:14px}
+.value{font-size:14px;font-weight:600}
+.track{fill:#eeeeee}
+.bar{fill:#2563eb}
+</style>
+<text class="title" x="32" y="42">Speed score</text>
+<text class="sub" x="32" y="70">40% normalized prompt processing + 60% normalized generation speed</text>
+<text class="label" x="32" y="136">Qwen3.5-0.8B Q4_K_M</text>
+<rect class="track" x="350" y="120" width="690" height="22" rx="4"/>
+<rect class="bar" x="350" y="120" width="690.0" height="22" rx="4"/>
+<text class="value" x="1052" y="136">100.00</text>
+<text class="label" x="32" y="184">K2-Horizon-0.9B Q4_K_M</text>
+<rect class="track" x="350" y="168" width="690" height="22" rx="4"/>
+<rect class="bar" x="350" y="168" width="636.3" height="22" rx="4"/>
+<text class="value" x="1052" y="184">92.22</text>
+<text class="label" x="32" y="232">LFM2.5-1.2B-Instruct Q4_K_M</text>
+<rect class="track" x="350" y="216" width="690" height="22" rx="4"/>
+<rect class="bar" x="350" y="216" width="597.1" height="22" rx="4"/>
+<text class="value" x="1052" y="232">86.53</text>
+<text class="label" x="32" y="280">Llama 3.2 1B Instruct Q4_K_M</text>
+<rect class="track" x="350" y="264" width="690" height="22" rx="4"/>
+<rect class="bar" x="350" y="264" width="579.1" height="22" rx="4"/>
+<text class="value" x="1052" y="280">83.93</text>
+<text class="label" x="32" y="328">Gemma 3 1B IT Q4_K_M</text>
+<rect class="track" x="350" y="312" width="690" height="22" rx="4"/>
+<rect class="bar" x="350" y="312" width="486.2" height="22" rx="4"/>
+<text class="value" x="1052" y="328">70.47</text>
+<text class="label" x="32" y="376">Qwen3.5-2B Q4_K_M</text>
+<rect class="track" x="350" y="360" width="690" height="22" rx="4"/>
+<rect class="bar" x="350" y="360" width="321.7" height="22" rx="4"/>
+<text class="value" x="1052" y="376">46.63</text>
+<text class="label" x="32" y="424">SmolLM3-3B IQ4_XS</text>
+<rect class="track" x="350" y="408" width="690" height="22" rx="4"/>
+<rect class="bar" x="350" y="408" width="173.1" height="22" rx="4"/>
+<text class="value" x="1052" y="424">25.09</text>
+</svg>

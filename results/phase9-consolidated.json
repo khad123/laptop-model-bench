@@ -1,0 +1,662 @@
+{
+  "models": [
+    {
+      "capability_score": 34.48,
+      "developer_score": 26.9,
+      "efficiency_score": 70.79,
+      "group": "primary",
+      "model": "Gemma 3 1B IT",
+      "model_id": "gemma3-1b-iq4xs",
+      "overall_laptop_score": 39.93,
+      "peak_rss_gib": 1.0165,
+      "phase2": 55.84,
+      "phase3": 75.0,
+      "phase4": 0.0,
+      "phase5": 39.79,
+      "phase6": 14.67,
+      "phase7": 55.56,
+      "pp_tokens_per_s": 72.1,
+      "quality_per_gib": 51.82,
+      "quant": "IQ4_XS",
+      "recommended_quant_view": false,
+      "size_gib": 0.6654,
+      "speed_score": 63.59,
+      "tg_tokens_per_s": 14.05
+    },
+    {
+      "capability_score": 44.51,
+      "developer_score": 46.33,
+      "efficiency_score": 74.75,
+      "group": "quant_comparison",
+      "model": "Gemma 3 1B IT",
+      "model_id": "gemma3-1b-q4km",
+      "overall_laptop_score": 49.05,
+      "peak_rss_gib": 0.9358,
+      "phase2": 37.5,
+      "phase3": 66.67,
+      "phase4": 56.57,
+      "phase5": 42.19,
+      "phase6": 12.33,
+      "phase7": 66.67,
+      "pp_tokens_per_s": 59.21,
+      "quality_per_gib": 59.29,
+      "quant": "Q4_K_M",
+      "recommended_quant_view": true,
+      "size_gib": 0.7507,
+      "speed_score": 70.47,
+      "tg_tokens_per_s": 18.35
+    },
+    {
+      "capability_score": 51.85,
+      "developer_score": 44.63,
+      "efficiency_score": 86.46,
+      "group": "primary",
+      "model": "K2-Horizon-0.9B",
+      "model_id": "k2-0.9b-q4km",
+      "overall_laptop_score": 57.05,
+      "peak_rss_gib": 1.115,
+      "phase2": 65.0,
+      "phase3": 83.33,
+      "phase4": 8.57,
+      "phase5": 77.08,
+      "phase6": 54.0,
+      "phase7": 44.44,
+      "pp_tokens_per_s": 94.83,
+      "quality_per_gib": 83.58,
+      "quant": "Q4_K_M",
+      "recommended_quant_view": true,
+      "size_gib": 0.6204,
+      "speed_score": 92.22,
+      "tg_tokens_per_s": 21.69
+    },
+    {
+      "capability_score": 56.54,
+      "developer_score": 49.93,
+      "efficiency_score": 66.06,
+      "group": "quant_comparison",
+      "model": "K2-Horizon-0.9B",
+      "model_id": "k2-0.9b-q6k",
+      "overall_laptop_score": 57.97,
+      "peak_rss_gib": 0.9272,
+      "phase2": 61.66,
+      "phase3": 75.0,
+      "phase4": 31.07,
+      "phase5": 87.5,
+      "phase6": 50.0,
+      "phase7": 55.56,
+      "pp_tokens_per_s": 51.21,
+      "quality_per_gib": 68.4,
+      "quant": "Q6_K",
+      "recommended_quant_view": false,
+      "size_gib": 0.8265,
+      "speed_score": 56.59,
+      "tg_tokens_per_s": 14.25
+    },
+    {
+      "capability_score": 47.63,
+      "developer_score": 35.93,
+      "efficiency_score": 80.51,
+      "group": "primary",
+      "model": "LFM2.5-1.2B-Instruct",
+      "model_id": "lfm25-1.2b-q4km",
+      "overall_laptop_score": 52.56,
+      "peak_rss_gib": 1.2059,
+      "phase2": 71.66,
+      "phase3": 75.0,
+      "phase4": 30.57,
+      "phase5": 75.0,
+      "phase6": 4.0,
+      "phase7": 77.78,
+      "pp_tokens_per_s": 88.0,
+      "quality_per_gib": 69.97,
+      "quant": "Q4_K_M",
+      "recommended_quant_view": true,
+      "size_gib": 0.6807,
+      "speed_score": 86.53,
+      "tg_tokens_per_s": 20.48
+    },
+    {
+      "capability_score": 36.75,
+      "developer_score": 21.6,
+      "efficiency_score": 67.47,
+      "group": "primary",
+      "model": "Llama 3.2 1B Instruct",
+      "model_id": "llama32-1b-iq4xs",
+      "overall_laptop_score": 41.36,
+      "peak_rss_gib": 0.8297,
+      "phase2": 65.0,
+      "phase3": 58.33,
+      "phase4": 0.0,
+      "phase5": 57.29,
+      "phase6": 13.67,
+      "phase7": 77.78,
+      "pp_tokens_per_s": 38.16,
+      "quality_per_gib": 53.09,
+      "quant": "IQ4_XS",
+      "recommended_quant_view": false,
+      "size_gib": 0.6921,
+      "speed_score": 51.98,
+      "tg_tokens_per_s": 14.28
+    },
+    {
+      "capability_score": 38.07,
+      "developer_score": 26.7,
+      "efficiency_score": 77.09,
+      "group": "quant_comparison",
+      "model": "Llama 3.2 1B Instruct",
+      "model_id": "llama32-1b-q4km",
+      "overall_laptop_score": 43.92,
+      "peak_rss_gib": 1.2813,
+      "phase2": 61.66,
+      "phase3": 75.0,
+      "phase4": 0.0,
+      "phase5": 55.73,
+      "phase6": 14.0,
+      "phase7": 66.67,
+      "pp_tokens_per_s": 90.67,
+      "quality_per_gib": 50.6,
+      "quant": "Q4_K_M",
+      "recommended_quant_view": true,
+      "size_gib": 0.7522,
+      "speed_score": 83.93,
+      "tg_tokens_per_s": 19.15
+    },
+    {
+      "capability_score": 52.41,
+      "developer_score": 39.4,
+      "efficiency_score": 99.88,
+      "group": "primary",
+      "model": "Qwen3.5-0.8B",
+      "model_id": "qwen35-0.8b-q4km",
+      "overall_laptop_score": 59.53,
+      "peak_rss_gib": 0.8334,
+      "phase2": 71.66,
+      "phase3": 50.0,
+      "phase4": 32.0,
+      "phase5": 72.08,
+      "phase6": 38.67,
+      "phase7": 88.89,
+      "pp_tokens_per_s": 111.22,
+      "quality_per_gib": 97.1,
+      "quant": "Q4_K_M",
+      "recommended_quant_view": true,
+      "size_gib": 0.5398,
+      "speed_score": 100.0,
+      "tg_tokens_per_s": 22.39
+    },
+    {
+      "capability_score": 82.7,
+      "developer_score": 84.07,
+      "efficiency_score": 42.78,
+      "group": "quant_comparison",
+      "model": "Qwen3.5-2B",
+      "model_id": "qwen35-2b-iq4xs",
+      "overall_laptop_score": 76.71,
+      "peak_rss_gib": 1.2726,
+      "phase2": 75.0,
+      "phase3": 75.0,
+      "phase4": 83.43,
+      "phase5": 83.33,
+      "phase6": 94.0,
+      "phase7": 77.78,
+      "pp_tokens_per_s": 26.8,
+      "quality_per_gib": 70.75,
+      "quant": "IQ4_XS",
+      "recommended_quant_view": false,
+      "size_gib": 1.1689,
+      "speed_score": 32.7,
+      "tg_tokens_per_s": 8.61
+    },
+    {
+      "capability_score": 85.13,
+      "developer_score": 87.02,
+      "efficiency_score": 45.25,
+      "group": "primary",
+      "model": "Qwen3.5-2B",
+      "model_id": "qwen35-2b-q4km",
+      "overall_laptop_score": 79.15,
+      "peak_rss_gib": 1.879,
+      "phase2": 77.5,
+      "phase3": 75.0,
+      "phase4": 86.29,
+      "phase5": 83.33,
+      "phase6": 100.0,
+      "phase7": 77.78,
+      "pp_tokens_per_s": 51.03,
+      "quality_per_gib": 65.47,
+      "quant": "Q4_K_M",
+      "recommended_quant_view": true,
+      "size_gib": 1.3003,
+      "speed_score": 46.63,
+      "tg_tokens_per_s": 10.55
+    },
+    {
+      "capability_score": 61.3,
+      "developer_score": 57.3,
+      "efficiency_score": 31.37,
+      "group": "primary",
+      "model": "SmolLM3-3B",
+      "model_id": "smollm3-3b-iq4xs",
+      "overall_laptop_score": 56.81,
+      "peak_rss_gib": 1.7822,
+      "phase2": 82.5,
+      "phase3": 66.67,
+      "phase4": 76.0,
+      "phase5": 44.06,
+      "phase6": 23.0,
+      "phase7": 100.0,
+      "pp_tokens_per_s": 13.44,
+      "quality_per_gib": 38.18,
+      "quant": "IQ4_XS",
+      "recommended_quant_view": true,
+      "size_gib": 1.6054,
+      "speed_score": 25.09,
+      "tg_tokens_per_s": 7.56
+    },
+    {
+      "capability_score": 59.2,
+      "developer_score": 58.6,
+      "efficiency_score": 27.45,
+      "group": "quant_comparison",
+      "model": "SmolLM3-3B",
+      "model_id": "smollm3-3b-q4km",
+      "overall_laptop_score": 54.44,
+      "peak_rss_gib": 3.1566,
+      "phase2": 75.84,
+      "phase3": 83.33,
+      "phase4": 78.0,
+      "phase5": 44.06,
+      "phase6": 8.0,
+      "phase7": 88.89,
+      "pp_tokens_per_s": 25.04,
+      "quality_per_gib": 33.19,
+      "quant": "Q4_K_M",
+      "recommended_quant_view": false,
+      "size_gib": 1.7838,
+      "speed_score": 27.73,
+      "tg_tokens_per_s": 6.99
+    }
+  ],
+  "phase7_correction": "Replace only smollm3-3b-iq4xs 4K timeout rows with 20260913T171609Z rows.",
+  "rankings": {
+    "agent": [
+      "qwen35-2b-q4km",
+      "qwen35-2b-iq4xs",
+      "k2-0.9b-q4km",
+      "k2-0.9b-q6k",
+      "qwen35-0.8b-q4km",
+      "smollm3-3b-iq4xs",
+      "gemma3-1b-iq4xs",
+      "llama32-1b-q4km",
+      "llama32-1b-iq4xs",
+      "gemma3-1b-q4km",
+      "smollm3-3b-q4km",
+      "lfm25-1.2b-q4km"
+    ],
+    "context": [
+      "smollm3-3b-iq4xs",
+      "qwen35-0.8b-q4km",
+      "smollm3-3b-q4km",
+      "lfm25-1.2b-q4km",
+      "llama32-1b-iq4xs",
+      "qwen35-2b-iq4xs",
+      "qwen35-2b-q4km",
+      "gemma3-1b-q4km",
+      "llama32-1b-q4km",
+      "gemma3-1b-iq4xs",
+      "k2-0.9b-q6k",
+      "k2-0.9b-q4km"
+    ],
+    "developer": [
+      "qwen35-2b-q4km",
+      "qwen35-2b-iq4xs",
+      "smollm3-3b-q4km",
+      "smollm3-3b-iq4xs",
+      "k2-0.9b-q6k",
+      "gemma3-1b-q4km",
+      "k2-0.9b-q4km",
+      "qwen35-0.8b-q4km",
+      "lfm25-1.2b-q4km",
+      "gemma3-1b-iq4xs",
+      "llama32-1b-q4km",
+      "llama32-1b-iq4xs"
+    ],
+    "fastest": [
+      "qwen35-0.8b-q4km",
+      "k2-0.9b-q4km",
+      "lfm25-1.2b-q4km",
+      "llama32-1b-q4km",
+      "gemma3-1b-q4km",
+      "gemma3-1b-iq4xs",
+      "k2-0.9b-q6k",
+      "llama32-1b-iq4xs",
+      "qwen35-2b-q4km",
+      "qwen35-2b-iq4xs",
+      "smollm3-3b-q4km",
+      "smollm3-3b-iq4xs"
+    ],
+    "instruction": [
+      "k2-0.9b-q6k",
+      "qwen35-2b-iq4xs",
+      "qwen35-2b-q4km",
+      "k2-0.9b-q4km",
+      "lfm25-1.2b-q4km",
+      "qwen35-0.8b-q4km",
+      "llama32-1b-iq4xs",
+      "llama32-1b-q4km",
+      "smollm3-3b-iq4xs",
+      "smollm3-3b-q4km",
+      "gemma3-1b-q4km",
+      "gemma3-1b-iq4xs"
+    ],
+    "isolated_coding": [
+      "k2-0.9b-q4km",
+      "smollm3-3b-q4km",
+      "gemma3-1b-iq4xs",
+      "k2-0.9b-q6k",
+      "lfm25-1.2b-q4km",
+      "llama32-1b-q4km",
+      "qwen35-2b-iq4xs",
+      "qwen35-2b-q4km",
+      "gemma3-1b-q4km",
+      "smollm3-3b-iq4xs",
+      "llama32-1b-iq4xs",
+      "qwen35-0.8b-q4km"
+    ],
+    "miniswe": [
+      "qwen35-2b-q4km",
+      "qwen35-2b-iq4xs",
+      "smollm3-3b-q4km",
+      "smollm3-3b-iq4xs",
+      "gemma3-1b-q4km",
+      "qwen35-0.8b-q4km",
+      "k2-0.9b-q6k",
+      "lfm25-1.2b-q4km",
+      "k2-0.9b-q4km",
+      "gemma3-1b-iq4xs",
+      "llama32-1b-iq4xs",
+      "llama32-1b-q4km"
+    ],
+    "overall_all_entries": [
+      "qwen35-2b-q4km",
+      "qwen35-2b-iq4xs",
+      "qwen35-0.8b-q4km",
+      "k2-0.9b-q6k",
+      "k2-0.9b-q4km",
+      "smollm3-3b-iq4xs",
+      "smollm3-3b-q4km",
+      "lfm25-1.2b-q4km",
+      "gemma3-1b-q4km",
+      "llama32-1b-q4km",
+      "llama32-1b-iq4xs",
+      "gemma3-1b-iq4xs"
+    ],
+    "overall_recommended_quants": [
+      "qwen35-2b-q4km",
+      "qwen35-0.8b-q4km",
+      "k2-0.9b-q4km",
+      "smollm3-3b-iq4xs",
+      "lfm25-1.2b-q4km",
+      "gemma3-1b-q4km",
+      "llama32-1b-q4km"
+    ],
+    "quality_per_gib": [
+      "qwen35-0.8b-q4km",
+      "k2-0.9b-q4km",
+      "qwen35-2b-iq4xs",
+      "lfm25-1.2b-q4km",
+      "k2-0.9b-q6k",
+      "qwen35-2b-q4km",
+      "gemma3-1b-q4km",
+      "llama32-1b-iq4xs",
+      "gemma3-1b-iq4xs",
+      "llama32-1b-q4km",
+      "smollm3-3b-iq4xs",
+      "smollm3-3b-q4km"
+    ],
+    "smartest": [
+      "smollm3-3b-iq4xs",
+      "qwen35-2b-q4km",
+      "smollm3-3b-q4km",
+      "qwen35-2b-iq4xs",
+      "lfm25-1.2b-q4km",
+      "qwen35-0.8b-q4km",
+      "k2-0.9b-q4km",
+      "llama32-1b-iq4xs",
+      "k2-0.9b-q6k",
+      "llama32-1b-q4km",
+      "gemma3-1b-iq4xs",
+      "gemma3-1b-q4km"
+    ]
+  },
+  "robust_winner_across_sensitivity_profiles": "qwen35-2b-q4km",
+  "schema_version": "phase9.v1",
+  "sensitivity_profiles": {
+    "capability_only_equal": {
+      "efficiency": 0.0,
+      "phase2": 16.666666666666668,
+      "phase3": 16.666666666666668,
+      "phase4": 16.666666666666668,
+      "phase5": 16.666666666666668,
+      "phase6": 16.666666666666668,
+      "phase7": 16.666666666666668
+    },
+    "developer_heavy": {
+      "efficiency": 5.0,
+      "phase2": 10.0,
+      "phase3": 20.0,
+      "phase4": 25.0,
+      "phase5": 10.0,
+      "phase6": 25.0,
+      "phase7": 5.0
+    },
+    "equal_capability_plus_efficiency": {
+      "efficiency": 15.0,
+      "phase2": 14.166666666666666,
+      "phase3": 14.166666666666666,
+      "phase4": 14.166666666666666,
+      "phase5": 14.166666666666666,
+      "phase6": 14.166666666666666,
+      "phase7": 14.166666666666666
+    },
+    "frozen_v1": {
+      "efficiency": 15.0,
+      "phase2": 12.0,
+      "phase3": 15.0,
+      "phase4": 20.0,
+      "phase5": 10.0,
+      "phase6": 20.0,
+      "phase7": 8.0
+    },
+    "general_purpose": {
+      "efficiency": 10.0,
+      "phase2": 20.0,
+      "phase3": 15.0,
+      "phase4": 15.0,
+      "phase5": 15.0,
+      "phase6": 15.0,
+      "phase7": 10.0
+    }
+  },
+  "sensitivity_rankings": {
+    "capability_only_equal": [
+      [
+        "qwen35-2b-q4km",
+        83.32
+      ],
+      [
+        "smollm3-3b-iq4xs",
+        65.37
+      ],
+      [
+        "qwen35-0.8b-q4km",
+        58.88
+      ],
+      [
+        "lfm25-1.2b-q4km",
+        55.67
+      ],
+      [
+        "k2-0.9b-q4km",
+        55.4
+      ],
+      [
+        "gemma3-1b-q4km",
+        46.99
+      ],
+      [
+        "llama32-1b-q4km",
+        45.51
+      ]
+    ],
+    "developer_heavy": [
+      [
+        "qwen35-2b-q4km",
+        83.81
+      ],
+      [
+        "smollm3-3b-iq4xs",
+        57.31
+      ],
+      [
+        "k2-0.9b-q4km",
+        53.06
+      ],
+      [
+        "qwen35-0.8b-q4km",
+        51.48
+      ],
+      [
+        "lfm25-1.2b-q4km",
+        46.22
+      ],
+      [
+        "gemma3-1b-q4km",
+        45.6
+      ],
+      [
+        "llama32-1b-q4km",
+        37.43
+      ]
+    ],
+    "equal_capability_plus_efficiency": [
+      [
+        "qwen35-2b-q4km",
+        77.61
+      ],
+      [
+        "qwen35-0.8b-q4km",
+        65.03
+      ],
+      [
+        "smollm3-3b-iq4xs",
+        60.27
+      ],
+      [
+        "k2-0.9b-q4km",
+        60.06
+      ],
+      [
+        "lfm25-1.2b-q4km",
+        59.39
+      ],
+      [
+        "gemma3-1b-q4km",
+        51.15
+      ],
+      [
+        "llama32-1b-q4km",
+        50.25
+      ]
+    ],
+    "frozen_v1": [
+      [
+        "qwen35-2b-q4km",
+        79.15
+      ],
+      [
+        "qwen35-0.8b-q4km",
+        59.53
+      ],
+      [
+        "k2-0.9b-q4km",
+        57.05
+      ],
+      [
+        "smollm3-3b-iq4xs",
+        56.81
+      ],
+      [
+        "lfm25-1.2b-q4km",
+        52.56
+      ],
+      [
+        "gemma3-1b-q4km",
+        49.05
+      ],
+      [
+        "llama32-1b-q4km",
+        43.92
+      ]
+    ],
+    "general_purpose": [
+      [
+        "qwen35-2b-q4km",
+        79.5
+      ],
+      [
+        "qwen35-0.8b-q4km",
+        62.12
+      ],
+      [
+        "smollm3-3b-iq4xs",
+        61.1
+      ],
+      [
+        "k2-0.9b-q4km",
+        59.54
+      ],
+      [
+        "lfm25-1.2b-q4km",
+        57.85
+      ],
+      [
+        "llama32-1b-q4km",
+        48.42
+      ],
+      [
+        "gemma3-1b-q4km",
+        48.31
+      ]
+    ]
+  },
+  "sources": {
+    "phase1": "results/phase1-20260912T125525Z.json",
+    "phase2": "results/phase2-20260912T163441Z.json",
+    "phase3": "results/phase3-20260912T172204Z.json",
+    "phase4": "results/phase4-20260912T185826Z.json",
+    "phase5": "results/phase5-20260912T233610Z.json",
+    "phase6": "results/phase6-20260913T001137Z.json",
+    "phase7": "results/phase7-20260913T135829Z.json",
+    "phase7_correction": "results/phase7-20260913T171609Z.json"
+  },
+  "status": "frozen-v1",
+  "weights": {
+    "capability": {
+      "phase2": 12.0,
+      "phase3": 15.0,
+      "phase4": 20.0,
+      "phase5": 10.0,
+      "phase6": 20.0,
+      "phase7": 8.0
+    },
+    "capability_total": 85.0,
+    "efficiency": {
+      "pp": 4.0,
+      "ram": 4.0,
+      "size": 2.0,
+      "tg": 5.0
+    },
+    "efficiency_total": 15.0
+  }
+}
