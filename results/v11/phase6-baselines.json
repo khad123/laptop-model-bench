@@ -1,0 +1,3839 @@
+{
+  "models": [
+    {
+      "categories": {
+        "disambiguation": 26.67,
+        "missing_argument": 60.0,
+        "multi_step": 13.33,
+        "single_tool": 53.33
+      },
+      "metrics": {
+        "arguments": 30.0,
+        "outcome": 0.0,
+        "sequence": 20.0,
+        "structured": 55.0,
+        "tool_choice": 30.0
+      },
+      "model": "Qwen3.5-0.8B",
+      "model_id": "qwen35-0.8b-q4km",
+      "phase6_score": 38.67,
+      "quant": "Q4_K_M",
+      "solved": 0,
+      "tasks": 10
+    },
+    {
+      "categories": {
+        "disambiguation": 20.0,
+        "missing_argument": 80.0,
+        "multi_step": 10.0,
+        "single_tool": 100.0
+      },
+      "metrics": {
+        "arguments": 30.0,
+        "outcome": 40.0,
+        "sequence": 40.0,
+        "structured": 62.5,
+        "tool_choice": 30.0
+      },
+      "model": "K2-Horizon-0.9B",
+      "model_id": "k2-0.9b-q4km",
+      "phase6_score": 54.0,
+      "quant": "Q4_K_M",
+      "solved": 4,
+      "tasks": 10
+    },
+    {
+      "categories": {
+        "disambiguation": 100.0,
+        "missing_argument": 100.0,
+        "multi_step": 100.0,
+        "single_tool": 100.0
+      },
+      "metrics": {
+        "arguments": 100.0,
+        "outcome": 100.0,
+        "sequence": 100.0,
+        "structured": 100.0,
+        "tool_choice": 100.0
+      },
+      "model": "Qwen3.5-2B",
+      "model_id": "qwen35-2b-q4km",
+      "phase6_score": 100.0,
+      "quant": "Q4_K_M",
+      "solved": 10,
+      "tasks": 10
+    },
+    {
+      "categories": {
+        "disambiguation": 3.33,
+        "missing_argument": 100.0,
+        "multi_step": 0.0,
+        "single_tool": 0.0
+      },
+      "metrics": {
+        "arguments": 0.0,
+        "outcome": 20.0,
+        "sequence": 13.33,
+        "structured": 12.5,
+        "tool_choice": 0.0
+      },
+      "model": "SmolLM3-3B",
+      "model_id": "smollm3-3b-iq4xs",
+      "phase6_score": 21.0,
+      "quant": "IQ4_XS",
+      "solved": 2,
+      "tasks": 10
+    }
+  ],
+  "results": [
+    {
+      "action_count": 4,
+      "artifact_dir": "results/v11-baselines/raw/phase6/20260914T005615Z/qwen35-0.8b-q4km/agent-01",
+      "category": "single_tool",
+      "checks": [
+        {
+          "metric": "structured_valid_json",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "structured_schema",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "sequence_action",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "tool_choice",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "arguments",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "structured_valid_json",
+          "passed": true,
+          "step": 2
+        },
+        {
+          "metric": "structured_schema",
+          "passed": true,
+          "step": 2
+        },
+        {
+          "metric": "sequence_action",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "outcome",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "sequence_length",
+          "passed": false,
+          "step": null
+        }
+      ],
+      "completion_tokens": 72,
+      "error": "",
+      "generation_seconds": 14.515539,
+      "metrics": {
+        "arguments": {
+          "passed": 1,
+          "total": 1
+        },
+        "outcome": {
+          "passed": 0,
+          "total": 1
+        },
+        "sequence": {
+          "passed": 1,
+          "total": 3
+        },
+        "structured": {
+          "passed": 4,
+          "total": 4
+        },
+        "tool_choice": {
+          "passed": 1,
+          "total": 1
+        }
+      },
+      "model": "Qwen3.5-0.8B",
+      "model_id": "qwen35-0.8b-q4km",
+      "passed_checks": 7,
+      "prompt_tokens": 1310,
+      "quant": "Q4_K_M",
+      "run_id": "20260914T005615Z",
+      "solved": false,
+      "status": "ok",
+      "task_id": "agent-01",
+      "task_score": 70.0,
+      "total_checks": 10
+    },
+    {
+      "action_count": 4,
+      "artifact_dir": "results/v11-baselines/raw/phase6/20260914T005615Z/qwen35-0.8b-q4km/agent-02",
+      "category": "single_tool",
+      "checks": [
+        {
+          "metric": "structured_valid_json",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "structured_schema",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "sequence_action",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "tool_choice",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "arguments",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "structured_valid_json",
+          "passed": true,
+          "step": 2
+        },
+        {
+          "metric": "structured_schema",
+          "passed": true,
+          "step": 2
+        },
+        {
+          "metric": "sequence_action",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "outcome",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "sequence_length",
+          "passed": false,
+          "step": null
+        }
+      ],
+      "completion_tokens": 93,
+      "error": "",
+      "generation_seconds": 16.373905,
+      "metrics": {
+        "arguments": {
+          "passed": 1,
+          "total": 1
+        },
+        "outcome": {
+          "passed": 0,
+          "total": 1
+        },
+        "sequence": {
+          "passed": 1,
+          "total": 3
+        },
+        "structured": {
+          "passed": 4,
+          "total": 4
+        },
+        "tool_choice": {
+          "passed": 1,
+          "total": 1
+        }
+      },
+      "model": "Qwen3.5-0.8B",
+      "model_id": "qwen35-0.8b-q4km",
+      "passed_checks": 7,
+      "prompt_tokens": 1352,
+      "quant": "Q4_K_M",
+      "run_id": "20260914T005615Z",
+      "solved": false,
+      "status": "ok",
+      "task_id": "agent-02",
+      "task_score": 70.0,
+      "total_checks": 10
+    },
+    {
+      "action_count": 1,
+      "artifact_dir": "results/v11-baselines/raw/phase6/20260914T005615Z/qwen35-0.8b-q4km/agent-03",
+      "category": "single_tool",
+      "checks": [
+        {
+          "metric": "structured_valid_json",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "structured_schema",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "sequence_action",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "tool_choice",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "arguments",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "structured_valid_json",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "structured_schema",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "sequence_action",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "outcome",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "sequence_length",
+          "passed": false,
+          "step": null
+        }
+      ],
+      "completion_tokens": 13,
+      "error": "",
+      "generation_seconds": 2.836898,
+      "metrics": {
+        "arguments": {
+          "passed": 0,
+          "total": 1
+        },
+        "outcome": {
+          "passed": 0,
+          "total": 1
+        },
+        "sequence": {
+          "passed": 0,
+          "total": 3
+        },
+        "structured": {
+          "passed": 2,
+          "total": 4
+        },
+        "tool_choice": {
+          "passed": 0,
+          "total": 1
+        }
+      },
+      "model": "Qwen3.5-0.8B",
+      "model_id": "qwen35-0.8b-q4km",
+      "passed_checks": 2,
+      "prompt_tokens": 241,
+      "quant": "Q4_K_M",
+      "run_id": "20260914T005615Z",
+      "solved": false,
+      "status": "ok",
+      "task_id": "agent-03",
+      "task_score": 20.0,
+      "total_checks": 10
+    },
+    {
+      "action_count": 1,
+      "artifact_dir": "results/v11-baselines/raw/phase6/20260914T005615Z/qwen35-0.8b-q4km/agent-04",
+      "category": "disambiguation",
+      "checks": [
+        {
+          "metric": "structured_valid_json",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "structured_schema",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "sequence_action",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "tool_choice",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "arguments",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "structured_valid_json",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "structured_schema",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "sequence_action",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "outcome",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "sequence_length",
+          "passed": false,
+          "step": null
+        }
+      ],
+      "completion_tokens": 15,
+      "error": "",
+      "generation_seconds": 3.770779,
+      "metrics": {
+        "arguments": {
+          "passed": 0,
+          "total": 1
+        },
+        "outcome": {
+          "passed": 0,
+          "total": 1
+        },
+        "sequence": {
+          "passed": 0,
+          "total": 3
+        },
+        "structured": {
+          "passed": 1,
+          "total": 4
+        },
+        "tool_choice": {
+          "passed": 0,
+          "total": 1
+        }
+      },
+      "model": "Qwen3.5-0.8B",
+      "model_id": "qwen35-0.8b-q4km",
+      "passed_checks": 1,
+      "prompt_tokens": 345,
+      "quant": "Q4_K_M",
+      "run_id": "20260914T005615Z",
+      "solved": false,
+      "status": "ok",
+      "task_id": "agent-04",
+      "task_score": 10.0,
+      "total_checks": 10
+    },
+    {
+      "action_count": 1,
+      "artifact_dir": "results/v11-baselines/raw/phase6/20260914T005615Z/qwen35-0.8b-q4km/agent-05",
+      "category": "disambiguation",
+      "checks": [
+        {
+          "metric": "structured_valid_json",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "structured_schema",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "sequence_action",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "tool_choice",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "arguments",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "structured_valid_json",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "structured_schema",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "sequence_action",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "outcome",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "sequence_length",
+          "passed": false,
+          "step": null
+        }
+      ],
+      "completion_tokens": 58,
+      "error": "",
+      "generation_seconds": 5.986248,
+      "metrics": {
+        "arguments": {
+          "passed": 0,
+          "total": 1
+        },
+        "outcome": {
+          "passed": 0,
+          "total": 1
+        },
+        "sequence": {
+          "passed": 0,
+          "total": 3
+        },
+        "structured": {
+          "passed": 0,
+          "total": 4
+        },
+        "tool_choice": {
+          "passed": 0,
+          "total": 1
+        }
+      },
+      "model": "Qwen3.5-0.8B",
+      "model_id": "qwen35-0.8b-q4km",
+      "passed_checks": 0,
+      "prompt_tokens": 347,
+      "quant": "Q4_K_M",
+      "run_id": "20260914T005615Z",
+      "solved": false,
+      "status": "ok",
+      "task_id": "agent-05",
+      "task_score": 0.0,
+      "total_checks": 10
+    },
+    {
+      "action_count": 4,
+      "artifact_dir": "results/v11-baselines/raw/phase6/20260914T005615Z/qwen35-0.8b-q4km/agent-06",
+      "category": "disambiguation",
+      "checks": [
+        {
+          "metric": "structured_valid_json",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "structured_schema",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "sequence_action",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "tool_choice",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "arguments",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "structured_valid_json",
+          "passed": true,
+          "step": 2
+        },
+        {
+          "metric": "structured_schema",
+          "passed": true,
+          "step": 2
+        },
+        {
+          "metric": "sequence_action",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "outcome",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "sequence_length",
+          "passed": false,
+          "step": null
+        }
+      ],
+      "completion_tokens": 119,
+      "error": "",
+      "generation_seconds": 24.681006,
+      "metrics": {
+        "arguments": {
+          "passed": 1,
+          "total": 1
+        },
+        "outcome": {
+          "passed": 0,
+          "total": 1
+        },
+        "sequence": {
+          "passed": 1,
+          "total": 3
+        },
+        "structured": {
+          "passed": 4,
+          "total": 4
+        },
+        "tool_choice": {
+          "passed": 1,
+          "total": 1
+        }
+      },
+      "model": "Qwen3.5-0.8B",
+      "model_id": "qwen35-0.8b-q4km",
+      "passed_checks": 7,
+      "prompt_tokens": 2113,
+      "quant": "Q4_K_M",
+      "run_id": "20260914T005615Z",
+      "solved": false,
+      "status": "ok",
+      "task_id": "agent-06",
+      "task_score": 70.0,
+      "total_checks": 10
+    },
+    {
+      "action_count": 1,
+      "artifact_dir": "results/v11-baselines/raw/phase6/20260914T005615Z/qwen35-0.8b-q4km/agent-07",
+      "category": "missing_argument",
+      "checks": [
+        {
+          "metric": "structured_valid_json",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "structured_schema",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "sequence_action",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "outcome",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "sequence_length",
+          "passed": true,
+          "step": null
+        }
+      ],
+      "completion_tokens": 11,
+      "error": "",
+      "generation_seconds": 2.882081,
+      "metrics": {
+        "arguments": {
+          "passed": 0,
+          "total": 0
+        },
+        "outcome": {
+          "passed": 0,
+          "total": 1
+        },
+        "sequence": {
+          "passed": 2,
+          "total": 2
+        },
+        "structured": {
+          "passed": 2,
+          "total": 2
+        },
+        "tool_choice": {
+          "passed": 0,
+          "total": 0
+        }
+      },
+      "model": "Qwen3.5-0.8B",
+      "model_id": "qwen35-0.8b-q4km",
+      "passed_checks": 4,
+      "prompt_tokens": 239,
+      "quant": "Q4_K_M",
+      "run_id": "20260914T005615Z",
+      "solved": false,
+      "status": "ok",
+      "task_id": "agent-07",
+      "task_score": 80.0,
+      "total_checks": 5
+    },
+    {
+      "action_count": 1,
+      "artifact_dir": "results/v11-baselines/raw/phase6/20260914T005615Z/qwen35-0.8b-q4km/agent-08",
+      "category": "missing_argument",
+      "checks": [
+        {
+          "metric": "structured_valid_json",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "structured_schema",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "sequence_action",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "outcome",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "sequence_length",
+          "passed": true,
+          "step": null
+        }
+      ],
+      "completion_tokens": 16,
+      "error": "",
+      "generation_seconds": 2.87089,
+      "metrics": {
+        "arguments": {
+          "passed": 0,
+          "total": 0
+        },
+        "outcome": {
+          "passed": 0,
+          "total": 1
+        },
+        "sequence": {
+          "passed": 1,
+          "total": 2
+        },
+        "structured": {
+          "passed": 1,
+          "total": 2
+        },
+        "tool_choice": {
+          "passed": 0,
+          "total": 0
+        }
+      },
+      "model": "Qwen3.5-0.8B",
+      "model_id": "qwen35-0.8b-q4km",
+      "passed_checks": 2,
+      "prompt_tokens": 241,
+      "quant": "Q4_K_M",
+      "run_id": "20260914T005615Z",
+      "solved": false,
+      "status": "ok",
+      "task_id": "agent-08",
+      "task_score": 40.0,
+      "total_checks": 5
+    },
+    {
+      "action_count": 1,
+      "artifact_dir": "results/v11-baselines/raw/phase6/20260914T005615Z/qwen35-0.8b-q4km/agent-09",
+      "category": "multi_step",
+      "checks": [
+        {
+          "metric": "structured_valid_json",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "structured_schema",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "sequence_action",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "tool_choice",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "arguments",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "structured_valid_json",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "structured_schema",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "sequence_action",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "tool_choice",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "arguments",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "structured_valid_json",
+          "passed": false,
+          "step": 3
+        },
+        {
+          "metric": "structured_schema",
+          "passed": false,
+          "step": 3
+        },
+        {
+          "metric": "sequence_action",
+          "passed": false,
+          "step": 3
+        },
+        {
+          "metric": "outcome",
+          "passed": false,
+          "step": 3
+        },
+        {
+          "metric": "sequence_length",
+          "passed": false,
+          "step": null
+        }
+      ],
+      "completion_tokens": 12,
+      "error": "",
+      "generation_seconds": 4.061911,
+      "metrics": {
+        "arguments": {
+          "passed": 0,
+          "total": 2
+        },
+        "outcome": {
+          "passed": 0,
+          "total": 1
+        },
+        "sequence": {
+          "passed": 0,
+          "total": 4
+        },
+        "structured": {
+          "passed": 2,
+          "total": 6
+        },
+        "tool_choice": {
+          "passed": 0,
+          "total": 2
+        }
+      },
+      "model": "Qwen3.5-0.8B",
+      "model_id": "qwen35-0.8b-q4km",
+      "passed_checks": 2,
+      "prompt_tokens": 372,
+      "quant": "Q4_K_M",
+      "run_id": "20260914T005615Z",
+      "solved": false,
+      "status": "ok",
+      "task_id": "agent-09",
+      "task_score": 13.33,
+      "total_checks": 15
+    },
+    {
+      "action_count": 1,
+      "artifact_dir": "results/v11-baselines/raw/phase6/20260914T005615Z/qwen35-0.8b-q4km/agent-10",
+      "category": "multi_step",
+      "checks": [
+        {
+          "metric": "structured_valid_json",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "structured_schema",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "sequence_action",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "tool_choice",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "arguments",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "structured_valid_json",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "structured_schema",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "sequence_action",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "tool_choice",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "arguments",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "structured_valid_json",
+          "passed": false,
+          "step": 3
+        },
+        {
+          "metric": "structured_schema",
+          "passed": false,
+          "step": 3
+        },
+        {
+          "metric": "sequence_action",
+          "passed": false,
+          "step": 3
+        },
+        {
+          "metric": "outcome",
+          "passed": false,
+          "step": 3
+        },
+        {
+          "metric": "sequence_length",
+          "passed": false,
+          "step": null
+        }
+      ],
+      "completion_tokens": 11,
+      "error": "",
+      "generation_seconds": 3.956404,
+      "metrics": {
+        "arguments": {
+          "passed": 0,
+          "total": 2
+        },
+        "outcome": {
+          "passed": 0,
+          "total": 1
+        },
+        "sequence": {
+          "passed": 0,
+          "total": 4
+        },
+        "structured": {
+          "passed": 2,
+          "total": 6
+        },
+        "tool_choice": {
+          "passed": 0,
+          "total": 2
+        }
+      },
+      "model": "Qwen3.5-0.8B",
+      "model_id": "qwen35-0.8b-q4km",
+      "passed_checks": 2,
+      "prompt_tokens": 380,
+      "quant": "Q4_K_M",
+      "run_id": "20260914T005615Z",
+      "solved": false,
+      "status": "ok",
+      "task_id": "agent-10",
+      "task_score": 13.33,
+      "total_checks": 15
+    },
+    {
+      "action_count": 2,
+      "artifact_dir": "results/v11-baselines/raw/phase6/20260914T005615Z/k2-0.9b-q4km/agent-01",
+      "category": "single_tool",
+      "checks": [
+        {
+          "metric": "structured_valid_json",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "structured_schema",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "sequence_action",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "tool_choice",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "arguments",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "structured_valid_json",
+          "passed": true,
+          "step": 2
+        },
+        {
+          "metric": "structured_schema",
+          "passed": true,
+          "step": 2
+        },
+        {
+          "metric": "sequence_action",
+          "passed": true,
+          "step": 2
+        },
+        {
+          "metric": "outcome",
+          "passed": true,
+          "step": 2
+        },
+        {
+          "metric": "sequence_length",
+          "passed": true,
+          "step": null
+        }
+      ],
+      "completion_tokens": 30,
+      "error": "",
+      "generation_seconds": 6.670899,
+      "metrics": {
+        "arguments": {
+          "passed": 1,
+          "total": 1
+        },
+        "outcome": {
+          "passed": 1,
+          "total": 1
+        },
+        "sequence": {
+          "passed": 3,
+          "total": 3
+        },
+        "structured": {
+          "passed": 4,
+          "total": 4
+        },
+        "tool_choice": {
+          "passed": 1,
+          "total": 1
+        }
+      },
+      "model": "K2-Horizon-0.9B",
+      "model_id": "k2-0.9b-q4km",
+      "passed_checks": 10,
+      "prompt_tokens": 514,
+      "quant": "Q4_K_M",
+      "run_id": "20260914T005615Z",
+      "solved": true,
+      "status": "ok",
+      "task_id": "agent-01",
+      "task_score": 100.0,
+      "total_checks": 10
+    },
+    {
+      "action_count": 2,
+      "artifact_dir": "results/v11-baselines/raw/phase6/20260914T005615Z/k2-0.9b-q4km/agent-02",
+      "category": "single_tool",
+      "checks": [
+        {
+          "metric": "structured_valid_json",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "structured_schema",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "sequence_action",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "tool_choice",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "arguments",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "structured_valid_json",
+          "passed": true,
+          "step": 2
+        },
+        {
+          "metric": "structured_schema",
+          "passed": true,
+          "step": 2
+        },
+        {
+          "metric": "sequence_action",
+          "passed": true,
+          "step": 2
+        },
+        {
+          "metric": "outcome",
+          "passed": true,
+          "step": 2
+        },
+        {
+          "metric": "sequence_length",
+          "passed": true,
+          "step": null
+        }
+      ],
+      "completion_tokens": 34,
+      "error": "",
+      "generation_seconds": 7.470709,
+      "metrics": {
+        "arguments": {
+          "passed": 1,
+          "total": 1
+        },
+        "outcome": {
+          "passed": 1,
+          "total": 1
+        },
+        "sequence": {
+          "passed": 3,
+          "total": 3
+        },
+        "structured": {
+          "passed": 4,
+          "total": 4
+        },
+        "tool_choice": {
+          "passed": 1,
+          "total": 1
+        }
+      },
+      "model": "K2-Horizon-0.9B",
+      "model_id": "k2-0.9b-q4km",
+      "passed_checks": 10,
+      "prompt_tokens": 525,
+      "quant": "Q4_K_M",
+      "run_id": "20260914T005615Z",
+      "solved": true,
+      "status": "ok",
+      "task_id": "agent-02",
+      "task_score": 100.0,
+      "total_checks": 10
+    },
+    {
+      "action_count": 2,
+      "artifact_dir": "results/v11-baselines/raw/phase6/20260914T005615Z/k2-0.9b-q4km/agent-03",
+      "category": "single_tool",
+      "checks": [
+        {
+          "metric": "structured_valid_json",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "structured_schema",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "sequence_action",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "tool_choice",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "arguments",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "structured_valid_json",
+          "passed": true,
+          "step": 2
+        },
+        {
+          "metric": "structured_schema",
+          "passed": true,
+          "step": 2
+        },
+        {
+          "metric": "sequence_action",
+          "passed": true,
+          "step": 2
+        },
+        {
+          "metric": "outcome",
+          "passed": true,
+          "step": 2
+        },
+        {
+          "metric": "sequence_length",
+          "passed": true,
+          "step": null
+        }
+      ],
+      "completion_tokens": 32,
+      "error": "",
+      "generation_seconds": 7.165333,
+      "metrics": {
+        "arguments": {
+          "passed": 1,
+          "total": 1
+        },
+        "outcome": {
+          "passed": 1,
+          "total": 1
+        },
+        "sequence": {
+          "passed": 3,
+          "total": 3
+        },
+        "structured": {
+          "passed": 4,
+          "total": 4
+        },
+        "tool_choice": {
+          "passed": 1,
+          "total": 1
+        }
+      },
+      "model": "K2-Horizon-0.9B",
+      "model_id": "k2-0.9b-q4km",
+      "passed_checks": 10,
+      "prompt_tokens": 505,
+      "quant": "Q4_K_M",
+      "run_id": "20260914T005615Z",
+      "solved": true,
+      "status": "ok",
+      "task_id": "agent-03",
+      "task_score": 100.0,
+      "total_checks": 10
+    },
+    {
+      "action_count": 1,
+      "artifact_dir": "results/v11-baselines/raw/phase6/20260914T005615Z/k2-0.9b-q4km/agent-04",
+      "category": "disambiguation",
+      "checks": [
+        {
+          "metric": "structured_valid_json",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "structured_schema",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "sequence_action",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "tool_choice",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "arguments",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "structured_valid_json",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "structured_schema",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "sequence_action",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "outcome",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "sequence_length",
+          "passed": false,
+          "step": null
+        }
+      ],
+      "completion_tokens": 11,
+      "error": "",
+      "generation_seconds": 4.694541,
+      "metrics": {
+        "arguments": {
+          "passed": 0,
+          "total": 1
+        },
+        "outcome": {
+          "passed": 0,
+          "total": 1
+        },
+        "sequence": {
+          "passed": 0,
+          "total": 3
+        },
+        "structured": {
+          "passed": 2,
+          "total": 4
+        },
+        "tool_choice": {
+          "passed": 0,
+          "total": 1
+        }
+      },
+      "model": "K2-Horizon-0.9B",
+      "model_id": "k2-0.9b-q4km",
+      "passed_checks": 2,
+      "prompt_tokens": 312,
+      "quant": "Q4_K_M",
+      "run_id": "20260914T005615Z",
+      "solved": false,
+      "status": "ok",
+      "task_id": "agent-04",
+      "task_score": 20.0,
+      "total_checks": 10
+    },
+    {
+      "action_count": 1,
+      "artifact_dir": "results/v11-baselines/raw/phase6/20260914T005615Z/k2-0.9b-q4km/agent-05",
+      "category": "disambiguation",
+      "checks": [
+        {
+          "metric": "structured_valid_json",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "structured_schema",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "sequence_action",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "tool_choice",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "arguments",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "structured_valid_json",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "structured_schema",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "sequence_action",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "outcome",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "sequence_length",
+          "passed": false,
+          "step": null
+        }
+      ],
+      "completion_tokens": 11,
+      "error": "",
+      "generation_seconds": 4.129911,
+      "metrics": {
+        "arguments": {
+          "passed": 0,
+          "total": 1
+        },
+        "outcome": {
+          "passed": 0,
+          "total": 1
+        },
+        "sequence": {
+          "passed": 0,
+          "total": 3
+        },
+        "structured": {
+          "passed": 2,
+          "total": 4
+        },
+        "tool_choice": {
+          "passed": 0,
+          "total": 1
+        }
+      },
+      "model": "K2-Horizon-0.9B",
+      "model_id": "k2-0.9b-q4km",
+      "passed_checks": 2,
+      "prompt_tokens": 320,
+      "quant": "Q4_K_M",
+      "run_id": "20260914T005615Z",
+      "solved": false,
+      "status": "ok",
+      "task_id": "agent-05",
+      "task_score": 20.0,
+      "total_checks": 10
+    },
+    {
+      "action_count": 1,
+      "artifact_dir": "results/v11-baselines/raw/phase6/20260914T005615Z/k2-0.9b-q4km/agent-06",
+      "category": "disambiguation",
+      "checks": [
+        {
+          "metric": "structured_valid_json",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "structured_schema",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "sequence_action",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "tool_choice",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "arguments",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "structured_valid_json",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "structured_schema",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "sequence_action",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "outcome",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "sequence_length",
+          "passed": false,
+          "step": null
+        }
+      ],
+      "completion_tokens": 13,
+      "error": "",
+      "generation_seconds": 4.805838,
+      "metrics": {
+        "arguments": {
+          "passed": 0,
+          "total": 1
+        },
+        "outcome": {
+          "passed": 0,
+          "total": 1
+        },
+        "sequence": {
+          "passed": 0,
+          "total": 3
+        },
+        "structured": {
+          "passed": 2,
+          "total": 4
+        },
+        "tool_choice": {
+          "passed": 0,
+          "total": 1
+        }
+      },
+      "model": "K2-Horizon-0.9B",
+      "model_id": "k2-0.9b-q4km",
+      "passed_checks": 2,
+      "prompt_tokens": 373,
+      "quant": "Q4_K_M",
+      "run_id": "20260914T005615Z",
+      "solved": false,
+      "status": "ok",
+      "task_id": "agent-06",
+      "task_score": 20.0,
+      "total_checks": 10
+    },
+    {
+      "action_count": 1,
+      "artifact_dir": "results/v11-baselines/raw/phase6/20260914T005615Z/k2-0.9b-q4km/agent-07",
+      "category": "missing_argument",
+      "checks": [
+        {
+          "metric": "structured_valid_json",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "structured_schema",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "sequence_action",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "outcome",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "sequence_length",
+          "passed": true,
+          "step": null
+        }
+      ],
+      "completion_tokens": 21,
+      "error": "",
+      "generation_seconds": 3.559822,
+      "metrics": {
+        "arguments": {
+          "passed": 0,
+          "total": 0
+        },
+        "outcome": {
+          "passed": 0,
+          "total": 1
+        },
+        "sequence": {
+          "passed": 1,
+          "total": 2
+        },
+        "structured": {
+          "passed": 2,
+          "total": 2
+        },
+        "tool_choice": {
+          "passed": 0,
+          "total": 0
+        }
+      },
+      "model": "K2-Horizon-0.9B",
+      "model_id": "k2-0.9b-q4km",
+      "passed_checks": 3,
+      "prompt_tokens": 223,
+      "quant": "Q4_K_M",
+      "run_id": "20260914T005615Z",
+      "solved": false,
+      "status": "ok",
+      "task_id": "agent-07",
+      "task_score": 60.0,
+      "total_checks": 5
+    },
+    {
+      "action_count": 1,
+      "artifact_dir": "results/v11-baselines/raw/phase6/20260914T005615Z/k2-0.9b-q4km/agent-08",
+      "category": "missing_argument",
+      "checks": [
+        {
+          "metric": "structured_valid_json",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "structured_schema",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "sequence_action",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "outcome",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "sequence_length",
+          "passed": true,
+          "step": null
+        }
+      ],
+      "completion_tokens": 12,
+      "error": "",
+      "generation_seconds": 3.008685,
+      "metrics": {
+        "arguments": {
+          "passed": 0,
+          "total": 0
+        },
+        "outcome": {
+          "passed": 1,
+          "total": 1
+        },
+        "sequence": {
+          "passed": 2,
+          "total": 2
+        },
+        "structured": {
+          "passed": 2,
+          "total": 2
+        },
+        "tool_choice": {
+          "passed": 0,
+          "total": 0
+        }
+      },
+      "model": "K2-Horizon-0.9B",
+      "model_id": "k2-0.9b-q4km",
+      "passed_checks": 5,
+      "prompt_tokens": 224,
+      "quant": "Q4_K_M",
+      "run_id": "20260914T005615Z",
+      "solved": true,
+      "status": "ok",
+      "task_id": "agent-08",
+      "task_score": 100.0,
+      "total_checks": 5
+    },
+    {
+      "action_count": 1,
+      "artifact_dir": "results/v11-baselines/raw/phase6/20260914T005615Z/k2-0.9b-q4km/agent-09",
+      "category": "multi_step",
+      "checks": [
+        {
+          "metric": "structured_valid_json",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "structured_schema",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "sequence_action",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "tool_choice",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "arguments",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "structured_valid_json",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "structured_schema",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "sequence_action",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "tool_choice",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "arguments",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "structured_valid_json",
+          "passed": false,
+          "step": 3
+        },
+        {
+          "metric": "structured_schema",
+          "passed": false,
+          "step": 3
+        },
+        {
+          "metric": "sequence_action",
+          "passed": false,
+          "step": 3
+        },
+        {
+          "metric": "outcome",
+          "passed": false,
+          "step": 3
+        },
+        {
+          "metric": "sequence_length",
+          "passed": false,
+          "step": null
+        }
+      ],
+      "completion_tokens": 20,
+      "error": "",
+      "generation_seconds": 4.823792,
+      "metrics": {
+        "arguments": {
+          "passed": 0,
+          "total": 2
+        },
+        "outcome": {
+          "passed": 0,
+          "total": 1
+        },
+        "sequence": {
+          "passed": 0,
+          "total": 4
+        },
+        "structured": {
+          "passed": 1,
+          "total": 6
+        },
+        "tool_choice": {
+          "passed": 0,
+          "total": 2
+        }
+      },
+      "model": "K2-Horizon-0.9B",
+      "model_id": "k2-0.9b-q4km",
+      "passed_checks": 1,
+      "prompt_tokens": 343,
+      "quant": "Q4_K_M",
+      "run_id": "20260914T005615Z",
+      "solved": false,
+      "status": "ok",
+      "task_id": "agent-09",
+      "task_score": 6.67,
+      "total_checks": 15
+    },
+    {
+      "action_count": 1,
+      "artifact_dir": "results/v11-baselines/raw/phase6/20260914T005615Z/k2-0.9b-q4km/agent-10",
+      "category": "multi_step",
+      "checks": [
+        {
+          "metric": "structured_valid_json",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "structured_schema",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "sequence_action",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "tool_choice",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "arguments",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "structured_valid_json",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "structured_schema",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "sequence_action",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "tool_choice",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "arguments",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "structured_valid_json",
+          "passed": false,
+          "step": 3
+        },
+        {
+          "metric": "structured_schema",
+          "passed": false,
+          "step": 3
+        },
+        {
+          "metric": "sequence_action",
+          "passed": false,
+          "step": 3
+        },
+        {
+          "metric": "outcome",
+          "passed": false,
+          "step": 3
+        },
+        {
+          "metric": "sequence_length",
+          "passed": false,
+          "step": null
+        }
+      ],
+      "completion_tokens": 11,
+      "error": "",
+      "generation_seconds": 4.432001,
+      "metrics": {
+        "arguments": {
+          "passed": 0,
+          "total": 2
+        },
+        "outcome": {
+          "passed": 0,
+          "total": 1
+        },
+        "sequence": {
+          "passed": 0,
+          "total": 4
+        },
+        "structured": {
+          "passed": 2,
+          "total": 6
+        },
+        "tool_choice": {
+          "passed": 0,
+          "total": 2
+        }
+      },
+      "model": "K2-Horizon-0.9B",
+      "model_id": "k2-0.9b-q4km",
+      "passed_checks": 2,
+      "prompt_tokens": 346,
+      "quant": "Q4_K_M",
+      "run_id": "20260914T005615Z",
+      "solved": false,
+      "status": "ok",
+      "task_id": "agent-10",
+      "task_score": 13.33,
+      "total_checks": 15
+    },
+    {
+      "action_count": 2,
+      "artifact_dir": "results/v11-baselines/raw/phase6/20260914T005615Z/qwen35-2b-q4km/agent-01",
+      "category": "single_tool",
+      "checks": [
+        {
+          "metric": "structured_valid_json",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "structured_schema",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "sequence_action",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "tool_choice",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "arguments",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "structured_valid_json",
+          "passed": true,
+          "step": 2
+        },
+        {
+          "metric": "structured_schema",
+          "passed": true,
+          "step": 2
+        },
+        {
+          "metric": "sequence_action",
+          "passed": true,
+          "step": 2
+        },
+        {
+          "metric": "outcome",
+          "passed": true,
+          "step": 2
+        },
+        {
+          "metric": "sequence_length",
+          "passed": true,
+          "step": null
+        }
+      ],
+      "completion_tokens": 29,
+      "error": "",
+      "generation_seconds": 13.160066,
+      "metrics": {
+        "arguments": {
+          "passed": 1,
+          "total": 1
+        },
+        "outcome": {
+          "passed": 1,
+          "total": 1
+        },
+        "sequence": {
+          "passed": 3,
+          "total": 3
+        },
+        "structured": {
+          "passed": 4,
+          "total": 4
+        },
+        "tool_choice": {
+          "passed": 1,
+          "total": 1
+        }
+      },
+      "model": "Qwen3.5-2B",
+      "model_id": "qwen35-2b-q4km",
+      "passed_checks": 10,
+      "prompt_tokens": 541,
+      "quant": "Q4_K_M",
+      "run_id": "20260914T005615Z",
+      "solved": true,
+      "status": "ok",
+      "task_id": "agent-01",
+      "task_score": 100.0,
+      "total_checks": 10
+    },
+    {
+      "action_count": 2,
+      "artifact_dir": "results/v11-baselines/raw/phase6/20260914T005615Z/qwen35-2b-q4km/agent-02",
+      "category": "single_tool",
+      "checks": [
+        {
+          "metric": "structured_valid_json",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "structured_schema",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "sequence_action",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "tool_choice",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "arguments",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "structured_valid_json",
+          "passed": true,
+          "step": 2
+        },
+        {
+          "metric": "structured_schema",
+          "passed": true,
+          "step": 2
+        },
+        {
+          "metric": "sequence_action",
+          "passed": true,
+          "step": 2
+        },
+        {
+          "metric": "outcome",
+          "passed": true,
+          "step": 2
+        },
+        {
+          "metric": "sequence_length",
+          "passed": true,
+          "step": null
+        }
+      ],
+      "completion_tokens": 34,
+      "error": "",
+      "generation_seconds": 14.770383,
+      "metrics": {
+        "arguments": {
+          "passed": 1,
+          "total": 1
+        },
+        "outcome": {
+          "passed": 1,
+          "total": 1
+        },
+        "sequence": {
+          "passed": 3,
+          "total": 3
+        },
+        "structured": {
+          "passed": 4,
+          "total": 4
+        },
+        "tool_choice": {
+          "passed": 1,
+          "total": 1
+        }
+      },
+      "model": "Qwen3.5-2B",
+      "model_id": "qwen35-2b-q4km",
+      "passed_checks": 10,
+      "prompt_tokens": 568,
+      "quant": "Q4_K_M",
+      "run_id": "20260914T005615Z",
+      "solved": true,
+      "status": "ok",
+      "task_id": "agent-02",
+      "task_score": 100.0,
+      "total_checks": 10
+    },
+    {
+      "action_count": 2,
+      "artifact_dir": "results/v11-baselines/raw/phase6/20260914T005615Z/qwen35-2b-q4km/agent-03",
+      "category": "single_tool",
+      "checks": [
+        {
+          "metric": "structured_valid_json",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "structured_schema",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "sequence_action",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "tool_choice",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "arguments",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "structured_valid_json",
+          "passed": true,
+          "step": 2
+        },
+        {
+          "metric": "structured_schema",
+          "passed": true,
+          "step": 2
+        },
+        {
+          "metric": "sequence_action",
+          "passed": true,
+          "step": 2
+        },
+        {
+          "metric": "outcome",
+          "passed": true,
+          "step": 2
+        },
+        {
+          "metric": "sequence_length",
+          "passed": true,
+          "step": null
+        }
+      ],
+      "completion_tokens": 32,
+      "error": "",
+      "generation_seconds": 13.993466,
+      "metrics": {
+        "arguments": {
+          "passed": 1,
+          "total": 1
+        },
+        "outcome": {
+          "passed": 1,
+          "total": 1
+        },
+        "sequence": {
+          "passed": 3,
+          "total": 3
+        },
+        "structured": {
+          "passed": 4,
+          "total": 4
+        },
+        "tool_choice": {
+          "passed": 1,
+          "total": 1
+        }
+      },
+      "model": "Qwen3.5-2B",
+      "model_id": "qwen35-2b-q4km",
+      "passed_checks": 10,
+      "prompt_tokens": 544,
+      "quant": "Q4_K_M",
+      "run_id": "20260914T005615Z",
+      "solved": true,
+      "status": "ok",
+      "task_id": "agent-03",
+      "task_score": 100.0,
+      "total_checks": 10
+    },
+    {
+      "action_count": 2,
+      "artifact_dir": "results/v11-baselines/raw/phase6/20260914T005615Z/qwen35-2b-q4km/agent-04",
+      "category": "disambiguation",
+      "checks": [
+        {
+          "metric": "structured_valid_json",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "structured_schema",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "sequence_action",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "tool_choice",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "arguments",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "structured_valid_json",
+          "passed": true,
+          "step": 2
+        },
+        {
+          "metric": "structured_schema",
+          "passed": true,
+          "step": 2
+        },
+        {
+          "metric": "sequence_action",
+          "passed": true,
+          "step": 2
+        },
+        {
+          "metric": "outcome",
+          "passed": true,
+          "step": 2
+        },
+        {
+          "metric": "sequence_length",
+          "passed": true,
+          "step": null
+        }
+      ],
+      "completion_tokens": 32,
+      "error": "",
+      "generation_seconds": 18.093682,
+      "metrics": {
+        "arguments": {
+          "passed": 1,
+          "total": 1
+        },
+        "outcome": {
+          "passed": 1,
+          "total": 1
+        },
+        "sequence": {
+          "passed": 3,
+          "total": 3
+        },
+        "structured": {
+          "passed": 4,
+          "total": 4
+        },
+        "tool_choice": {
+          "passed": 1,
+          "total": 1
+        }
+      },
+      "model": "Qwen3.5-2B",
+      "model_id": "qwen35-2b-q4km",
+      "passed_checks": 10,
+      "prompt_tokens": 759,
+      "quant": "Q4_K_M",
+      "run_id": "20260914T005615Z",
+      "solved": true,
+      "status": "ok",
+      "task_id": "agent-04",
+      "task_score": 100.0,
+      "total_checks": 10
+    },
+    {
+      "action_count": 2,
+      "artifact_dir": "results/v11-baselines/raw/phase6/20260914T005615Z/qwen35-2b-q4km/agent-05",
+      "category": "disambiguation",
+      "checks": [
+        {
+          "metric": "structured_valid_json",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "structured_schema",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "sequence_action",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "tool_choice",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "arguments",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "structured_valid_json",
+          "passed": true,
+          "step": 2
+        },
+        {
+          "metric": "structured_schema",
+          "passed": true,
+          "step": 2
+        },
+        {
+          "metric": "sequence_action",
+          "passed": true,
+          "step": 2
+        },
+        {
+          "metric": "outcome",
+          "passed": true,
+          "step": 2
+        },
+        {
+          "metric": "sequence_length",
+          "passed": true,
+          "step": null
+        }
+      ],
+      "completion_tokens": 32,
+      "error": "",
+      "generation_seconds": 18.533145,
+      "metrics": {
+        "arguments": {
+          "passed": 1,
+          "total": 1
+        },
+        "outcome": {
+          "passed": 1,
+          "total": 1
+        },
+        "sequence": {
+          "passed": 3,
+          "total": 3
+        },
+        "structured": {
+          "passed": 4,
+          "total": 4
+        },
+        "tool_choice": {
+          "passed": 1,
+          "total": 1
+        }
+      },
+      "model": "Qwen3.5-2B",
+      "model_id": "qwen35-2b-q4km",
+      "passed_checks": 10,
+      "prompt_tokens": 771,
+      "quant": "Q4_K_M",
+      "run_id": "20260914T005615Z",
+      "solved": true,
+      "status": "ok",
+      "task_id": "agent-05",
+      "task_score": 100.0,
+      "total_checks": 10
+    },
+    {
+      "action_count": 2,
+      "artifact_dir": "results/v11-baselines/raw/phase6/20260914T005615Z/qwen35-2b-q4km/agent-06",
+      "category": "disambiguation",
+      "checks": [
+        {
+          "metric": "structured_valid_json",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "structured_schema",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "sequence_action",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "tool_choice",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "arguments",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "structured_valid_json",
+          "passed": true,
+          "step": 2
+        },
+        {
+          "metric": "structured_schema",
+          "passed": true,
+          "step": 2
+        },
+        {
+          "metric": "sequence_action",
+          "passed": true,
+          "step": 2
+        },
+        {
+          "metric": "outcome",
+          "passed": true,
+          "step": 2
+        },
+        {
+          "metric": "sequence_length",
+          "passed": true,
+          "step": null
+        }
+      ],
+      "completion_tokens": 41,
+      "error": "",
+      "generation_seconds": 21.880041,
+      "metrics": {
+        "arguments": {
+          "passed": 1,
+          "total": 1
+        },
+        "outcome": {
+          "passed": 1,
+          "total": 1
+        },
+        "sequence": {
+          "passed": 3,
+          "total": 3
+        },
+        "structured": {
+          "passed": 4,
+          "total": 4
+        },
+        "tool_choice": {
+          "passed": 1,
+          "total": 1
+        }
+      },
+      "model": "Qwen3.5-2B",
+      "model_id": "qwen35-2b-q4km",
+      "passed_checks": 10,
+      "prompt_tokens": 902,
+      "quant": "Q4_K_M",
+      "run_id": "20260914T005615Z",
+      "solved": true,
+      "status": "ok",
+      "task_id": "agent-06",
+      "task_score": 100.0,
+      "total_checks": 10
+    },
+    {
+      "action_count": 1,
+      "artifact_dir": "results/v11-baselines/raw/phase6/20260914T005615Z/qwen35-2b-q4km/agent-07",
+      "category": "missing_argument",
+      "checks": [
+        {
+          "metric": "structured_valid_json",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "structured_schema",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "sequence_action",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "outcome",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "sequence_length",
+          "passed": true,
+          "step": null
+        }
+      ],
+      "completion_tokens": 10,
+      "error": "",
+      "generation_seconds": 5.721331,
+      "metrics": {
+        "arguments": {
+          "passed": 0,
+          "total": 0
+        },
+        "outcome": {
+          "passed": 1,
+          "total": 1
+        },
+        "sequence": {
+          "passed": 2,
+          "total": 2
+        },
+        "structured": {
+          "passed": 2,
+          "total": 2
+        },
+        "tool_choice": {
+          "passed": 0,
+          "total": 0
+        }
+      },
+      "model": "Qwen3.5-2B",
+      "model_id": "qwen35-2b-q4km",
+      "passed_checks": 5,
+      "prompt_tokens": 239,
+      "quant": "Q4_K_M",
+      "run_id": "20260914T005615Z",
+      "solved": true,
+      "status": "ok",
+      "task_id": "agent-07",
+      "task_score": 100.0,
+      "total_checks": 5
+    },
+    {
+      "action_count": 1,
+      "artifact_dir": "results/v11-baselines/raw/phase6/20260914T005615Z/qwen35-2b-q4km/agent-08",
+      "category": "missing_argument",
+      "checks": [
+        {
+          "metric": "structured_valid_json",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "structured_schema",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "sequence_action",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "outcome",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "sequence_length",
+          "passed": true,
+          "step": null
+        }
+      ],
+      "completion_tokens": 11,
+      "error": "",
+      "generation_seconds": 5.846397,
+      "metrics": {
+        "arguments": {
+          "passed": 0,
+          "total": 0
+        },
+        "outcome": {
+          "passed": 1,
+          "total": 1
+        },
+        "sequence": {
+          "passed": 2,
+          "total": 2
+        },
+        "structured": {
+          "passed": 2,
+          "total": 2
+        },
+        "tool_choice": {
+          "passed": 0,
+          "total": 0
+        }
+      },
+      "model": "Qwen3.5-2B",
+      "model_id": "qwen35-2b-q4km",
+      "passed_checks": 5,
+      "prompt_tokens": 241,
+      "quant": "Q4_K_M",
+      "run_id": "20260914T005615Z",
+      "solved": true,
+      "status": "ok",
+      "task_id": "agent-08",
+      "task_score": 100.0,
+      "total_checks": 5
+    },
+    {
+      "action_count": 3,
+      "artifact_dir": "results/v11-baselines/raw/phase6/20260914T005615Z/qwen35-2b-q4km/agent-09",
+      "category": "multi_step",
+      "checks": [
+        {
+          "metric": "structured_valid_json",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "structured_schema",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "sequence_action",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "tool_choice",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "arguments",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "structured_valid_json",
+          "passed": true,
+          "step": 2
+        },
+        {
+          "metric": "structured_schema",
+          "passed": true,
+          "step": 2
+        },
+        {
+          "metric": "sequence_action",
+          "passed": true,
+          "step": 2
+        },
+        {
+          "metric": "tool_choice",
+          "passed": true,
+          "step": 2
+        },
+        {
+          "metric": "arguments",
+          "passed": true,
+          "step": 2
+        },
+        {
+          "metric": "structured_valid_json",
+          "passed": true,
+          "step": 3
+        },
+        {
+          "metric": "structured_schema",
+          "passed": true,
+          "step": 3
+        },
+        {
+          "metric": "sequence_action",
+          "passed": true,
+          "step": 3
+        },
+        {
+          "metric": "outcome",
+          "passed": true,
+          "step": 3
+        },
+        {
+          "metric": "sequence_length",
+          "passed": true,
+          "step": null
+        }
+      ],
+      "completion_tokens": 57,
+      "error": "",
+      "generation_seconds": 31.732191,
+      "metrics": {
+        "arguments": {
+          "passed": 2,
+          "total": 2
+        },
+        "outcome": {
+          "passed": 1,
+          "total": 1
+        },
+        "sequence": {
+          "passed": 4,
+          "total": 4
+        },
+        "structured": {
+          "passed": 6,
+          "total": 6
+        },
+        "tool_choice": {
+          "passed": 2,
+          "total": 2
+        }
+      },
+      "model": "Qwen3.5-2B",
+      "model_id": "qwen35-2b-q4km",
+      "passed_checks": 15,
+      "prompt_tokens": 1326,
+      "quant": "Q4_K_M",
+      "run_id": "20260914T005615Z",
+      "solved": true,
+      "status": "ok",
+      "task_id": "agent-09",
+      "task_score": 100.0,
+      "total_checks": 15
+    },
+    {
+      "action_count": 3,
+      "artifact_dir": "results/v11-baselines/raw/phase6/20260914T005615Z/qwen35-2b-q4km/agent-10",
+      "category": "multi_step",
+      "checks": [
+        {
+          "metric": "structured_valid_json",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "structured_schema",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "sequence_action",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "tool_choice",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "arguments",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "structured_valid_json",
+          "passed": true,
+          "step": 2
+        },
+        {
+          "metric": "structured_schema",
+          "passed": true,
+          "step": 2
+        },
+        {
+          "metric": "sequence_action",
+          "passed": true,
+          "step": 2
+        },
+        {
+          "metric": "tool_choice",
+          "passed": true,
+          "step": 2
+        },
+        {
+          "metric": "arguments",
+          "passed": true,
+          "step": 2
+        },
+        {
+          "metric": "structured_valid_json",
+          "passed": true,
+          "step": 3
+        },
+        {
+          "metric": "structured_schema",
+          "passed": true,
+          "step": 3
+        },
+        {
+          "metric": "sequence_action",
+          "passed": true,
+          "step": 3
+        },
+        {
+          "metric": "outcome",
+          "passed": true,
+          "step": 3
+        },
+        {
+          "metric": "sequence_length",
+          "passed": true,
+          "step": null
+        }
+      ],
+      "completion_tokens": 61,
+      "error": "",
+      "generation_seconds": 32.710518,
+      "metrics": {
+        "arguments": {
+          "passed": 2,
+          "total": 2
+        },
+        "outcome": {
+          "passed": 1,
+          "total": 1
+        },
+        "sequence": {
+          "passed": 4,
+          "total": 4
+        },
+        "structured": {
+          "passed": 6,
+          "total": 6
+        },
+        "tool_choice": {
+          "passed": 2,
+          "total": 2
+        }
+      },
+      "model": "Qwen3.5-2B",
+      "model_id": "qwen35-2b-q4km",
+      "passed_checks": 15,
+      "prompt_tokens": 1354,
+      "quant": "Q4_K_M",
+      "run_id": "20260914T005615Z",
+      "solved": true,
+      "status": "ok",
+      "task_id": "agent-10",
+      "task_score": 100.0,
+      "total_checks": 15
+    },
+    {
+      "action_count": 1,
+      "artifact_dir": "results/v11-baselines/raw/phase6/20260914T005615Z/smollm3-3b-iq4xs/agent-01",
+      "category": "single_tool",
+      "checks": [
+        {
+          "metric": "structured_valid_json",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "structured_schema",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "sequence_action",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "tool_choice",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "arguments",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "structured_valid_json",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "structured_schema",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "sequence_action",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "outcome",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "sequence_length",
+          "passed": false,
+          "step": null
+        }
+      ],
+      "completion_tokens": 30,
+      "error": "",
+      "generation_seconds": 19.373792,
+      "metrics": {
+        "arguments": {
+          "passed": 0,
+          "total": 1
+        },
+        "outcome": {
+          "passed": 0,
+          "total": 1
+        },
+        "sequence": {
+          "passed": 0,
+          "total": 3
+        },
+        "structured": {
+          "passed": 0,
+          "total": 4
+        },
+        "tool_choice": {
+          "passed": 0,
+          "total": 1
+        }
+      },
+      "model": "SmolLM3-3B",
+      "model_id": "smollm3-3b-iq4xs",
+      "passed_checks": 0,
+      "prompt_tokens": 256,
+      "quant": "IQ4_XS",
+      "run_id": "20260914T005615Z",
+      "solved": false,
+      "status": "ok",
+      "task_id": "agent-01",
+      "task_score": 0.0,
+      "total_checks": 10
+    },
+    {
+      "action_count": 1,
+      "artifact_dir": "results/v11-baselines/raw/phase6/20260914T005615Z/smollm3-3b-iq4xs/agent-02",
+      "category": "single_tool",
+      "checks": [
+        {
+          "metric": "structured_valid_json",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "structured_schema",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "sequence_action",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "tool_choice",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "arguments",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "structured_valid_json",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "structured_schema",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "sequence_action",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "outcome",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "sequence_length",
+          "passed": false,
+          "step": null
+        }
+      ],
+      "completion_tokens": 26,
+      "error": "",
+      "generation_seconds": 20.189235,
+      "metrics": {
+        "arguments": {
+          "passed": 0,
+          "total": 1
+        },
+        "outcome": {
+          "passed": 0,
+          "total": 1
+        },
+        "sequence": {
+          "passed": 0,
+          "total": 3
+        },
+        "structured": {
+          "passed": 0,
+          "total": 4
+        },
+        "tool_choice": {
+          "passed": 0,
+          "total": 1
+        }
+      },
+      "model": "SmolLM3-3B",
+      "model_id": "smollm3-3b-iq4xs",
+      "passed_checks": 0,
+      "prompt_tokens": 265,
+      "quant": "IQ4_XS",
+      "run_id": "20260914T005615Z",
+      "solved": false,
+      "status": "ok",
+      "task_id": "agent-02",
+      "task_score": 0.0,
+      "total_checks": 10
+    },
+    {
+      "action_count": 1,
+      "artifact_dir": "results/v11-baselines/raw/phase6/20260914T005615Z/smollm3-3b-iq4xs/agent-03",
+      "category": "single_tool",
+      "checks": [
+        {
+          "metric": "structured_valid_json",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "structured_schema",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "sequence_action",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "tool_choice",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "arguments",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "structured_valid_json",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "structured_schema",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "sequence_action",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "outcome",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "sequence_length",
+          "passed": false,
+          "step": null
+        }
+      ],
+      "completion_tokens": 31,
+      "error": "",
+      "generation_seconds": 19.763041,
+      "metrics": {
+        "arguments": {
+          "passed": 0,
+          "total": 1
+        },
+        "outcome": {
+          "passed": 0,
+          "total": 1
+        },
+        "sequence": {
+          "passed": 0,
+          "total": 3
+        },
+        "structured": {
+          "passed": 0,
+          "total": 4
+        },
+        "tool_choice": {
+          "passed": 0,
+          "total": 1
+        }
+      },
+      "model": "SmolLM3-3B",
+      "model_id": "smollm3-3b-iq4xs",
+      "passed_checks": 0,
+      "prompt_tokens": 253,
+      "quant": "IQ4_XS",
+      "run_id": "20260914T005615Z",
+      "solved": false,
+      "status": "ok",
+      "task_id": "agent-03",
+      "task_score": 0.0,
+      "total_checks": 10
+    },
+    {
+      "action_count": 1,
+      "artifact_dir": "results/v11-baselines/raw/phase6/20260914T005615Z/smollm3-3b-iq4xs/agent-04",
+      "category": "disambiguation",
+      "checks": [
+        {
+          "metric": "structured_valid_json",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "structured_schema",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "sequence_action",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "tool_choice",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "arguments",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "structured_valid_json",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "structured_schema",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "sequence_action",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "outcome",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "sequence_length",
+          "passed": false,
+          "step": null
+        }
+      ],
+      "completion_tokens": 28,
+      "error": "",
+      "generation_seconds": 25.280284,
+      "metrics": {
+        "arguments": {
+          "passed": 0,
+          "total": 1
+        },
+        "outcome": {
+          "passed": 0,
+          "total": 1
+        },
+        "sequence": {
+          "passed": 0,
+          "total": 3
+        },
+        "structured": {
+          "passed": 0,
+          "total": 4
+        },
+        "tool_choice": {
+          "passed": 0,
+          "total": 1
+        }
+      },
+      "model": "SmolLM3-3B",
+      "model_id": "smollm3-3b-iq4xs",
+      "passed_checks": 0,
+      "prompt_tokens": 343,
+      "quant": "IQ4_XS",
+      "run_id": "20260914T005615Z",
+      "solved": false,
+      "status": "ok",
+      "task_id": "agent-04",
+      "task_score": 0.0,
+      "total_checks": 10
+    },
+    {
+      "action_count": 1,
+      "artifact_dir": "results/v11-baselines/raw/phase6/20260914T005615Z/smollm3-3b-iq4xs/agent-05",
+      "category": "disambiguation",
+      "checks": [
+        {
+          "metric": "structured_valid_json",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "structured_schema",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "sequence_action",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "tool_choice",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "arguments",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "structured_valid_json",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "structured_schema",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "sequence_action",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "outcome",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "sequence_length",
+          "passed": false,
+          "step": null
+        }
+      ],
+      "completion_tokens": 19,
+      "error": "",
+      "generation_seconds": 24.257163,
+      "metrics": {
+        "arguments": {
+          "passed": 0,
+          "total": 1
+        },
+        "outcome": {
+          "passed": 0,
+          "total": 1
+        },
+        "sequence": {
+          "passed": 0,
+          "total": 3
+        },
+        "structured": {
+          "passed": 1,
+          "total": 4
+        },
+        "tool_choice": {
+          "passed": 0,
+          "total": 1
+        }
+      },
+      "model": "SmolLM3-3B",
+      "model_id": "smollm3-3b-iq4xs",
+      "passed_checks": 1,
+      "prompt_tokens": 343,
+      "quant": "IQ4_XS",
+      "run_id": "20260914T005615Z",
+      "solved": false,
+      "status": "ok",
+      "task_id": "agent-05",
+      "task_score": 10.0,
+      "total_checks": 10
+    },
+    {
+      "action_count": 1,
+      "artifact_dir": "results/v11-baselines/raw/phase6/20260914T005615Z/smollm3-3b-iq4xs/agent-06",
+      "category": "disambiguation",
+      "checks": [
+        {
+          "metric": "structured_valid_json",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "structured_schema",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "sequence_action",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "tool_choice",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "arguments",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "structured_valid_json",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "structured_schema",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "sequence_action",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "outcome",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "sequence_length",
+          "passed": false,
+          "step": null
+        }
+      ],
+      "completion_tokens": 102,
+      "error": "",
+      "generation_seconds": 37.830289,
+      "metrics": {
+        "arguments": {
+          "passed": 0,
+          "total": 1
+        },
+        "outcome": {
+          "passed": 0,
+          "total": 1
+        },
+        "sequence": {
+          "passed": 0,
+          "total": 3
+        },
+        "structured": {
+          "passed": 0,
+          "total": 4
+        },
+        "tool_choice": {
+          "passed": 0,
+          "total": 1
+        }
+      },
+      "model": "SmolLM3-3B",
+      "model_id": "smollm3-3b-iq4xs",
+      "passed_checks": 0,
+      "prompt_tokens": 399,
+      "quant": "IQ4_XS",
+      "run_id": "20260914T005615Z",
+      "solved": false,
+      "status": "ok",
+      "task_id": "agent-06",
+      "task_score": 0.0,
+      "total_checks": 10
+    },
+    {
+      "action_count": 1,
+      "artifact_dir": "results/v11-baselines/raw/phase6/20260914T005615Z/smollm3-3b-iq4xs/agent-07",
+      "category": "missing_argument",
+      "checks": [
+        {
+          "metric": "structured_valid_json",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "structured_schema",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "sequence_action",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "outcome",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "sequence_length",
+          "passed": true,
+          "step": null
+        }
+      ],
+      "completion_tokens": 10,
+      "error": "",
+      "generation_seconds": 17.339176,
+      "metrics": {
+        "arguments": {
+          "passed": 0,
+          "total": 0
+        },
+        "outcome": {
+          "passed": 1,
+          "total": 1
+        },
+        "sequence": {
+          "passed": 2,
+          "total": 2
+        },
+        "structured": {
+          "passed": 2,
+          "total": 2
+        },
+        "tool_choice": {
+          "passed": 0,
+          "total": 0
+        }
+      },
+      "model": "SmolLM3-3B",
+      "model_id": "smollm3-3b-iq4xs",
+      "passed_checks": 5,
+      "prompt_tokens": 253,
+      "quant": "IQ4_XS",
+      "run_id": "20260914T005615Z",
+      "solved": true,
+      "status": "ok",
+      "task_id": "agent-07",
+      "task_score": 100.0,
+      "total_checks": 5
+    },
+    {
+      "action_count": 1,
+      "artifact_dir": "results/v11-baselines/raw/phase6/20260914T005615Z/smollm3-3b-iq4xs/agent-08",
+      "category": "missing_argument",
+      "checks": [
+        {
+          "metric": "structured_valid_json",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "structured_schema",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "sequence_action",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "outcome",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "sequence_length",
+          "passed": true,
+          "step": null
+        }
+      ],
+      "completion_tokens": 11,
+      "error": "",
+      "generation_seconds": 17.609861,
+      "metrics": {
+        "arguments": {
+          "passed": 0,
+          "total": 0
+        },
+        "outcome": {
+          "passed": 1,
+          "total": 1
+        },
+        "sequence": {
+          "passed": 2,
+          "total": 2
+        },
+        "structured": {
+          "passed": 2,
+          "total": 2
+        },
+        "tool_choice": {
+          "passed": 0,
+          "total": 0
+        }
+      },
+      "model": "SmolLM3-3B",
+      "model_id": "smollm3-3b-iq4xs",
+      "passed_checks": 5,
+      "prompt_tokens": 255,
+      "quant": "IQ4_XS",
+      "run_id": "20260914T005615Z",
+      "solved": true,
+      "status": "ok",
+      "task_id": "agent-08",
+      "task_score": 100.0,
+      "total_checks": 5
+    },
+    {
+      "action_count": 1,
+      "artifact_dir": "results/v11-baselines/raw/phase6/20260914T005615Z/smollm3-3b-iq4xs/agent-09",
+      "category": "multi_step",
+      "checks": [
+        {
+          "metric": "structured_valid_json",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "structured_schema",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "sequence_action",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "tool_choice",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "arguments",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "structured_valid_json",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "structured_schema",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "sequence_action",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "tool_choice",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "arguments",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "structured_valid_json",
+          "passed": false,
+          "step": 3
+        },
+        {
+          "metric": "structured_schema",
+          "passed": false,
+          "step": 3
+        },
+        {
+          "metric": "sequence_action",
+          "passed": false,
+          "step": 3
+        },
+        {
+          "metric": "outcome",
+          "passed": false,
+          "step": 3
+        },
+        {
+          "metric": "sequence_length",
+          "passed": false,
+          "step": null
+        }
+      ],
+      "completion_tokens": 75,
+      "error": "",
+      "generation_seconds": 32.288144,
+      "metrics": {
+        "arguments": {
+          "passed": 0,
+          "total": 2
+        },
+        "outcome": {
+          "passed": 0,
+          "total": 1
+        },
+        "sequence": {
+          "passed": 0,
+          "total": 4
+        },
+        "structured": {
+          "passed": 0,
+          "total": 6
+        },
+        "tool_choice": {
+          "passed": 0,
+          "total": 2
+        }
+      },
+      "model": "SmolLM3-3B",
+      "model_id": "smollm3-3b-iq4xs",
+      "passed_checks": 0,
+      "prompt_tokens": 364,
+      "quant": "IQ4_XS",
+      "run_id": "20260914T005615Z",
+      "solved": false,
+      "status": "ok",
+      "task_id": "agent-09",
+      "task_score": 0.0,
+      "total_checks": 15
+    },
+    {
+      "action_count": 1,
+      "artifact_dir": "results/v11-baselines/raw/phase6/20260914T005615Z/smollm3-3b-iq4xs/agent-10",
+      "category": "multi_step",
+      "checks": [
+        {
+          "metric": "structured_valid_json",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "structured_schema",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "sequence_action",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "tool_choice",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "arguments",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "structured_valid_json",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "structured_schema",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "sequence_action",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "tool_choice",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "arguments",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "structured_valid_json",
+          "passed": false,
+          "step": 3
+        },
+        {
+          "metric": "structured_schema",
+          "passed": false,
+          "step": 3
+        },
+        {
+          "metric": "sequence_action",
+          "passed": false,
+          "step": 3
+        },
+        {
+          "metric": "outcome",
+          "passed": false,
+          "step": 3
+        },
+        {
+          "metric": "sequence_length",
+          "passed": false,
+          "step": null
+        }
+      ],
+      "completion_tokens": 192,
+      "error": "",
+      "generation_seconds": 47.310369,
+      "metrics": {
+        "arguments": {
+          "passed": 0,
+          "total": 2
+        },
+        "outcome": {
+          "passed": 0,
+          "total": 1
+        },
+        "sequence": {
+          "passed": 0,
+          "total": 4
+        },
+        "structured": {
+          "passed": 0,
+          "total": 6
+        },
+        "tool_choice": {
+          "passed": 0,
+          "total": 2
+        }
+      },
+      "model": "SmolLM3-3B",
+      "model_id": "smollm3-3b-iq4xs",
+      "passed_checks": 0,
+      "prompt_tokens": 374,
+      "quant": "IQ4_XS",
+      "run_id": "20260914T005615Z",
+      "solved": false,
+      "status": "ok",
+      "task_id": "agent-10",
+      "task_score": 0.0,
+      "total_checks": 15
+    }
+  ],
+  "run": {
+    "benchmark_version": "phase6-v0.1",
+    "finished_at_utc": "2026-09-14T01:05:56Z",
+    "hf_cache": "/home/conan/.cache/huggingface/hub",
+    "hostname": "conangx",
+    "kernel": "7.2.3-arch1-3",
+    "llama_cpp_dir": "/home/conan/Models/llama.cpp-k2",
+    "llama_cpp_git_commit": "35999d101cf2233fc54f09c3c8d599da7303ce02",
+    "llama_server": "/home/conan/Models/llama.cpp-k2/build/bin/llama-server",
+    "llama_server_version": "version: 0.3.0-dev (build 10671, commit 35999d101)\nbuilt with GNU 16.2.1 for Linux x86_64",
+    "platform": "Linux-7.2.3-arch1-3-x86_64-with-glibc2.44",
+    "registry_path": "/home/conan/laptop-model-bench/docs/MODEL_REGISTRY_V11_BASELINES.md",
+    "run_id": "20260914T005615Z",
+    "settings": {
+      "cache_prompt": false,
+      "context": 4096,
+      "max_actions": 4,
+      "max_tokens_per_action": 192,
+      "n_gpu_layers": 0,
+      "reasoning_effort": "none",
+      "seed": 42,
+      "temperature": 0.0,
+      "threads": 4,
+      "tool_protocol": "runtime-neutral-json-action-loop"
+    },
+    "started_at_utc": "2026-09-14T00:56:15Z",
+    "task_file": "/home/conan/laptop-model-bench/tasks/phase6_v0.1.json"
+  },
+  "schema_version": "phase6.v0.1"
+}

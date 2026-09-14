@@ -1,0 +1,217 @@
+{
+  "category_winners": {
+    "Agents / tools": {
+      "model_id": "qwen35-2b-q4km",
+      "score": 100.0
+    },
+    "Coding": {
+      "model_id": "minicpm5-2b-q4km",
+      "score": 91.67
+    },
+    "Context": {
+      "model_id": "smollm3-3b-iq4xs",
+      "score": 100.0
+    },
+    "Generation speed": {
+      "model_id": "minicpm5-1b-q4km",
+      "score": 23.78
+    },
+    "Instruction": {
+      "model_id": "minicpm5-2b-q4km",
+      "score": 89.58
+    },
+    "MiniSWE": {
+      "model_id": "minicpm5-2b-q4km",
+      "score": 97.14
+    },
+    "Prompt speed": {
+      "model_id": "minicpm5-1b-q4km",
+      "score": 155.79
+    },
+    "Reasoning / knowledge": {
+      "model_id": "qwen35-2b-q4km",
+      "score": 80.0
+    }
+  },
+  "leaderboard": [
+    {
+      "capability_score": 85.49,
+      "developer_score": 87.02,
+      "efficiency_score": 39.51,
+      "model": "Qwen3.5-2B",
+      "model_id": "qwen35-2b-q4km",
+      "overall_laptop_score": 78.59,
+      "peak_rss_gib": 1.87,
+      "phase2": 80.0,
+      "phase3": 75.0,
+      "phase4": 86.29,
+      "phase5": 83.33,
+      "phase6": 100.0,
+      "phase7": 77.78,
+      "pp_tokens_per_s": 49.81,
+      "quality_per_gib": 65.74,
+      "quant": "Q4_K_M",
+      "rank": 1,
+      "size_gib": 1.3,
+      "source_group": "baseline",
+      "speed_score": 39.09,
+      "tg_tokens_per_s": 10.43
+    },
+    {
+      "capability_score": 71.96,
+      "developer_score": 72.96,
+      "efficiency_score": 34.49,
+      "model": "MiniCPM5-2B",
+      "model_id": "minicpm5-2b-q4km",
+      "overall_laptop_score": 66.34,
+      "peak_rss_gib": 2.46,
+      "phase2": 77.5,
+      "phase3": 91.67,
+      "phase4": 97.14,
+      "phase5": 89.58,
+      "phase6": 22.0,
+      "phase7": 66.67,
+      "pp_tokens_per_s": 40.76,
+      "quality_per_gib": 49.49,
+      "quant": "Q4_K_M",
+      "rank": 2,
+      "size_gib": 1.45,
+      "source_group": "minicpm",
+      "speed_score": 36.23,
+      "tg_tokens_per_s": 10.21
+    },
+    {
+      "capability_score": 64.36,
+      "developer_score": 63.9,
+      "efficiency_score": 30.81,
+      "model": "SmolLM3-3B",
+      "model_id": "smollm3-3b-iq4xs",
+      "overall_laptop_score": 59.33,
+      "peak_rss_gib": 1.78,
+      "phase2": 77.5,
+      "phase3": 66.67,
+      "phase4": 94.0,
+      "phase5": 44.06,
+      "phase6": 21.0,
+      "phase7": 100.0,
+      "pp_tokens_per_s": 15.53,
+      "quality_per_gib": 40.09,
+      "quant": "IQ4_XS",
+      "rank": 3,
+      "size_gib": 1.61,
+      "source_group": "baseline",
+      "speed_score": 26.08,
+      "tg_tokens_per_s": 8.76
+    },
+    {
+      "capability_score": 51.59,
+      "developer_score": 39.4,
+      "efficiency_score": 86.65,
+      "model": "Qwen3.5-0.8B",
+      "model_id": "qwen35-0.8b-q4km",
+      "overall_laptop_score": 56.85,
+      "peak_rss_gib": 0.76,
+      "phase2": 65.84,
+      "phase3": 50.0,
+      "phase4": 32.0,
+      "phase5": 72.08,
+      "phase6": 38.67,
+      "phase7": 88.89,
+      "pp_tokens_per_s": 116.19,
+      "quality_per_gib": 95.58,
+      "quant": "Q4_K_M",
+      "rank": 4,
+      "size_gib": 0.54,
+      "source_group": "baseline",
+      "speed_score": 78.01,
+      "tg_tokens_per_s": 19.09
+    },
+    {
+      "capability_score": 52.33,
+      "developer_score": 44.63,
+      "efficiency_score": 74.53,
+      "model": "K2-Horizon-0.9B",
+      "model_id": "k2-0.9b-q4km",
+      "overall_laptop_score": 55.66,
+      "peak_rss_gib": 1.11,
+      "phase2": 68.34,
+      "phase3": 83.33,
+      "phase4": 8.57,
+      "phase5": 77.08,
+      "phase6": 54.0,
+      "phase7": 44.44,
+      "pp_tokens_per_s": 84.46,
+      "quality_per_gib": 84.34,
+      "quant": "Q4_K_M",
+      "rank": 5,
+      "size_gib": 0.62,
+      "source_group": "baseline",
+      "speed_score": 75.89,
+      "tg_tokens_per_s": 21.48
+    },
+    {
+      "capability_score": 39.18,
+      "developer_score": 26.83,
+      "efficiency_score": 90.66,
+      "model": "MiniCPM5-1B",
+      "model_id": "minicpm5-1b-q4km",
+      "overall_laptop_score": 46.9,
+      "peak_rss_gib": 1.04,
+      "phase2": 64.16,
+      "phase3": 66.67,
+      "phase4": 8.57,
+      "phase5": 89.58,
+      "phase6": 11.33,
+      "phase7": 33.33,
+      "pp_tokens_per_s": 155.79,
+      "quality_per_gib": 61.14,
+      "quant": "Q4_K_M",
+      "rank": 6,
+      "size_gib": 0.64,
+      "source_group": "minicpm",
+      "speed_score": 100.0,
+      "tg_tokens_per_s": 23.78
+    }
+  ],
+  "methodology": {
+    "capability_weights": {
+      "phase2": 12.0,
+      "phase3": 15.0,
+      "phase4": 20.0,
+      "phase5": 10.0,
+      "phase6": 20.0,
+      "phase7": 8.0
+    },
+    "developer_score": "30% coding + 40% MiniSWE + 30% agents",
+    "efficiency_weights": {
+      "pp": 4.0,
+      "ram": 4.0,
+      "size": 2.0,
+      "tg": 5.0
+    },
+    "normalization_pool": "six fresh v1.1 models",
+    "overall": "85% capability + 15% laptop efficiency",
+    "speed_score": "40% normalized PP + 60% normalized TG"
+  },
+  "sources": {
+    "baseline": {
+      "1": "results/v11/phase1-baselines.json",
+      "2": "results/v11/phase2-baselines.json",
+      "3": "results/v11/phase3-baselines.json",
+      "4": "results/v11/phase4-baselines.json",
+      "5": "results/v11/phase5-baselines.json",
+      "6": "results/v11/phase6-baselines.json",
+      "7": "results/v11/phase7-baselines.json"
+    },
+    "minicpm": {
+      "1": "results/v11/phase1-minicpm.json",
+      "2": "results/v11/phase2-minicpm.json",
+      "3": "results/v11/phase3-minicpm.json",
+      "4": "results/v11/phase4-minicpm.json",
+      "5": "results/v11/phase5-minicpm.json",
+      "6": "results/v11/phase6-minicpm.json",
+      "7": "results/v11/phase7-minicpm.json"
+    }
+  },
+  "version": "v1.1"
+}

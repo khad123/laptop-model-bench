@@ -1,0 +1,7 @@
+rank,model_id,model,quant,overall_laptop_score,capability_score,efficiency_score,developer_score,speed_score,quality_per_gib,phase2,phase3,phase4,phase5,phase6,phase7,pp_tokens_per_s,tg_tokens_per_s,peak_rss_gib,size_gib,source_group
+1,qwen35-2b-q4km,Qwen3.5-2B,Q4_K_M,78.59,85.49,39.51,87.02,39.09,65.74,80.0,75.0,86.29,83.33,100.0,77.78,49.81,10.43,1.87,1.3,baseline
+2,minicpm5-2b-q4km,MiniCPM5-2B,Q4_K_M,66.34,71.96,34.49,72.96,36.23,49.49,77.5,91.67,97.14,89.58,22.0,66.67,40.76,10.21,2.46,1.45,minicpm
+3,smollm3-3b-iq4xs,SmolLM3-3B,IQ4_XS,59.33,64.36,30.81,63.9,26.08,40.09,77.5,66.67,94.0,44.06,21.0,100.0,15.53,8.76,1.78,1.61,baseline
+4,qwen35-0.8b-q4km,Qwen3.5-0.8B,Q4_K_M,56.85,51.59,86.65,39.4,78.01,95.58,65.84,50.0,32.0,72.08,38.67,88.89,116.19,19.09,0.76,0.54,baseline
+5,k2-0.9b-q4km,K2-Horizon-0.9B,Q4_K_M,55.66,52.33,74.53,44.63,75.89,84.34,68.34,83.33,8.57,77.08,54.0,44.44,84.46,21.48,1.11,0.62,baseline
+6,minicpm5-1b-q4km,MiniCPM5-1B,Q4_K_M,46.9,39.18,90.66,26.83,100.0,61.14,64.16,66.67,8.57,89.58,11.33,33.33,155.79,23.78,1.04,0.64,minicpm

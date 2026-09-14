@@ -1,0 +1,1937 @@
+{
+  "models": [
+    {
+      "categories": {
+        "disambiguation": 10.0,
+        "missing_argument": 20.0,
+        "multi_step": 6.67,
+        "single_tool": 10.0
+      },
+      "metrics": {
+        "arguments": 0.0,
+        "outcome": 0.0,
+        "sequence": 6.67,
+        "structured": 20.0,
+        "tool_choice": 0.0
+      },
+      "model": "MiniCPM5-1B",
+      "model_id": "minicpm5-1b-q4km",
+      "phase6_score": 11.33,
+      "quant": "Q4_K_M",
+      "solved": 0,
+      "tasks": 10
+    },
+    {
+      "categories": {
+        "disambiguation": 0.0,
+        "missing_argument": 60.0,
+        "multi_step": 0.0,
+        "single_tool": 33.33
+      },
+      "metrics": {
+        "arguments": 10.0,
+        "outcome": 20.0,
+        "sequence": 20.0,
+        "structured": 15.0,
+        "tool_choice": 10.0
+      },
+      "model": "MiniCPM5-2B",
+      "model_id": "minicpm5-2b-q4km",
+      "phase6_score": 22.0,
+      "quant": "Q4_K_M",
+      "solved": 2,
+      "tasks": 10
+    }
+  ],
+  "results": [
+    {
+      "action_count": 1,
+      "artifact_dir": "results/raw/phase6/20260914T000235Z/minicpm5-1b-q4km/agent-01",
+      "category": "single_tool",
+      "checks": [
+        {
+          "metric": "structured_valid_json",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "structured_schema",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "sequence_action",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "tool_choice",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "arguments",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "structured_valid_json",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "structured_schema",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "sequence_action",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "outcome",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "sequence_length",
+          "passed": false,
+          "step": null
+        }
+      ],
+      "completion_tokens": 13,
+      "error": "",
+      "generation_seconds": 2.569075,
+      "metrics": {
+        "arguments": {
+          "passed": 0,
+          "total": 1
+        },
+        "outcome": {
+          "passed": 0,
+          "total": 1
+        },
+        "sequence": {
+          "passed": 0,
+          "total": 3
+        },
+        "structured": {
+          "passed": 1,
+          "total": 4
+        },
+        "tool_choice": {
+          "passed": 0,
+          "total": 1
+        }
+      },
+      "model": "MiniCPM5-1B",
+      "model_id": "minicpm5-1b-q4km",
+      "passed_checks": 1,
+      "prompt_tokens": 227,
+      "quant": "Q4_K_M",
+      "run_id": "20260914T000235Z",
+      "solved": false,
+      "status": "ok",
+      "task_id": "agent-01",
+      "task_score": 10.0,
+      "total_checks": 10
+    },
+    {
+      "action_count": 1,
+      "artifact_dir": "results/raw/phase6/20260914T000235Z/minicpm5-1b-q4km/agent-02",
+      "category": "single_tool",
+      "checks": [
+        {
+          "metric": "structured_valid_json",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "structured_schema",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "sequence_action",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "tool_choice",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "arguments",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "structured_valid_json",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "structured_schema",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "sequence_action",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "outcome",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "sequence_length",
+          "passed": false,
+          "step": null
+        }
+      ],
+      "completion_tokens": 17,
+      "error": "",
+      "generation_seconds": 3.570457,
+      "metrics": {
+        "arguments": {
+          "passed": 0,
+          "total": 1
+        },
+        "outcome": {
+          "passed": 0,
+          "total": 1
+        },
+        "sequence": {
+          "passed": 0,
+          "total": 3
+        },
+        "structured": {
+          "passed": 2,
+          "total": 4
+        },
+        "tool_choice": {
+          "passed": 0,
+          "total": 1
+        }
+      },
+      "model": "MiniCPM5-1B",
+      "model_id": "minicpm5-1b-q4km",
+      "passed_checks": 2,
+      "prompt_tokens": 236,
+      "quant": "Q4_K_M",
+      "run_id": "20260914T000235Z",
+      "solved": false,
+      "status": "ok",
+      "task_id": "agent-02",
+      "task_score": 20.0,
+      "total_checks": 10
+    },
+    {
+      "action_count": 1,
+      "artifact_dir": "results/raw/phase6/20260914T000235Z/minicpm5-1b-q4km/agent-03",
+      "category": "single_tool",
+      "checks": [
+        {
+          "metric": "structured_valid_json",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "structured_schema",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "sequence_action",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "tool_choice",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "arguments",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "structured_valid_json",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "structured_schema",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "sequence_action",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "outcome",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "sequence_length",
+          "passed": false,
+          "step": null
+        }
+      ],
+      "completion_tokens": 17,
+      "error": "",
+      "generation_seconds": 3.109962,
+      "metrics": {
+        "arguments": {
+          "passed": 0,
+          "total": 1
+        },
+        "outcome": {
+          "passed": 0,
+          "total": 1
+        },
+        "sequence": {
+          "passed": 0,
+          "total": 3
+        },
+        "structured": {
+          "passed": 0,
+          "total": 4
+        },
+        "tool_choice": {
+          "passed": 0,
+          "total": 1
+        }
+      },
+      "model": "MiniCPM5-1B",
+      "model_id": "minicpm5-1b-q4km",
+      "passed_checks": 0,
+      "prompt_tokens": 224,
+      "quant": "Q4_K_M",
+      "run_id": "20260914T000235Z",
+      "solved": false,
+      "status": "ok",
+      "task_id": "agent-03",
+      "task_score": 0.0,
+      "total_checks": 10
+    },
+    {
+      "action_count": 1,
+      "artifact_dir": "results/raw/phase6/20260914T000235Z/minicpm5-1b-q4km/agent-04",
+      "category": "disambiguation",
+      "checks": [
+        {
+          "metric": "structured_valid_json",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "structured_schema",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "sequence_action",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "tool_choice",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "arguments",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "structured_valid_json",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "structured_schema",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "sequence_action",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "outcome",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "sequence_length",
+          "passed": false,
+          "step": null
+        }
+      ],
+      "completion_tokens": 10,
+      "error": "",
+      "generation_seconds": 3.759562,
+      "metrics": {
+        "arguments": {
+          "passed": 0,
+          "total": 1
+        },
+        "outcome": {
+          "passed": 0,
+          "total": 1
+        },
+        "sequence": {
+          "passed": 0,
+          "total": 3
+        },
+        "structured": {
+          "passed": 2,
+          "total": 4
+        },
+        "tool_choice": {
+          "passed": 0,
+          "total": 1
+        }
+      },
+      "model": "MiniCPM5-1B",
+      "model_id": "minicpm5-1b-q4km",
+      "passed_checks": 2,
+      "prompt_tokens": 316,
+      "quant": "Q4_K_M",
+      "run_id": "20260914T000235Z",
+      "solved": false,
+      "status": "ok",
+      "task_id": "agent-04",
+      "task_score": 20.0,
+      "total_checks": 10
+    },
+    {
+      "action_count": 1,
+      "artifact_dir": "results/raw/phase6/20260914T000235Z/minicpm5-1b-q4km/agent-05",
+      "category": "disambiguation",
+      "checks": [
+        {
+          "metric": "structured_valid_json",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "structured_schema",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "sequence_action",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "tool_choice",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "arguments",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "structured_valid_json",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "structured_schema",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "sequence_action",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "outcome",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "sequence_length",
+          "passed": false,
+          "step": null
+        }
+      ],
+      "completion_tokens": 108,
+      "error": "",
+      "generation_seconds": 10.425835,
+      "metrics": {
+        "arguments": {
+          "passed": 0,
+          "total": 1
+        },
+        "outcome": {
+          "passed": 0,
+          "total": 1
+        },
+        "sequence": {
+          "passed": 0,
+          "total": 3
+        },
+        "structured": {
+          "passed": 0,
+          "total": 4
+        },
+        "tool_choice": {
+          "passed": 0,
+          "total": 1
+        }
+      },
+      "model": "MiniCPM5-1B",
+      "model_id": "minicpm5-1b-q4km",
+      "passed_checks": 0,
+      "prompt_tokens": 321,
+      "quant": "Q4_K_M",
+      "run_id": "20260914T000235Z",
+      "solved": false,
+      "status": "ok",
+      "task_id": "agent-05",
+      "task_score": 0.0,
+      "total_checks": 10
+    },
+    {
+      "action_count": 1,
+      "artifact_dir": "results/raw/phase6/20260914T000235Z/minicpm5-1b-q4km/agent-06",
+      "category": "disambiguation",
+      "checks": [
+        {
+          "metric": "structured_valid_json",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "structured_schema",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "sequence_action",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "tool_choice",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "arguments",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "structured_valid_json",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "structured_schema",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "sequence_action",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "outcome",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "sequence_length",
+          "passed": false,
+          "step": null
+        }
+      ],
+      "completion_tokens": 25,
+      "error": "",
+      "generation_seconds": 5.424999,
+      "metrics": {
+        "arguments": {
+          "passed": 0,
+          "total": 1
+        },
+        "outcome": {
+          "passed": 0,
+          "total": 1
+        },
+        "sequence": {
+          "passed": 0,
+          "total": 3
+        },
+        "structured": {
+          "passed": 1,
+          "total": 4
+        },
+        "tool_choice": {
+          "passed": 0,
+          "total": 1
+        }
+      },
+      "model": "MiniCPM5-1B",
+      "model_id": "minicpm5-1b-q4km",
+      "passed_checks": 1,
+      "prompt_tokens": 373,
+      "quant": "Q4_K_M",
+      "run_id": "20260914T000235Z",
+      "solved": false,
+      "status": "ok",
+      "task_id": "agent-06",
+      "task_score": 10.0,
+      "total_checks": 10
+    },
+    {
+      "action_count": 1,
+      "artifact_dir": "results/raw/phase6/20260914T000235Z/minicpm5-1b-q4km/agent-07",
+      "category": "missing_argument",
+      "checks": [
+        {
+          "metric": "structured_valid_json",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "structured_schema",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "sequence_action",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "outcome",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "sequence_length",
+          "passed": true,
+          "step": null
+        }
+      ],
+      "completion_tokens": 57,
+      "error": "",
+      "generation_seconds": 4.676653,
+      "metrics": {
+        "arguments": {
+          "passed": 0,
+          "total": 0
+        },
+        "outcome": {
+          "passed": 0,
+          "total": 1
+        },
+        "sequence": {
+          "passed": 1,
+          "total": 2
+        },
+        "structured": {
+          "passed": 0,
+          "total": 2
+        },
+        "tool_choice": {
+          "passed": 0,
+          "total": 0
+        }
+      },
+      "model": "MiniCPM5-1B",
+      "model_id": "minicpm5-1b-q4km",
+      "passed_checks": 1,
+      "prompt_tokens": 224,
+      "quant": "Q4_K_M",
+      "run_id": "20260914T000235Z",
+      "solved": false,
+      "status": "ok",
+      "task_id": "agent-07",
+      "task_score": 20.0,
+      "total_checks": 5
+    },
+    {
+      "action_count": 1,
+      "artifact_dir": "results/raw/phase6/20260914T000235Z/minicpm5-1b-q4km/agent-08",
+      "category": "missing_argument",
+      "checks": [
+        {
+          "metric": "structured_valid_json",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "structured_schema",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "sequence_action",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "outcome",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "sequence_length",
+          "passed": true,
+          "step": null
+        }
+      ],
+      "completion_tokens": 29,
+      "error": "",
+      "generation_seconds": 3.034862,
+      "metrics": {
+        "arguments": {
+          "passed": 0,
+          "total": 0
+        },
+        "outcome": {
+          "passed": 0,
+          "total": 1
+        },
+        "sequence": {
+          "passed": 1,
+          "total": 2
+        },
+        "structured": {
+          "passed": 0,
+          "total": 2
+        },
+        "tool_choice": {
+          "passed": 0,
+          "total": 0
+        }
+      },
+      "model": "MiniCPM5-1B",
+      "model_id": "minicpm5-1b-q4km",
+      "passed_checks": 1,
+      "prompt_tokens": 226,
+      "quant": "Q4_K_M",
+      "run_id": "20260914T000235Z",
+      "solved": false,
+      "status": "ok",
+      "task_id": "agent-08",
+      "task_score": 20.0,
+      "total_checks": 5
+    },
+    {
+      "action_count": 1,
+      "artifact_dir": "results/raw/phase6/20260914T000235Z/minicpm5-1b-q4km/agent-09",
+      "category": "multi_step",
+      "checks": [
+        {
+          "metric": "structured_valid_json",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "structured_schema",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "sequence_action",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "tool_choice",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "arguments",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "structured_valid_json",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "structured_schema",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "sequence_action",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "tool_choice",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "arguments",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "structured_valid_json",
+          "passed": false,
+          "step": 3
+        },
+        {
+          "metric": "structured_schema",
+          "passed": false,
+          "step": 3
+        },
+        {
+          "metric": "sequence_action",
+          "passed": false,
+          "step": 3
+        },
+        {
+          "metric": "outcome",
+          "passed": false,
+          "step": 3
+        },
+        {
+          "metric": "sequence_length",
+          "passed": false,
+          "step": null
+        }
+      ],
+      "completion_tokens": 19,
+      "error": "",
+      "generation_seconds": 3.625065,
+      "metrics": {
+        "arguments": {
+          "passed": 0,
+          "total": 2
+        },
+        "outcome": {
+          "passed": 0,
+          "total": 1
+        },
+        "sequence": {
+          "passed": 0,
+          "total": 4
+        },
+        "structured": {
+          "passed": 0,
+          "total": 6
+        },
+        "tool_choice": {
+          "passed": 0,
+          "total": 2
+        }
+      },
+      "model": "MiniCPM5-1B",
+      "model_id": "minicpm5-1b-q4km",
+      "passed_checks": 0,
+      "prompt_tokens": 342,
+      "quant": "Q4_K_M",
+      "run_id": "20260914T000235Z",
+      "solved": false,
+      "status": "ok",
+      "task_id": "agent-09",
+      "task_score": 0.0,
+      "total_checks": 15
+    },
+    {
+      "action_count": 1,
+      "artifact_dir": "results/raw/phase6/20260914T000235Z/minicpm5-1b-q4km/agent-10",
+      "category": "multi_step",
+      "checks": [
+        {
+          "metric": "structured_valid_json",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "structured_schema",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "sequence_action",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "tool_choice",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "arguments",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "structured_valid_json",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "structured_schema",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "sequence_action",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "tool_choice",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "arguments",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "structured_valid_json",
+          "passed": false,
+          "step": 3
+        },
+        {
+          "metric": "structured_schema",
+          "passed": false,
+          "step": 3
+        },
+        {
+          "metric": "sequence_action",
+          "passed": false,
+          "step": 3
+        },
+        {
+          "metric": "outcome",
+          "passed": false,
+          "step": 3
+        },
+        {
+          "metric": "sequence_length",
+          "passed": false,
+          "step": null
+        }
+      ],
+      "completion_tokens": 14,
+      "error": "",
+      "generation_seconds": 3.761978,
+      "metrics": {
+        "arguments": {
+          "passed": 0,
+          "total": 2
+        },
+        "outcome": {
+          "passed": 0,
+          "total": 1
+        },
+        "sequence": {
+          "passed": 0,
+          "total": 4
+        },
+        "structured": {
+          "passed": 2,
+          "total": 6
+        },
+        "tool_choice": {
+          "passed": 0,
+          "total": 2
+        }
+      },
+      "model": "MiniCPM5-1B",
+      "model_id": "minicpm5-1b-q4km",
+      "passed_checks": 2,
+      "prompt_tokens": 347,
+      "quant": "Q4_K_M",
+      "run_id": "20260914T000235Z",
+      "solved": false,
+      "status": "ok",
+      "task_id": "agent-10",
+      "task_score": 13.33,
+      "total_checks": 15
+    },
+    {
+      "action_count": 1,
+      "artifact_dir": "results/raw/phase6/20260914T000235Z/minicpm5-2b-q4km/agent-01",
+      "category": "single_tool",
+      "checks": [
+        {
+          "metric": "structured_valid_json",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "structured_schema",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "sequence_action",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "tool_choice",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "arguments",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "structured_valid_json",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "structured_schema",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "sequence_action",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "outcome",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "sequence_length",
+          "passed": false,
+          "step": null
+        }
+      ],
+      "completion_tokens": 85,
+      "error": "",
+      "generation_seconds": 13.842612,
+      "metrics": {
+        "arguments": {
+          "passed": 0,
+          "total": 1
+        },
+        "outcome": {
+          "passed": 0,
+          "total": 1
+        },
+        "sequence": {
+          "passed": 0,
+          "total": 3
+        },
+        "structured": {
+          "passed": 0,
+          "total": 4
+        },
+        "tool_choice": {
+          "passed": 0,
+          "total": 1
+        }
+      },
+      "model": "MiniCPM5-2B",
+      "model_id": "minicpm5-2b-q4km",
+      "passed_checks": 0,
+      "prompt_tokens": 227,
+      "quant": "Q4_K_M",
+      "run_id": "20260914T000235Z",
+      "solved": false,
+      "status": "ok",
+      "task_id": "agent-01",
+      "task_score": 0.0,
+      "total_checks": 10
+    },
+    {
+      "action_count": 2,
+      "artifact_dir": "results/raw/phase6/20260914T000235Z/minicpm5-2b-q4km/agent-02",
+      "category": "single_tool",
+      "checks": [
+        {
+          "metric": "structured_valid_json",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "structured_schema",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "sequence_action",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "tool_choice",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "arguments",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "structured_valid_json",
+          "passed": true,
+          "step": 2
+        },
+        {
+          "metric": "structured_schema",
+          "passed": true,
+          "step": 2
+        },
+        {
+          "metric": "sequence_action",
+          "passed": true,
+          "step": 2
+        },
+        {
+          "metric": "outcome",
+          "passed": true,
+          "step": 2
+        },
+        {
+          "metric": "sequence_length",
+          "passed": true,
+          "step": null
+        }
+      ],
+      "completion_tokens": 32,
+      "error": "",
+      "generation_seconds": 15.211078,
+      "metrics": {
+        "arguments": {
+          "passed": 1,
+          "total": 1
+        },
+        "outcome": {
+          "passed": 1,
+          "total": 1
+        },
+        "sequence": {
+          "passed": 3,
+          "total": 3
+        },
+        "structured": {
+          "passed": 4,
+          "total": 4
+        },
+        "tool_choice": {
+          "passed": 1,
+          "total": 1
+        }
+      },
+      "model": "MiniCPM5-2B",
+      "model_id": "minicpm5-2b-q4km",
+      "passed_checks": 10,
+      "prompt_tokens": 528,
+      "quant": "Q4_K_M",
+      "run_id": "20260914T000235Z",
+      "solved": true,
+      "status": "ok",
+      "task_id": "agent-02",
+      "task_score": 100.0,
+      "total_checks": 10
+    },
+    {
+      "action_count": 1,
+      "artifact_dir": "results/raw/phase6/20260914T000235Z/minicpm5-2b-q4km/agent-03",
+      "category": "single_tool",
+      "checks": [
+        {
+          "metric": "structured_valid_json",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "structured_schema",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "sequence_action",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "tool_choice",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "arguments",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "structured_valid_json",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "structured_schema",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "sequence_action",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "outcome",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "sequence_length",
+          "passed": false,
+          "step": null
+        }
+      ],
+      "completion_tokens": 38,
+      "error": "",
+      "generation_seconds": 9.258558,
+      "metrics": {
+        "arguments": {
+          "passed": 0,
+          "total": 1
+        },
+        "outcome": {
+          "passed": 0,
+          "total": 1
+        },
+        "sequence": {
+          "passed": 0,
+          "total": 3
+        },
+        "structured": {
+          "passed": 0,
+          "total": 4
+        },
+        "tool_choice": {
+          "passed": 0,
+          "total": 1
+        }
+      },
+      "model": "MiniCPM5-2B",
+      "model_id": "minicpm5-2b-q4km",
+      "passed_checks": 0,
+      "prompt_tokens": 224,
+      "quant": "Q4_K_M",
+      "run_id": "20260914T000235Z",
+      "solved": false,
+      "status": "ok",
+      "task_id": "agent-03",
+      "task_score": 0.0,
+      "total_checks": 10
+    },
+    {
+      "action_count": 1,
+      "artifact_dir": "results/raw/phase6/20260914T000235Z/minicpm5-2b-q4km/agent-04",
+      "category": "disambiguation",
+      "checks": [
+        {
+          "metric": "structured_valid_json",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "structured_schema",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "sequence_action",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "tool_choice",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "arguments",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "structured_valid_json",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "structured_schema",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "sequence_action",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "outcome",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "sequence_length",
+          "passed": false,
+          "step": null
+        }
+      ],
+      "completion_tokens": 42,
+      "error": "",
+      "generation_seconds": 12.398172,
+      "metrics": {
+        "arguments": {
+          "passed": 0,
+          "total": 1
+        },
+        "outcome": {
+          "passed": 0,
+          "total": 1
+        },
+        "sequence": {
+          "passed": 0,
+          "total": 3
+        },
+        "structured": {
+          "passed": 0,
+          "total": 4
+        },
+        "tool_choice": {
+          "passed": 0,
+          "total": 1
+        }
+      },
+      "model": "MiniCPM5-2B",
+      "model_id": "minicpm5-2b-q4km",
+      "passed_checks": 0,
+      "prompt_tokens": 316,
+      "quant": "Q4_K_M",
+      "run_id": "20260914T000235Z",
+      "solved": false,
+      "status": "ok",
+      "task_id": "agent-04",
+      "task_score": 0.0,
+      "total_checks": 10
+    },
+    {
+      "action_count": 1,
+      "artifact_dir": "results/raw/phase6/20260914T000235Z/minicpm5-2b-q4km/agent-05",
+      "category": "disambiguation",
+      "checks": [
+        {
+          "metric": "structured_valid_json",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "structured_schema",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "sequence_action",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "tool_choice",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "arguments",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "structured_valid_json",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "structured_schema",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "sequence_action",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "outcome",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "sequence_length",
+          "passed": false,
+          "step": null
+        }
+      ],
+      "completion_tokens": 36,
+      "error": "",
+      "generation_seconds": 12.030579,
+      "metrics": {
+        "arguments": {
+          "passed": 0,
+          "total": 1
+        },
+        "outcome": {
+          "passed": 0,
+          "total": 1
+        },
+        "sequence": {
+          "passed": 0,
+          "total": 3
+        },
+        "structured": {
+          "passed": 0,
+          "total": 4
+        },
+        "tool_choice": {
+          "passed": 0,
+          "total": 1
+        }
+      },
+      "model": "MiniCPM5-2B",
+      "model_id": "minicpm5-2b-q4km",
+      "passed_checks": 0,
+      "prompt_tokens": 321,
+      "quant": "Q4_K_M",
+      "run_id": "20260914T000235Z",
+      "solved": false,
+      "status": "ok",
+      "task_id": "agent-05",
+      "task_score": 0.0,
+      "total_checks": 10
+    },
+    {
+      "action_count": 1,
+      "artifact_dir": "results/raw/phase6/20260914T000235Z/minicpm5-2b-q4km/agent-06",
+      "category": "disambiguation",
+      "checks": [
+        {
+          "metric": "structured_valid_json",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "structured_schema",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "sequence_action",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "tool_choice",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "arguments",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "structured_valid_json",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "structured_schema",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "sequence_action",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "outcome",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "sequence_length",
+          "passed": false,
+          "step": null
+        }
+      ],
+      "completion_tokens": 62,
+      "error": "",
+      "generation_seconds": 15.756776,
+      "metrics": {
+        "arguments": {
+          "passed": 0,
+          "total": 1
+        },
+        "outcome": {
+          "passed": 0,
+          "total": 1
+        },
+        "sequence": {
+          "passed": 0,
+          "total": 3
+        },
+        "structured": {
+          "passed": 0,
+          "total": 4
+        },
+        "tool_choice": {
+          "passed": 0,
+          "total": 1
+        }
+      },
+      "model": "MiniCPM5-2B",
+      "model_id": "minicpm5-2b-q4km",
+      "passed_checks": 0,
+      "prompt_tokens": 373,
+      "quant": "Q4_K_M",
+      "run_id": "20260914T000235Z",
+      "solved": false,
+      "status": "ok",
+      "task_id": "agent-06",
+      "task_score": 0.0,
+      "total_checks": 10
+    },
+    {
+      "action_count": 1,
+      "artifact_dir": "results/raw/phase6/20260914T000235Z/minicpm5-2b-q4km/agent-07",
+      "category": "missing_argument",
+      "checks": [
+        {
+          "metric": "structured_valid_json",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "structured_schema",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "sequence_action",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "outcome",
+          "passed": true,
+          "step": 1
+        },
+        {
+          "metric": "sequence_length",
+          "passed": true,
+          "step": null
+        }
+      ],
+      "completion_tokens": 10,
+      "error": "",
+      "generation_seconds": 6.108816,
+      "metrics": {
+        "arguments": {
+          "passed": 0,
+          "total": 0
+        },
+        "outcome": {
+          "passed": 1,
+          "total": 1
+        },
+        "sequence": {
+          "passed": 2,
+          "total": 2
+        },
+        "structured": {
+          "passed": 2,
+          "total": 2
+        },
+        "tool_choice": {
+          "passed": 0,
+          "total": 0
+        }
+      },
+      "model": "MiniCPM5-2B",
+      "model_id": "minicpm5-2b-q4km",
+      "passed_checks": 5,
+      "prompt_tokens": 224,
+      "quant": "Q4_K_M",
+      "run_id": "20260914T000235Z",
+      "solved": true,
+      "status": "ok",
+      "task_id": "agent-07",
+      "task_score": 100.0,
+      "total_checks": 5
+    },
+    {
+      "action_count": 1,
+      "artifact_dir": "results/raw/phase6/20260914T000235Z/minicpm5-2b-q4km/agent-08",
+      "category": "missing_argument",
+      "checks": [
+        {
+          "metric": "structured_valid_json",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "structured_schema",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "sequence_action",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "outcome",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "sequence_length",
+          "passed": true,
+          "step": null
+        }
+      ],
+      "completion_tokens": 32,
+      "error": "",
+      "generation_seconds": 8.460566,
+      "metrics": {
+        "arguments": {
+          "passed": 0,
+          "total": 0
+        },
+        "outcome": {
+          "passed": 0,
+          "total": 1
+        },
+        "sequence": {
+          "passed": 1,
+          "total": 2
+        },
+        "structured": {
+          "passed": 0,
+          "total": 2
+        },
+        "tool_choice": {
+          "passed": 0,
+          "total": 0
+        }
+      },
+      "model": "MiniCPM5-2B",
+      "model_id": "minicpm5-2b-q4km",
+      "passed_checks": 1,
+      "prompt_tokens": 226,
+      "quant": "Q4_K_M",
+      "run_id": "20260914T000235Z",
+      "solved": false,
+      "status": "ok",
+      "task_id": "agent-08",
+      "task_score": 20.0,
+      "total_checks": 5
+    },
+    {
+      "action_count": 1,
+      "artifact_dir": "results/raw/phase6/20260914T000235Z/minicpm5-2b-q4km/agent-09",
+      "category": "multi_step",
+      "checks": [
+        {
+          "metric": "structured_valid_json",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "structured_schema",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "sequence_action",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "tool_choice",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "arguments",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "structured_valid_json",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "structured_schema",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "sequence_action",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "tool_choice",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "arguments",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "structured_valid_json",
+          "passed": false,
+          "step": 3
+        },
+        {
+          "metric": "structured_schema",
+          "passed": false,
+          "step": 3
+        },
+        {
+          "metric": "sequence_action",
+          "passed": false,
+          "step": 3
+        },
+        {
+          "metric": "outcome",
+          "passed": false,
+          "step": 3
+        },
+        {
+          "metric": "sequence_length",
+          "passed": false,
+          "step": null
+        }
+      ],
+      "completion_tokens": 27,
+      "error": "",
+      "generation_seconds": 10.675067,
+      "metrics": {
+        "arguments": {
+          "passed": 0,
+          "total": 2
+        },
+        "outcome": {
+          "passed": 0,
+          "total": 1
+        },
+        "sequence": {
+          "passed": 0,
+          "total": 4
+        },
+        "structured": {
+          "passed": 0,
+          "total": 6
+        },
+        "tool_choice": {
+          "passed": 0,
+          "total": 2
+        }
+      },
+      "model": "MiniCPM5-2B",
+      "model_id": "minicpm5-2b-q4km",
+      "passed_checks": 0,
+      "prompt_tokens": 342,
+      "quant": "Q4_K_M",
+      "run_id": "20260914T000235Z",
+      "solved": false,
+      "status": "ok",
+      "task_id": "agent-09",
+      "task_score": 0.0,
+      "total_checks": 15
+    },
+    {
+      "action_count": 1,
+      "artifact_dir": "results/raw/phase6/20260914T000235Z/minicpm5-2b-q4km/agent-10",
+      "category": "multi_step",
+      "checks": [
+        {
+          "metric": "structured_valid_json",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "structured_schema",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "sequence_action",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "tool_choice",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "arguments",
+          "passed": false,
+          "step": 1
+        },
+        {
+          "metric": "structured_valid_json",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "structured_schema",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "sequence_action",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "tool_choice",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "arguments",
+          "passed": false,
+          "step": 2
+        },
+        {
+          "metric": "structured_valid_json",
+          "passed": false,
+          "step": 3
+        },
+        {
+          "metric": "structured_schema",
+          "passed": false,
+          "step": 3
+        },
+        {
+          "metric": "sequence_action",
+          "passed": false,
+          "step": 3
+        },
+        {
+          "metric": "outcome",
+          "passed": false,
+          "step": 3
+        },
+        {
+          "metric": "sequence_length",
+          "passed": false,
+          "step": null
+        }
+      ],
+      "completion_tokens": 55,
+      "error": "",
+      "generation_seconds": 17.152713,
+      "metrics": {
+        "arguments": {
+          "passed": 0,
+          "total": 2
+        },
+        "outcome": {
+          "passed": 0,
+          "total": 1
+        },
+        "sequence": {
+          "passed": 0,
+          "total": 4
+        },
+        "structured": {
+          "passed": 0,
+          "total": 6
+        },
+        "tool_choice": {
+          "passed": 0,
+          "total": 2
+        }
+      },
+      "model": "MiniCPM5-2B",
+      "model_id": "minicpm5-2b-q4km",
+      "passed_checks": 0,
+      "prompt_tokens": 347,
+      "quant": "Q4_K_M",
+      "run_id": "20260914T000235Z",
+      "solved": false,
+      "status": "ok",
+      "task_id": "agent-10",
+      "task_score": 0.0,
+      "total_checks": 15
+    }
+  ],
+  "run": {
+    "benchmark_version": "phase6-v0.1",
+    "finished_at_utc": "2026-09-14T00:05:23Z",
+    "hf_cache": "/home/conan/.cache/huggingface/hub",
+    "hostname": "conangx",
+    "kernel": "7.2.3-arch1-3",
+    "llama_cpp_dir": "/home/conan/Models/llama.cpp-k2",
+    "llama_cpp_git_commit": "35999d101cf2233fc54f09c3c8d599da7303ce02",
+    "llama_server": "/home/conan/Models/llama.cpp-k2/build/bin/llama-server",
+    "llama_server_version": "version: 0.3.0-dev (build 10671, commit 35999d101)\nbuilt with GNU 16.2.1 for Linux x86_64",
+    "platform": "Linux-7.2.3-arch1-3-x86_64-with-glibc2.44",
+    "registry_path": "/home/conan/laptop-model-bench/docs/MODEL_REGISTRY_V11_CHALLENGERS.md",
+    "run_id": "20260914T000235Z",
+    "settings": {
+      "cache_prompt": false,
+      "context": 4096,
+      "max_actions": 4,
+      "max_tokens_per_action": 192,
+      "n_gpu_layers": 0,
+      "reasoning_effort": "none",
+      "seed": 42,
+      "temperature": 0.0,
+      "threads": 4,
+      "tool_protocol": "runtime-neutral-json-action-loop"
+    },
+    "started_at_utc": "2026-09-14T00:02:35Z",
+    "task_file": "/home/conan/laptop-model-bench/tasks/phase6_v0.1.json"
+  },
+  "schema_version": "phase6.v0.1"
+}
