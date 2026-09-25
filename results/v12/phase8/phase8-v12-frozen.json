@@ -1,0 +1,67 @@
+{
+  "benchmark_version": "phase8-v1.2",
+  "models": 4,
+  "note": "The reused instruction runner names its raw output phase5-*. The benchmark itself is Phase 8.",
+  "official_run": "20260916T113847Z",
+  "phase": "v1.2-phase8",
+  "requests": 48,
+  "results": [
+    {
+      "categories": {
+        "code_review": 33.33,
+        "data_work": 86.67,
+        "troubleshooting": 66.67,
+        "workflow": 100.0
+      },
+      "model_id": "minicpm5-2b-q4km",
+      "rank": 1,
+      "score": 71.67,
+      "solved": 8
+    },
+    {
+      "categories": {
+        "code_review": 0.0,
+        "data_work": 100.0,
+        "troubleshooting": 50.0,
+        "workflow": 100.0
+      },
+      "model_id": "qwen35-2b-q4km",
+      "rank": 2,
+      "score": 62.5,
+      "solved": 7
+    },
+    {
+      "categories": {
+        "code_review": 0.0,
+        "data_work": 20.0,
+        "troubleshooting": 16.67,
+        "workflow": 77.78
+      },
+      "model_id": "qwen35-0.8b-q4km",
+      "rank": 3,
+      "score": 28.61,
+      "solved": 2
+    },
+    {
+      "categories": {
+        "code_review": 0.0,
+        "data_work": 33.33,
+        "troubleshooting": 16.67,
+        "workflow": 0.0
+      },
+      "model_id": "smollm3-3b-iq4xs",
+      "rank": 4,
+      "score": 12.5,
+      "solved": 1
+    }
+  ],
+  "source_file": "results/v12/phase8/phase5-20260916T113847Z.json",
+  "status": "frozen",
+  "task_design": {
+    "code_review": 3,
+    "data_work": 3,
+    "troubleshooting": 3,
+    "workflow": 3
+  },
+  "tasks": 12
+}

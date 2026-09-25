@@ -1,0 +1,77 @@
+{
+  "benchmark_version": "phase6-v1.2",
+  "difficulty": {
+    "minicpm5-2b-q4km": {
+      "hard": 40.0,
+      "legacy": 22.0
+    },
+    "qwen35-0.8b-q4km": {
+      "hard": 32.33,
+      "legacy": 38.67
+    },
+    "qwen35-2b-q4km": {
+      "hard": 85.33,
+      "legacy": 100.0
+    },
+    "smollm3-3b-iq4xs": {
+      "hard": 21.0,
+      "legacy": 20.0
+    }
+  },
+  "models": 4,
+  "official_run": "20260915T220947Z",
+  "phase": "v1.2-phase6",
+  "requests": 80,
+  "results": [
+    {
+      "arguments": 100.0,
+      "model_id": "qwen35-2b-q4km",
+      "outcome": 75.0,
+      "rank": 1,
+      "score": 92.67,
+      "solved": 15,
+      "structured": 100.0,
+      "tool_choice": 100.0
+    },
+    {
+      "arguments": 20.0,
+      "model_id": "qwen35-0.8b-q4km",
+      "outcome": 5.0,
+      "rank": 2,
+      "score": 35.5,
+      "solved": 1,
+      "structured": 52.5,
+      "tool_choice": 25.0
+    },
+    {
+      "arguments": 15.0,
+      "model_id": "minicpm5-2b-q4km",
+      "outcome": 25.0,
+      "rank": 3,
+      "score": 31.0,
+      "solved": 5,
+      "structured": 22.5,
+      "tool_choice": 15.0
+    },
+    {
+      "arguments": 0.0,
+      "model_id": "smollm3-3b-iq4xs",
+      "outcome": 15.0,
+      "rank": 4,
+      "score": 20.5,
+      "solved": 3,
+      "structured": 15.0,
+      "tool_choice": 0.0
+    }
+  ],
+  "status": "frozen",
+  "task_design": {
+    "disambiguation": 5,
+    "legacy": 10,
+    "missing_argument": 5,
+    "multi_step": 5,
+    "new_hard": 10,
+    "single_tool": 5
+  },
+  "tasks": 20
+}

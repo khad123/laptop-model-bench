@@ -1,0 +1,535 @@
+{
+  "benchmark_version": "phase2-v1.2-dev",
+  "status": "development",
+  "description": "Project-authored deterministic reasoning and knowledge suite for Laptop Model Bench v1.2. Contains 36 four-choice tasks across six equally sized domains, with balanced answer positions and difficulty.",
+  "system_prompt": "You are taking a deterministic benchmark. Answer without tools or external access.",
+  "task_design": {
+    "total_items": 36,
+    "domains": {
+      "quantitative": 6,
+      "multi_step": 6,
+      "logic": 6,
+      "science_technical": 6,
+      "software_engineering": 6,
+      "commonsense_ambiguity": 6
+    },
+    "difficulty_balance": {
+      "easy": 12,
+      "medium": 12,
+      "hard": 12
+    },
+    "answer_position_balance": {
+      "A": 9,
+      "B": 9,
+      "C": 9,
+      "D": 9
+    },
+    "notes": "All items are project-authored. Correct answer positions are balanced overall to reduce answer-position bias."
+  },
+  "tasks": [
+    {
+      "id": "quant-01",
+      "domain": "quantitative",
+      "category": "arithmetic",
+      "difficulty": "easy",
+      "question": "What is 18 \u00d7 7 - 26?",
+      "choices": {
+        "A": "100",
+        "B": "110",
+        "C": "92",
+        "D": "126"
+      },
+      "answer": "A"
+    },
+    {
+      "id": "quant-02",
+      "domain": "quantitative",
+      "category": "percentage",
+      "difficulty": "easy",
+      "question": "What is 35% of 240?",
+      "choices": {
+        "A": "72",
+        "B": "84",
+        "C": "96",
+        "D": "105"
+      },
+      "answer": "B"
+    },
+    {
+      "id": "quant-03",
+      "domain": "quantitative",
+      "category": "multi_step",
+      "difficulty": "medium",
+      "question": "A $150 item is discounted by 20%, then the discounted price is reduced by another 10%. What is the final price?",
+      "choices": {
+        "A": "$105",
+        "B": "$120",
+        "C": "$108",
+        "D": "$115"
+      },
+      "answer": "C"
+    },
+    {
+      "id": "quant-04",
+      "domain": "quantitative",
+      "category": "ratio",
+      "difficulty": "medium",
+      "question": "Three groups are in the ratio 2:3:5 and contain 80 people total. How many people are in the second group?",
+      "choices": {
+        "A": "16",
+        "B": "30",
+        "C": "40",
+        "D": "24"
+      },
+      "answer": "D"
+    },
+    {
+      "id": "quant-05",
+      "domain": "quantitative",
+      "category": "rate",
+      "difficulty": "hard",
+      "question": "Four identical machines make 360 parts in 6 hours. At the same constant rate, how many parts do six machines make in 5 hours?",
+      "choices": {
+        "A": "450",
+        "B": "540",
+        "C": "375",
+        "D": "600"
+      },
+      "answer": "A"
+    },
+    {
+      "id": "quant-06",
+      "domain": "quantitative",
+      "category": "probability",
+      "difficulty": "hard",
+      "question": "A bag contains 4 red and 3 blue marbles. Two marbles are drawn without replacement. What is the probability that both are red?",
+      "choices": {
+        "A": "4/7",
+        "B": "2/7",
+        "C": "3/7",
+        "D": "1/2"
+      },
+      "answer": "B"
+    },
+    {
+      "id": "multi-01",
+      "domain": "multi_step",
+      "category": "distance",
+      "difficulty": "easy",
+      "question": "A train travels at 60 km/h for 1.5 hours, then at 90 km/h for 2 hours. What total distance does it travel?",
+      "choices": {
+        "A": "225 km",
+        "B": "240 km",
+        "C": "270 km",
+        "D": "300 km"
+      },
+      "answer": "C"
+    },
+    {
+      "id": "multi-02",
+      "domain": "multi_step",
+      "category": "fractions",
+      "difficulty": "easy",
+      "question": "A school has 120 students. Three fifths are girls. One quarter of the girls are absent. How many girls are present?",
+      "choices": {
+        "A": "72",
+        "B": "48",
+        "C": "60",
+        "D": "54"
+      },
+      "answer": "D"
+    },
+    {
+      "id": "multi-03",
+      "domain": "multi_step",
+      "category": "fractions",
+      "difficulty": "medium",
+      "question": "A 160-liter tank is 3/8 full. Then water equal to one quarter of the tank's total capacity is added. How much water is now in the tank?",
+      "choices": {
+        "A": "100 liters",
+        "B": "90 liters",
+        "C": "120 liters",
+        "D": "140 liters"
+      },
+      "answer": "A"
+    },
+    {
+      "id": "multi-04",
+      "domain": "multi_step",
+      "category": "percentage",
+      "difficulty": "medium",
+      "question": "A population of 800 increases by 25% and then decreases by 20%. What is the final population?",
+      "choices": {
+        "A": "760",
+        "B": "800",
+        "C": "820",
+        "D": "840"
+      },
+      "answer": "B"
+    },
+    {
+      "id": "multi-05",
+      "domain": "multi_step",
+      "category": "algebra",
+      "difficulty": "hard",
+      "question": "A father is three times as old as his son. In 12 years, the father will be twice as old as his son. How old is the father now?",
+      "choices": {
+        "A": "30",
+        "B": "42",
+        "C": "36",
+        "D": "48"
+      },
+      "answer": "C"
+    },
+    {
+      "id": "multi-06",
+      "domain": "multi_step",
+      "category": "work_rate",
+      "difficulty": "hard",
+      "question": "Worker A can finish a job alone in 6 hours. Worker B can finish the same job alone in 12 hours. If they work together at constant rates, how long will the job take?",
+      "choices": {
+        "A": "3 hours",
+        "B": "6 hours",
+        "C": "4.5 hours",
+        "D": "4 hours"
+      },
+      "answer": "D"
+    },
+    {
+      "id": "logic-01",
+      "domain": "logic",
+      "category": "syllogism",
+      "difficulty": "easy",
+      "question": "All ravens are birds. No birds are mammals. Which statement must be true?",
+      "choices": {
+        "A": "No ravens are mammals.",
+        "B": "All mammals are ravens.",
+        "C": "Some birds are mammals.",
+        "D": "No mammals exist."
+      },
+      "answer": "A"
+    },
+    {
+      "id": "logic-02",
+      "domain": "logic",
+      "category": "ordering",
+      "difficulty": "easy",
+      "question": "Ana arrives before Ben. Ben arrives before Cara. Dan arrives after Cara. Who must arrive first?",
+      "choices": {
+        "A": "Ben",
+        "B": "Ana",
+        "C": "Cara",
+        "D": "Dan"
+      },
+      "answer": "B"
+    },
+    {
+      "id": "logic-03",
+      "domain": "logic",
+      "category": "ordering",
+      "difficulty": "medium",
+      "question": "S must occur before P. P must occur before Q. R occurs after Q. Which event must occur earliest?",
+      "choices": {
+        "A": "P",
+        "B": "Q",
+        "C": "S",
+        "D": "R"
+      },
+      "answer": "C"
+    },
+    {
+      "id": "logic-04",
+      "domain": "logic",
+      "category": "set_logic",
+      "difficulty": "medium",
+      "question": "All glens are nors. Some nors are feks. No feks are zims. Which statement must be true?",
+      "choices": {
+        "A": "No glens are zims.",
+        "B": "Some glens are feks.",
+        "C": "All nors are glens.",
+        "D": "Some nors are feks."
+      },
+      "answer": "D"
+    },
+    {
+      "id": "logic-05",
+      "domain": "logic",
+      "category": "truthfulness",
+      "difficulty": "hard",
+      "question": "Alice and Bob are each either always truthful or always lying. Alice says, 'Bob is lying.' Bob says, 'Alice and I are the same type.' Which assignment is consistent?",
+      "choices": {
+        "A": "Alice truthful, Bob lying",
+        "B": "Alice lying, Bob truthful",
+        "C": "Both truthful",
+        "D": "Both lying"
+      },
+      "answer": "A"
+    },
+    {
+      "id": "logic-06",
+      "domain": "logic",
+      "category": "conditional",
+      "difficulty": "hard",
+      "question": "If the build passes, deployment occurs. If deployment occurs, monitoring starts. Monitoring did not start. Which conclusion must follow?",
+      "choices": {
+        "A": "Monitoring actually started.",
+        "B": "The build did not pass.",
+        "C": "Deployment occurred.",
+        "D": "Nothing can be concluded about the build."
+      },
+      "answer": "B"
+    },
+    {
+      "id": "tech-01",
+      "domain": "science_technical",
+      "category": "physics",
+      "difficulty": "easy",
+      "question": "A 12-volt potential difference is applied across a 4-ohm resistor. What current flows according to Ohm's law?",
+      "choices": {
+        "A": "48 A",
+        "B": "16 A",
+        "C": "3 A",
+        "D": "0.33 A"
+      },
+      "answer": "C"
+    },
+    {
+      "id": "tech-02",
+      "domain": "science_technical",
+      "category": "biology",
+      "difficulty": "easy",
+      "question": "In normal double-stranded DNA, adenine pairs with which base?",
+      "choices": {
+        "A": "Cytosine",
+        "B": "Uracil",
+        "C": "Guanine",
+        "D": "Thymine"
+      },
+      "answer": "D"
+    },
+    {
+      "id": "tech-03",
+      "domain": "science_technical",
+      "category": "networking",
+      "difficulty": "medium",
+      "question": "In the OSI model, which layer is primarily responsible for routing IP packets between networks?",
+      "choices": {
+        "A": "Network layer",
+        "B": "Transport layer",
+        "C": "Data-link layer",
+        "D": "Application layer"
+      },
+      "answer": "A"
+    },
+    {
+      "id": "tech-04",
+      "domain": "science_technical",
+      "category": "physics",
+      "difficulty": "medium",
+      "question": "If an object's speed doubles while its mass remains constant, what happens to its kinetic energy?",
+      "choices": {
+        "A": "It is halved.",
+        "B": "It becomes four times as large.",
+        "C": "It doubles.",
+        "D": "It is unchanged."
+      },
+      "answer": "B"
+    },
+    {
+      "id": "tech-05",
+      "domain": "science_technical",
+      "category": "algorithms",
+      "difficulty": "hard",
+      "question": "What is the worst-case time complexity of binary search on a sorted random-access array of n elements?",
+      "choices": {
+        "A": "O(n\u00b2)",
+        "B": "O(n)",
+        "C": "O(log n)",
+        "D": "O(1)"
+      },
+      "answer": "C"
+    },
+    {
+      "id": "tech-06",
+      "domain": "science_technical",
+      "category": "databases",
+      "difficulty": "hard",
+      "question": "Under the standard SQL isolation levels, what is the least restrictive isolation level that prevents dirty reads?",
+      "choices": {
+        "A": "Read Uncommitted",
+        "B": "Serializable",
+        "C": "Repeatable Read",
+        "D": "Read Committed"
+      },
+      "answer": "D"
+    },
+    {
+      "id": "swe-01",
+      "domain": "software_engineering",
+      "category": "git",
+      "difficulty": "easy",
+      "question": "Which Git command normally shows the state of the working tree and staging area?",
+      "choices": {
+        "A": "git status",
+        "B": "git merge",
+        "C": "git clone",
+        "D": "git init"
+      },
+      "answer": "A"
+    },
+    {
+      "id": "swe-02",
+      "domain": "software_engineering",
+      "category": "http",
+      "difficulty": "easy",
+      "question": "What does HTTP status code 404 normally indicate?",
+      "choices": {
+        "A": "Authentication required",
+        "B": "The requested resource was not found",
+        "C": "The server completed the request successfully",
+        "D": "An internal server error occurred"
+      },
+      "answer": "B"
+    },
+    {
+      "id": "swe-03",
+      "domain": "software_engineering",
+      "category": "testing",
+      "difficulty": "medium",
+      "question": "A test checks one pure function in isolation with no external services or filesystem access. What type of test is this most directly?",
+      "choices": {
+        "A": "Smoke test",
+        "B": "End-to-end test",
+        "C": "Unit test",
+        "D": "Integration test"
+      },
+      "answer": "C"
+    },
+    {
+      "id": "swe-04",
+      "domain": "software_engineering",
+      "category": "python",
+      "difficulty": "medium",
+      "question": "A Python function uses def add_item(x, items=[]): and appends to items. Unexpected values persist between calls. What is the standard fix?",
+      "choices": {
+        "A": "Declare items as global.",
+        "B": "Delete the list after every append.",
+        "C": "Convert items to a tuple before returning.",
+        "D": "Use None as the default and create a new list inside the function."
+      },
+      "answer": "D"
+    },
+    {
+      "id": "swe-05",
+      "domain": "software_engineering",
+      "category": "concurrency",
+      "difficulty": "hard",
+      "question": "Two threads increment the same shared counter without synchronization. Why can increments be lost?",
+      "choices": {
+        "A": "The read-modify-write operations can interleave and overwrite one another.",
+        "B": "Integer addition always clears the CPU cache.",
+        "C": "Each thread automatically receives a permanent private copy of the variable.",
+        "D": "The operating system forbids two threads from reading the same memory."
+      },
+      "answer": "A"
+    },
+    {
+      "id": "swe-06",
+      "domain": "software_engineering",
+      "category": "api_design",
+      "difficulty": "hard",
+      "question": "Which HTTP method is defined to be idempotent when used according to HTTP semantics?",
+      "choices": {
+        "A": "POST",
+        "B": "PUT",
+        "C": "CONNECT",
+        "D": "PATCH"
+      },
+      "answer": "B"
+    },
+    {
+      "id": "amb-01",
+      "domain": "commonsense_ambiguity",
+      "category": "commonsense",
+      "difficulty": "easy",
+      "question": "Sam puts ice cream in the freezer before leaving home for several hours. What is the most likely reason?",
+      "choices": {
+        "A": "To make the container brighter",
+        "B": "To dry the container",
+        "C": "To keep the ice cream frozen",
+        "D": "To increase its weight"
+      },
+      "answer": "C"
+    },
+    {
+      "id": "amb-02",
+      "domain": "commonsense_ambiguity",
+      "category": "reference_resolution",
+      "difficulty": "easy",
+      "question": "The trophy did not fit in the suitcase because it was too small. In the most natural interpretation, what was too small?",
+      "choices": {
+        "A": "The trophy",
+        "B": "The room",
+        "C": "The person carrying it",
+        "D": "The suitcase"
+      },
+      "answer": "D"
+    },
+    {
+      "id": "amb-03",
+      "domain": "commonsense_ambiguity",
+      "category": "ambiguity",
+      "difficulty": "medium",
+      "question": "Jordan called Alex after they left the office. Based only on this sentence, who left the office?",
+      "choices": {
+        "A": "It cannot be determined uniquely.",
+        "B": "Jordan definitely did.",
+        "C": "Alex definitely did.",
+        "D": "Both definitely did."
+      },
+      "answer": "A"
+    },
+    {
+      "id": "amb-04",
+      "domain": "commonsense_ambiguity",
+      "category": "temporal",
+      "difficulty": "medium",
+      "question": "A meeting originally scheduled for Tuesday is moved to two days later. On what day is it now scheduled?",
+      "choices": {
+        "A": "Wednesday",
+        "B": "Thursday",
+        "C": "Friday",
+        "D": "Monday"
+      },
+      "answer": "B"
+    },
+    {
+      "id": "amb-05",
+      "domain": "commonsense_ambiguity",
+      "category": "uncertainty",
+      "difficulty": "hard",
+      "question": "A server responds slowly to one request. No other evidence is available. Which conclusion is justified?",
+      "choices": {
+        "A": "The server is always slow.",
+        "B": "The network is definitely faulty.",
+        "C": "One slow response was observed, but its cause is not established.",
+        "D": "The server hardware is failing."
+      },
+      "answer": "C"
+    },
+    {
+      "id": "amb-06",
+      "domain": "commonsense_ambiguity",
+      "category": "conflicting_evidence",
+      "difficulty": "hard",
+      "question": "Report A says there are 12 units in stock. Report B says there are 15. No information is given about which report is newer or more reliable. What can be concluded?",
+      "choices": {
+        "A": "There are exactly 12 units.",
+        "B": "There are exactly 15 units.",
+        "C": "There are exactly 13.5 units.",
+        "D": "The reports disagree, so the actual quantity cannot be determined from the given information."
+      },
+      "answer": "D"
+    }
+  ]
+}

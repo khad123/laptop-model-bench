@@ -1,0 +1,292 @@
+{
+  "benchmark_version": "phase3-v1.2",
+  "difficulty": {
+    "minicpm5-2b-q4km": {
+      "easy": {
+        "passed": 6,
+        "score": 100.0,
+        "total": 6
+      },
+      "hard": {
+        "passed": 5,
+        "score": 83.33,
+        "total": 6
+      },
+      "medium": {
+        "passed": 8,
+        "score": 100.0,
+        "total": 8
+      }
+    },
+    "qwen35-0.8b-q4km": {
+      "easy": {
+        "passed": 3,
+        "score": 50.0,
+        "total": 6
+      },
+      "hard": {
+        "passed": 2,
+        "score": 33.33,
+        "total": 6
+      },
+      "medium": {
+        "passed": 2,
+        "score": 25.0,
+        "total": 8
+      }
+    },
+    "qwen35-2b-q4km": {
+      "easy": {
+        "passed": 6,
+        "score": 100.0,
+        "total": 6
+      },
+      "hard": {
+        "passed": 5,
+        "score": 83.33,
+        "total": 6
+      },
+      "medium": {
+        "passed": 4,
+        "score": 50.0,
+        "total": 8
+      }
+    },
+    "smollm3-3b-iq4xs": {
+      "easy": {
+        "passed": 5,
+        "score": 83.33,
+        "total": 6
+      },
+      "hard": {
+        "passed": 6,
+        "score": 100.0,
+        "total": 6
+      },
+      "medium": {
+        "passed": 6,
+        "score": 75.0,
+        "total": 8
+      }
+    }
+  },
+  "methodology": {
+    "easy_tasks": 6,
+    "hard_tasks": 6,
+    "max_completion_tokens": 512,
+    "medium_tasks": 8,
+    "models": 4,
+    "network": "disabled",
+    "reasoning": "disabled",
+    "requests": 80,
+    "sandbox": "bubblewrap",
+    "scoring": "task passes only when all hidden tests pass",
+    "tasks": 20
+  },
+  "models": [
+    {
+      "categories": {
+        "algorithms": {
+          "passed": 1,
+          "score": 14.29,
+          "total": 7
+        },
+        "basic": {
+          "passed": 1,
+          "score": 100.0,
+          "total": 1
+        },
+        "dynamic_programming": {
+          "passed": 1,
+          "score": 50.0,
+          "total": 2
+        },
+        "mappings": {
+          "passed": 1,
+          "score": 100.0,
+          "total": 1
+        },
+        "parsing": {
+          "passed": 1,
+          "score": 50.0,
+          "total": 2
+        },
+        "recursion": {
+          "passed": 1,
+          "score": 100.0,
+          "total": 1
+        },
+        "sequences": {
+          "passed": 1,
+          "score": 33.33,
+          "total": 3
+        },
+        "strings": {
+          "passed": 0,
+          "score": 0.0,
+          "total": 3
+        }
+      },
+      "model": "Qwen3.5-0.8B",
+      "model_id": "qwen35-0.8b-q4km",
+      "passed": 7,
+      "phase3_score": 35.0,
+      "quant": "Q4_K_M",
+      "total": 20
+    },
+    {
+      "categories": {
+        "algorithms": {
+          "passed": 4,
+          "score": 57.14,
+          "total": 7
+        },
+        "basic": {
+          "passed": 1,
+          "score": 100.0,
+          "total": 1
+        },
+        "dynamic_programming": {
+          "passed": 2,
+          "score": 100.0,
+          "total": 2
+        },
+        "mappings": {
+          "passed": 1,
+          "score": 100.0,
+          "total": 1
+        },
+        "parsing": {
+          "passed": 1,
+          "score": 50.0,
+          "total": 2
+        },
+        "recursion": {
+          "passed": 1,
+          "score": 100.0,
+          "total": 1
+        },
+        "sequences": {
+          "passed": 3,
+          "score": 100.0,
+          "total": 3
+        },
+        "strings": {
+          "passed": 2,
+          "score": 66.67,
+          "total": 3
+        }
+      },
+      "model": "Qwen3.5-2B",
+      "model_id": "qwen35-2b-q4km",
+      "passed": 15,
+      "phase3_score": 75.0,
+      "quant": "Q4_K_M",
+      "total": 20
+    },
+    {
+      "categories": {
+        "algorithms": {
+          "passed": 6,
+          "score": 85.71,
+          "total": 7
+        },
+        "basic": {
+          "passed": 1,
+          "score": 100.0,
+          "total": 1
+        },
+        "dynamic_programming": {
+          "passed": 2,
+          "score": 100.0,
+          "total": 2
+        },
+        "mappings": {
+          "passed": 1,
+          "score": 100.0,
+          "total": 1
+        },
+        "parsing": {
+          "passed": 2,
+          "score": 100.0,
+          "total": 2
+        },
+        "recursion": {
+          "passed": 1,
+          "score": 100.0,
+          "total": 1
+        },
+        "sequences": {
+          "passed": 3,
+          "score": 100.0,
+          "total": 3
+        },
+        "strings": {
+          "passed": 3,
+          "score": 100.0,
+          "total": 3
+        }
+      },
+      "model": "MiniCPM5-2B",
+      "model_id": "minicpm5-2b-q4km",
+      "passed": 19,
+      "phase3_score": 95.0,
+      "quant": "Q4_K_M",
+      "total": 20
+    },
+    {
+      "categories": {
+        "algorithms": {
+          "passed": 6,
+          "score": 85.71,
+          "total": 7
+        },
+        "basic": {
+          "passed": 1,
+          "score": 100.0,
+          "total": 1
+        },
+        "dynamic_programming": {
+          "passed": 2,
+          "score": 100.0,
+          "total": 2
+        },
+        "mappings": {
+          "passed": 1,
+          "score": 100.0,
+          "total": 1
+        },
+        "parsing": {
+          "passed": 2,
+          "score": 100.0,
+          "total": 2
+        },
+        "recursion": {
+          "passed": 1,
+          "score": 100.0,
+          "total": 1
+        },
+        "sequences": {
+          "passed": 2,
+          "score": 66.67,
+          "total": 3
+        },
+        "strings": {
+          "passed": 2,
+          "score": 66.67,
+          "total": 3
+        }
+      },
+      "model": "SmolLM3-3B",
+      "model_id": "smollm3-3b-iq4xs",
+      "passed": 17,
+      "phase3_score": 85.0,
+      "quant": "IQ4_XS",
+      "total": 20
+    }
+  ],
+  "phase": "v1.2-phase3",
+  "source_file": "results/v12/phase3/phase3-20260915T000052Z.json",
+  "source_run": "20260915T000052Z",
+  "status": "frozen"
+}

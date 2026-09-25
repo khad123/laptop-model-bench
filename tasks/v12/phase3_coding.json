@@ -1,0 +1,1323 @@
+{
+  "benchmark_version": "phase3-v1.2",
+  "status": "frozen",
+  "description": "Laptop Model Bench v1.2 project-authored executable Python coding suite. Twenty tasks are scored by hidden deterministic tests executed locally inside the benchmark sandbox.",
+  "system_prompt": "You are taking a deterministic Python 3 coding benchmark. Return only valid Python 3 code. Define the requested function exactly. Do not use files, network access, subprocesses, input, eval, exec, or external packages.",
+  "task_design": {
+    "total_items": 20,
+    "difficulty_balance": {
+      "easy": 6,
+      "medium": 8,
+      "hard": 6
+    },
+    "category_balance": {
+      "basic": 1,
+      "strings": 3,
+      "sequences": 3,
+      "mappings": 1,
+      "algorithms": 7,
+      "parsing": 2,
+      "recursion": 1,
+      "dynamic_programming": 2
+    },
+    "scoring": "A task passes only when all hidden tests pass."
+  },
+  "tasks": [
+    {
+      "id": "code-01",
+      "category": "basic",
+      "difficulty": "easy",
+      "function": "clamp",
+      "prompt": "Implement `clamp(value, low, high)`. Assume low <= high. Return low if value is below low, high if value is above high, otherwise return value.",
+      "tests": [
+        {
+          "args": [
+            -5,
+            0,
+            10
+          ],
+          "expected": 0
+        },
+        {
+          "args": [
+            5,
+            0,
+            10
+          ],
+          "expected": 5
+        },
+        {
+          "args": [
+            15,
+            0,
+            10
+          ],
+          "expected": 10
+        },
+        {
+          "args": [
+            3,
+            3,
+            3
+          ],
+          "expected": 3
+        },
+        {
+          "args": [
+            -2,
+            -5,
+            -1
+          ],
+          "expected": -2
+        }
+      ]
+    },
+    {
+      "id": "code-02",
+      "category": "strings",
+      "difficulty": "easy",
+      "function": "count_vowels",
+      "prompt": "Implement `count_vowels(text)`. Return the number of ASCII vowels a, e, i, o, u in text, ignoring case.",
+      "tests": [
+        {
+          "args": [
+            ""
+          ],
+          "expected": 0
+        },
+        {
+          "args": [
+            "hello"
+          ],
+          "expected": 2
+        },
+        {
+          "args": [
+            "AEIOU"
+          ],
+          "expected": 5
+        },
+        {
+          "args": [
+            "rhythm"
+          ],
+          "expected": 0
+        },
+        {
+          "args": [
+            "OpenAI"
+          ],
+          "expected": 4
+        }
+      ]
+    },
+    {
+      "id": "code-03",
+      "category": "sequences",
+      "difficulty": "easy",
+      "function": "dedupe_preserve_order",
+      "prompt": "Implement `dedupe_preserve_order(items)`. Inputs contain hashable values. Return a new list containing only the first occurrence of each value, preserving original order.",
+      "tests": [
+        {
+          "args": [
+            []
+          ],
+          "expected": []
+        },
+        {
+          "args": [
+            [
+              1,
+              2,
+              1,
+              3,
+              2
+            ]
+          ],
+          "expected": [
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "args": [
+            [
+              "a",
+              "b",
+              "a"
+            ]
+          ],
+          "expected": [
+            "a",
+            "b"
+          ]
+        },
+        {
+          "args": [
+            [
+              1,
+              1,
+              1
+            ]
+          ],
+          "expected": [
+            1
+          ]
+        },
+        {
+          "args": [
+            [
+              3,
+              2,
+              3,
+              1,
+              2
+            ]
+          ],
+          "expected": [
+            3,
+            2,
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "id": "code-04",
+      "category": "strings",
+      "difficulty": "easy",
+      "function": "is_palindrome_text",
+      "prompt": "Implement `is_palindrome_text(text)`. Return True when the letters and digits in text form a palindrome after ignoring case and all non-alphanumeric characters; otherwise return False.",
+      "tests": [
+        {
+          "args": [
+            "RaceCar"
+          ],
+          "expected": true
+        },
+        {
+          "args": [
+            "A man, a plan, a canal: Panama!"
+          ],
+          "expected": true
+        },
+        {
+          "args": [
+            "hello"
+          ],
+          "expected": false
+        },
+        {
+          "args": [
+            ""
+          ],
+          "expected": true
+        },
+        {
+          "args": [
+            "12321"
+          ],
+          "expected": true
+        }
+      ]
+    },
+    {
+      "id": "code-05",
+      "category": "sequences",
+      "difficulty": "easy",
+      "function": "rotate_right",
+      "prompt": "Implement `rotate_right(items, k)`. Return a new list rotated right by non-negative integer k positions. k may exceed the list length. An empty input returns an empty list.",
+      "tests": [
+        {
+          "args": [
+            [
+              1,
+              2,
+              3,
+              4
+            ],
+            1
+          ],
+          "expected": [
+            4,
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "args": [
+            [
+              1,
+              2,
+              3,
+              4
+            ],
+            0
+          ],
+          "expected": [
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "args": [
+            [
+              1,
+              2,
+              3,
+              4
+            ],
+            6
+          ],
+          "expected": [
+            3,
+            4,
+            1,
+            2
+          ]
+        },
+        {
+          "args": [
+            [],
+            5
+          ],
+          "expected": []
+        },
+        {
+          "args": [
+            [
+              "a",
+              "b",
+              "c"
+            ],
+            3
+          ],
+          "expected": [
+            "a",
+            "b",
+            "c"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "code-06",
+      "category": "mappings",
+      "difficulty": "easy",
+      "function": "invert_unique_dict",
+      "prompt": "Implement `invert_unique_dict(mapping)`. Assume all values are hashable and unique. Return a new dictionary whose keys are the original values and whose values are the original keys.",
+      "tests": [
+        {
+          "args": [
+            {}
+          ],
+          "expected": {}
+        },
+        {
+          "args": [
+            {
+              "a": "red",
+              "b": "blue"
+            }
+          ],
+          "expected": {
+            "red": "a",
+            "blue": "b"
+          }
+        },
+        {
+          "args": [
+            {
+              "x": "one"
+            }
+          ],
+          "expected": {
+            "one": "x"
+          }
+        },
+        {
+          "args": [
+            {
+              "first": "1",
+              "second": "2"
+            }
+          ],
+          "expected": {
+            "1": "first",
+            "2": "second"
+          }
+        }
+      ]
+    },
+    {
+      "id": "code-07",
+      "category": "algorithms",
+      "difficulty": "medium",
+      "function": "balanced_brackets",
+      "prompt": "Implement `balanced_brackets(text)`. Consider (), [], and {}. Ignore all other characters. Return True only if brackets are closed using the matching type in correct nesting order.",
+      "tests": [
+        {
+          "args": [
+            ""
+          ],
+          "expected": true
+        },
+        {
+          "args": [
+            "()[]{}"
+          ],
+          "expected": true
+        },
+        {
+          "args": [
+            "([{}])"
+          ],
+          "expected": true
+        },
+        {
+          "args": [
+            "(]"
+          ],
+          "expected": false
+        },
+        {
+          "args": [
+            "([)]"
+          ],
+          "expected": false
+        },
+        {
+          "args": [
+            "abc{[x](y)}"
+          ],
+          "expected": true
+        },
+        {
+          "args": [
+            "((("
+          ],
+          "expected": false
+        }
+      ]
+    },
+    {
+      "id": "code-08",
+      "category": "algorithms",
+      "difficulty": "medium",
+      "function": "merge_intervals",
+      "prompt": "Implement `merge_intervals(intervals)`. Each interval is [start, end] with start <= end. Return a new list of [start, end] lists sorted by start, merging overlapping intervals. Intervals that only touch at an endpoint must also be merged. Do not mutate the input. The returned intervals must be lists, not tuples.",
+      "tests": [
+        {
+          "args": [
+            []
+          ],
+          "expected": []
+        },
+        {
+          "args": [
+            [
+              [
+                1,
+                3
+              ],
+              [
+                2,
+                4
+              ]
+            ]
+          ],
+          "expected": [
+            [
+              1,
+              4
+            ]
+          ]
+        },
+        {
+          "args": [
+            [
+              [
+                1,
+                2
+              ],
+              [
+                2,
+                4
+              ]
+            ]
+          ],
+          "expected": [
+            [
+              1,
+              4
+            ]
+          ]
+        },
+        {
+          "args": [
+            [
+              [
+                5,
+                7
+              ],
+              [
+                1,
+                2
+              ],
+              [
+                2,
+                4
+              ]
+            ]
+          ],
+          "expected": [
+            [
+              1,
+              4
+            ],
+            [
+              5,
+              7
+            ]
+          ]
+        },
+        {
+          "args": [
+            [
+              [
+                -3,
+                -1
+              ],
+              [
+                -2,
+                2
+              ],
+              [
+                5,
+                5
+              ]
+            ]
+          ],
+          "expected": [
+            [
+              -3,
+              2
+            ],
+            [
+              5,
+              5
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "code-09",
+      "category": "strings",
+      "difficulty": "medium",
+      "function": "word_frequencies",
+      "prompt": "Implement `word_frequencies(text)`. A word is a maximal consecutive sequence of ASCII letters A-Z or a-z. Return a dictionary mapping lowercase words to counts. Ignore all other characters.",
+      "tests": [
+        {
+          "args": [
+            "Hello, hello world!"
+          ],
+          "expected": {
+            "hello": 2,
+            "world": 1
+          }
+        },
+        {
+          "args": [
+            ""
+          ],
+          "expected": {}
+        },
+        {
+          "args": [
+            "One two TWO three-three"
+          ],
+          "expected": {
+            "one": 1,
+            "two": 2,
+            "three": 2
+          }
+        },
+        {
+          "args": [
+            "123 abc ABC_ def"
+          ],
+          "expected": {
+            "abc": 2,
+            "def": 1
+          }
+        },
+        {
+          "args": [
+            "Don't stop"
+          ],
+          "expected": {
+            "don": 1,
+            "t": 1,
+            "stop": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "code-10",
+      "category": "sequences",
+      "difficulty": "medium",
+      "function": "moving_average",
+      "prompt": "Implement `moving_average(nums, window)`. window is a positive integer. Return a list containing the arithmetic mean of each contiguous window of that size. If window > len(nums), return [].",
+      "tests": [
+        {
+          "args": [
+            [
+              1,
+              2,
+              3,
+              4
+            ],
+            2
+          ],
+          "expected": [
+            1.5,
+            2.5,
+            3.5
+          ]
+        },
+        {
+          "args": [
+            [
+              5
+            ],
+            1
+          ],
+          "expected": [
+            5.0
+          ]
+        },
+        {
+          "args": [
+            [
+              1,
+              2
+            ],
+            3
+          ],
+          "expected": []
+        },
+        {
+          "args": [
+            [
+              -2,
+              0,
+              2
+            ],
+            3
+          ],
+          "expected": [
+            0.0
+          ]
+        },
+        {
+          "args": [
+            [],
+            1
+          ],
+          "expected": []
+        }
+      ]
+    },
+    {
+      "id": "code-11",
+      "category": "parsing",
+      "difficulty": "medium",
+      "function": "parse_key_values",
+      "prompt": "Implement `parse_key_values(text)`. Each non-empty line has the form key=value. Strip whitespace around the key and value. Ignore blank lines. If a key occurs more than once, the last value wins. Return a dictionary of strings.",
+      "tests": [
+        {
+          "args": [
+            ""
+          ],
+          "expected": {}
+        },
+        {
+          "args": [
+            "a=1\nb=2"
+          ],
+          "expected": {
+            "a": "1",
+            "b": "2"
+          }
+        },
+        {
+          "args": [
+            " a = hello \n\n b= world "
+          ],
+          "expected": {
+            "a": "hello",
+            "b": "world"
+          }
+        },
+        {
+          "args": [
+            "x=1\nx=2"
+          ],
+          "expected": {
+            "x": "2"
+          }
+        },
+        {
+          "args": [
+            "k="
+          ],
+          "expected": {
+            "k": ""
+          }
+        }
+      ]
+    },
+    {
+      "id": "code-12",
+      "category": "algorithms",
+      "difficulty": "medium",
+      "function": "longest_increasing_run",
+      "prompt": "Implement `longest_increasing_run(nums)`. Return the length of the longest contiguous strictly increasing run. Return 0 for an empty list.",
+      "tests": [
+        {
+          "args": [
+            []
+          ],
+          "expected": 0
+        },
+        {
+          "args": [
+            [
+              1
+            ]
+          ],
+          "expected": 1
+        },
+        {
+          "args": [
+            [
+              1,
+              2,
+              3
+            ]
+          ],
+          "expected": 3
+        },
+        {
+          "args": [
+            [
+              3,
+              2,
+              1
+            ]
+          ],
+          "expected": 1
+        },
+        {
+          "args": [
+            [
+              1,
+              2,
+              2,
+              3,
+              4
+            ]
+          ],
+          "expected": 3
+        },
+        {
+          "args": [
+            [
+              1,
+              3,
+              2,
+              4,
+              6,
+              5
+            ]
+          ],
+          "expected": 3
+        }
+      ]
+    },
+    {
+      "id": "code-13",
+      "category": "recursion",
+      "difficulty": "medium",
+      "function": "flatten_nested_list",
+      "prompt": "Implement `flatten_nested_list(value)`. value is a list whose elements may themselves be nested lists to any depth. Return a new flat list containing all non-list elements from left to right.",
+      "tests": [
+        {
+          "args": [
+            []
+          ],
+          "expected": []
+        },
+        {
+          "args": [
+            [
+              1,
+              [
+                2,
+                [
+                  3
+                ]
+              ],
+              4
+            ]
+          ],
+          "expected": [
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "args": [
+            [
+              [
+                "a"
+              ],
+              [
+                "b",
+                [
+                  "c"
+                ]
+              ]
+            ]
+          ],
+          "expected": [
+            "a",
+            "b",
+            "c"
+          ]
+        },
+        {
+          "args": [
+            [
+              [
+                [
+                  1
+                ]
+              ],
+              2,
+              [],
+              [
+                3,
+                4
+              ]
+            ]
+          ],
+          "expected": [
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "id": "code-14",
+      "category": "algorithms",
+      "difficulty": "medium",
+      "function": "two_sum_indices",
+      "prompt": "Implement `two_sum_indices(nums, target)`. Return the lexicographically smallest pair [i, j] where i < j and nums[i] + nums[j] == target. Return [] when no pair exists.",
+      "tests": [
+        {
+          "args": [
+            [
+              2,
+              7,
+              11,
+              15
+            ],
+            9
+          ],
+          "expected": [
+            0,
+            1
+          ]
+        },
+        {
+          "args": [
+            [
+              3,
+              3
+            ],
+            6
+          ],
+          "expected": [
+            0,
+            1
+          ]
+        },
+        {
+          "args": [
+            [
+              1,
+              4,
+              2,
+              3
+            ],
+            5
+          ],
+          "expected": [
+            0,
+            1
+          ]
+        },
+        {
+          "args": [
+            [
+              1,
+              2,
+              3
+            ],
+            10
+          ],
+          "expected": []
+        },
+        {
+          "args": [
+            [
+              -1,
+              0,
+              1,
+              2
+            ],
+            1
+          ],
+          "expected": [
+            0,
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "id": "code-15",
+      "category": "algorithms",
+      "difficulty": "hard",
+      "function": "top_k_frequent",
+      "prompt": "Implement `top_k_frequent(items, k)`. Return up to k distinct items ordered by descending frequency. Break frequency ties by the index of each item's first occurrence. k is non-negative.",
+      "tests": [
+        {
+          "args": [
+            [
+              1,
+              1,
+              2,
+              2,
+              2,
+              3
+            ],
+            2
+          ],
+          "expected": [
+            2,
+            1
+          ]
+        },
+        {
+          "args": [
+            [
+              "a",
+              "b",
+              "a",
+              "b",
+              "c"
+            ],
+            2
+          ],
+          "expected": [
+            "a",
+            "b"
+          ]
+        },
+        {
+          "args": [
+            [
+              4,
+              5,
+              6
+            ],
+            10
+          ],
+          "expected": [
+            4,
+            5,
+            6
+          ]
+        },
+        {
+          "args": [
+            [],
+            3
+          ],
+          "expected": []
+        },
+        {
+          "args": [
+            [
+              1,
+              2,
+              1,
+              2
+            ],
+            0
+          ],
+          "expected": []
+        }
+      ]
+    },
+    {
+      "id": "code-16",
+      "category": "algorithms",
+      "difficulty": "hard",
+      "function": "shortest_path_length",
+      "prompt": "Implement `shortest_path_length(graph, start, goal)`. graph is a dictionary mapping node strings to lists of neighboring node strings. Treat edges as directed and unweighted. Return the minimum number of edges from start to goal, or -1 if unreachable. Return 0 when start == goal.",
+      "tests": [
+        {
+          "args": [
+            {
+              "A": [
+                "B"
+              ],
+              "B": [
+                "C"
+              ],
+              "C": []
+            },
+            "A",
+            "C"
+          ],
+          "expected": 2
+        },
+        {
+          "args": [
+            {
+              "A": [
+                "B",
+                "C"
+              ],
+              "B": [
+                "D"
+              ],
+              "C": [
+                "D"
+              ],
+              "D": []
+            },
+            "A",
+            "D"
+          ],
+          "expected": 2
+        },
+        {
+          "args": [
+            {
+              "A": [
+                "B"
+              ],
+              "B": [],
+              "C": []
+            },
+            "A",
+            "C"
+          ],
+          "expected": -1
+        },
+        {
+          "args": [
+            {},
+            "x",
+            "x"
+          ],
+          "expected": 0
+        },
+        {
+          "args": [
+            {
+              "A": [
+                "A",
+                "B"
+              ],
+              "B": [
+                "C"
+              ],
+              "C": []
+            },
+            "A",
+            "C"
+          ],
+          "expected": 2
+        }
+      ]
+    },
+    {
+      "id": "code-17",
+      "category": "dynamic_programming",
+      "difficulty": "hard",
+      "function": "min_coins",
+      "prompt": "Implement `min_coins(coins, amount)`. coins contains positive integer denominations and may be reused unlimited times. Return the minimum number of coins needed to make amount exactly, or -1 if impossible. amount is non-negative.",
+      "tests": [
+        {
+          "args": [
+            [
+              1,
+              3,
+              4
+            ],
+            6
+          ],
+          "expected": 2
+        },
+        {
+          "args": [
+            [
+              2
+            ],
+            3
+          ],
+          "expected": -1
+        },
+        {
+          "args": [
+            [
+              2,
+              5,
+              10
+            ],
+            0
+          ],
+          "expected": 0
+        },
+        {
+          "args": [
+            [
+              2,
+              5,
+              10
+            ],
+            17
+          ],
+          "expected": 3
+        },
+        {
+          "args": [
+            [
+              7,
+              3
+            ],
+            14
+          ],
+          "expected": 2
+        }
+      ]
+    },
+    {
+      "id": "code-18",
+      "category": "parsing",
+      "difficulty": "hard",
+      "function": "normalize_path",
+      "prompt": "Implement `normalize_path(path)`. Treat path as a Unix-style absolute path. Collapse repeated slashes, remove '.' components, and resolve '..' by removing the previous component when possible. Attempts to go above root remain at root. Return the normalized absolute path without a trailing slash except for '/'.",
+      "tests": [
+        {
+          "args": [
+            "/"
+          ],
+          "expected": "/"
+        },
+        {
+          "args": [
+            "/a//b/./c"
+          ],
+          "expected": "/a/b/c"
+        },
+        {
+          "args": [
+            "/a/b/../c"
+          ],
+          "expected": "/a/c"
+        },
+        {
+          "args": [
+            "/../../a"
+          ],
+          "expected": "/a"
+        },
+        {
+          "args": [
+            "/a/b/../../"
+          ],
+          "expected": "/"
+        },
+        {
+          "args": [
+            "/a/./../b//c/"
+          ],
+          "expected": "/b/c"
+        }
+      ]
+    },
+    {
+      "id": "code-19",
+      "category": "algorithms",
+      "difficulty": "hard",
+      "function": "group_anagrams",
+      "prompt": "Implement `group_anagrams(words)`. Group words that are anagrams using exact character matching. Preserve the order in which groups first appear, and preserve original order inside each group. Return a list of lists.",
+      "tests": [
+        {
+          "args": [
+            []
+          ],
+          "expected": []
+        },
+        {
+          "args": [
+            [
+              "eat",
+              "tea",
+              "tan",
+              "ate",
+              "nat",
+              "bat"
+            ]
+          ],
+          "expected": [
+            [
+              "eat",
+              "tea",
+              "ate"
+            ],
+            [
+              "tan",
+              "nat"
+            ],
+            [
+              "bat"
+            ]
+          ]
+        },
+        {
+          "args": [
+            [
+              "a",
+              "a",
+              "b"
+            ]
+          ],
+          "expected": [
+            [
+              "a",
+              "a"
+            ],
+            [
+              "b"
+            ]
+          ]
+        },
+        {
+          "args": [
+            [
+              "ab",
+              "ba",
+              "abc",
+              "cab"
+            ]
+          ],
+          "expected": [
+            [
+              "ab",
+              "ba"
+            ],
+            [
+              "abc",
+              "cab"
+            ]
+          ]
+        },
+        {
+          "args": [
+            [
+              "A",
+              "a"
+            ]
+          ],
+          "expected": [
+            [
+              "A"
+            ],
+            [
+              "a"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "code-20",
+      "category": "dynamic_programming",
+      "difficulty": "hard",
+      "function": "longest_common_subsequence_length",
+      "prompt": "Implement `longest_common_subsequence_length(a, b)`. Return the length of the longest sequence of characters that appears in both strings in the same relative order, not necessarily contiguously.",
+      "tests": [
+        {
+          "args": [
+            "",
+            ""
+          ],
+          "expected": 0
+        },
+        {
+          "args": [
+            "abc",
+            ""
+          ],
+          "expected": 0
+        },
+        {
+          "args": [
+            "abcde",
+            "ace"
+          ],
+          "expected": 3
+        },
+        {
+          "args": [
+            "abc",
+            "abc"
+          ],
+          "expected": 3
+        },
+        {
+          "args": [
+            "abc",
+            "def"
+          ],
+          "expected": 0
+        },
+        {
+          "args": [
+            "AGGTAB",
+            "GXTXAYB"
+          ],
+          "expected": 4
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,197 @@
+{
+  "benchmark_version": "phase4-v1.2.1",
+  "status": "frozen",
+  "description": "Laptop Model Bench v1.2 MiniSWE suite: 15 project-authored tiny Python repositories with issue descriptions, multi-file context, hidden deterministic tests, and partial-credit checks.",
+  "system_prompt": "You are fixing a tiny existing Python repository. Return only complete replacement files using <file path=\"relative/path.py\"> ... </file> blocks. Change only files that need modification. Do not use files, network access, subprocesses, eval, exec, input, or external packages.",
+  "task_design": {
+    "total_items": 15,
+    "difficulty_balance": {
+      "easy": 5,
+      "medium": 5,
+      "hard": 5
+    },
+    "scoring": "Hidden checks provide partial credit; a task fully passes only when all hidden checks pass."
+  },
+  "tasks": [
+    {
+      "id": "swe-01",
+      "category": "configuration",
+      "issue": "`build_config` has the wrong precedence. Configuration must be applied in this order: defaults, then file values, then environment values, so environment values win conflicts. It must not mutate DEFAULTS or either input dictionary. Fix the repository.",
+      "files": {
+        "tinyapp/__init__.py": "",
+        "tinyapp/config.py": "DEFAULTS = {\"host\": \"localhost\", \"port\": 8000, \"debug\": False}\n\ndef build_config(file_values=None, env_values=None):\n    config = DEFAULTS.copy()\n    if env_values:\n        config.update(env_values)\n    if file_values:\n        config.update(file_values)\n    return config\n"
+      },
+      "hidden_tests": "import json, sys\nsys.path.insert(0, \"/work\")\nfrom tinyapp.config import DEFAULTS, build_config\n\nresults = []\ndef check(name, condition):\n    results.append((name, bool(condition)))\n\ncheck(\"defaults\", build_config() == {\"host\":\"localhost\",\"port\":8000,\"debug\":False})\nf = {\"port\": 9000, \"debug\": True}\ne = {\"port\": 7000}\nf_before = dict(f); e_before = dict(e); d_before = dict(DEFAULTS)\ncheck(\"precedence\", build_config(f, e)[\"port\"] == 7000)\ncheck(\"file_applies\", build_config(f, e)[\"debug\"] is True)\nbuild_config(f, e)\ncheck(\"inputs_unchanged\", f == f_before and e == e_before)\ncheck(\"defaults_unchanged\", DEFAULTS == d_before)\npassed = sum(ok for _, ok in results)\nprint(json.dumps({\"status\":\"pass\" if passed == len(results) else (\"partial\" if passed else \"fail\"),\"passed\":passed,\"total\":len(results),\"checks\":results}))\nraise SystemExit(0 if passed == len(results) else 1)\n",
+      "difficulty": "easy"
+    },
+    {
+      "id": "swe-02",
+      "category": "validation",
+      "issue": "Username validation is too permissive. After trimming surrounding whitespace and lowercasing, a valid username must be 3\u201320 characters, contain only ASCII letters a-z, digits 0-9, or `_`, must not start or end with `_`, and must not contain `__`. Keep `normalize_username` behavior. Fix `valid_username`.",
+      "files": {
+        "accounts/__init__.py": "",
+        "accounts/validators.py": "def normalize_username(value):\n    return value.strip().lower()\n\ndef valid_username(value):\n    value = normalize_username(value)\n    return len(value) >= 3 and value.replace(\"_\", \"\").isalnum()\n"
+      },
+      "hidden_tests": "import json, sys\nsys.path.insert(0, \"/work\")\nfrom accounts.validators import normalize_username, valid_username\n\ncases = [\n    (\" Alice_7 \", True),\n    (\"ab\", False),\n    (\"a\" * 21, False),\n    (\"_alice\", False),\n    (\"alice_\", False),\n    (\"ali__ce\", False),\n    (\"alice-7\", False),\n    (\"\u00e1l\u00eece\", False),\n    (\"ABC123\", True),\n]\nresults = []\nfor value, expected in cases:\n    results.append((value, valid_username(value) == expected))\nresults.append((\"normalize\", normalize_username(\"  ALIce_7 \") == \"alice_7\"))\npassed = sum(ok for _, ok in results)\nprint(json.dumps({\"status\":\"pass\" if passed == len(results) else (\"partial\" if passed else \"fail\"),\"passed\":passed,\"total\":len(results),\"checks\":results}, ensure_ascii=False))\nraise SystemExit(0 if passed == len(results) else 1)\n",
+      "difficulty": "easy"
+    },
+    {
+      "id": "swe-03",
+      "category": "state_logic",
+      "issue": "`available_stock(records, sku)` computes stock incorrectly. Each record has `sku`, `qty`, and `status`. For the requested SKU: `received` adds qty, `reserved` subtracts qty, and `damaged` contributes nothing. Records for other SKUs and unknown statuses must be ignored. The final result must never be below 0. Do not mutate records.",
+      "files": {
+        "inventory/__init__.py": "",
+        "inventory/models.py": "VALID_STATUSES = {\"received\", \"reserved\", \"damaged\"}\n",
+        "inventory/service.py": "from .models import VALID_STATUSES\n\ndef available_stock(records, sku):\n    total = 0\n    for record in records:\n        if record[\"sku\"] == sku:\n            total += record[\"qty\"]\n    return total\n"
+      },
+      "hidden_tests": "import copy, json, sys\nsys.path.insert(0, \"/work\")\nfrom inventory.service import available_stock\n\nrecords = [\n    {\"sku\":\"A\",\"qty\":10,\"status\":\"received\"},\n    {\"sku\":\"A\",\"qty\":3,\"status\":\"reserved\"},\n    {\"sku\":\"A\",\"qty\":4,\"status\":\"damaged\"},\n    {\"sku\":\"B\",\"qty\":100,\"status\":\"received\"},\n    {\"sku\":\"A\",\"qty\":9,\"status\":\"mystery\"},\n]\nbefore = copy.deepcopy(records)\nchecks = [\n    (\"basic\", available_stock(records, \"A\") == 7),\n    (\"other_sku\", available_stock(records, \"B\") == 100),\n    (\"missing\", available_stock(records, \"C\") == 0),\n    (\"floor_zero\", available_stock([{\"sku\":\"A\",\"qty\":2,\"status\":\"received\"},{\"sku\":\"A\",\"qty\":5,\"status\":\"reserved\"}], \"A\") == 0),\n    (\"unchanged\", records == before),\n]\npassed = sum(ok for _, ok in checks)\nprint(json.dumps({\"status\":\"pass\" if passed == len(checks) else (\"partial\" if passed else \"fail\"),\"passed\":passed,\"total\":len(checks),\"checks\":checks}))\nraise SystemExit(0 if passed == len(checks) else 1)\n",
+      "difficulty": "easy"
+    },
+    {
+      "id": "swe-04",
+      "category": "pagination",
+      "issue": "`paginate(items, page, page_size)` should use 1-based page numbers. For example page=1 starts at the first item. Return a new list. If page < 1 or page_size < 1, return []. A page beyond the end also returns []. Fix the implementation without mutating `items`.",
+      "files": {
+        "api/__init__.py": "",
+        "api/pagination.py": "def paginate(items, page, page_size):\n    start = page * page_size\n    end = start + page_size\n    return items[start:end]\n"
+      },
+      "hidden_tests": "import json, sys\nsys.path.insert(0, \"/work\")\nfrom api.pagination import paginate\n\ndata = [1,2,3,4,5]\nbefore = list(data)\nchecks = [\n    (\"page1\", paginate(data,1,2) == [1,2]),\n    (\"page2\", paginate(data,2,2) == [3,4]),\n    (\"last\", paginate(data,3,2) == [5]),\n    (\"beyond\", paginate(data,4,2) == []),\n    (\"invalid_page\", paginate(data,0,2) == []),\n    (\"invalid_size\", paginate(data,1,0) == []),\n    (\"unchanged\", data == before),\n    (\"new_list\", paginate(data,1,10) is not data),\n]\npassed = sum(ok for _, ok in checks)\nprint(json.dumps({\"status\":\"pass\" if passed == len(checks) else (\"partial\" if passed else \"fail\"),\"passed\":passed,\"total\":len(checks),\"checks\":checks}))\nraise SystemExit(0 if passed == len(checks) else 1)\n",
+      "difficulty": "easy"
+    },
+    {
+      "id": "swe-05",
+      "category": "business_logic",
+      "issue": "`order_total(lines, coupon_percent=0)` applies coupons incorrectly. Each line has `unit_price` and `quantity`; use `line_total` for each line. `coupon_percent` is a whole-number percentage (10 means 10%). Clamp coupon_percent to the range 0..100, apply it once to the subtotal, and return the final value rounded to 2 decimals. Do not mutate `lines`.",
+      "files": {
+        "store/__init__.py": "",
+        "store/pricing.py": "def line_total(unit_price, quantity):\n    return round(unit_price * quantity, 2)\n",
+        "store/order.py": "from .pricing import line_total\n\ndef order_total(lines, coupon_percent=0):\n    subtotal = sum(line_total(line[\"unit_price\"], line[\"quantity\"]) for line in lines)\n    if coupon_percent:\n        subtotal -= coupon_percent\n    return round(subtotal, 2)\n"
+      },
+      "hidden_tests": "import copy, json, sys\nsys.path.insert(0, \"/work\")\nfrom store.order import order_total\n\nlines = [{\"unit_price\": 12.50, \"quantity\": 2}, {\"unit_price\": 5.00, \"quantity\": 1}]\nbefore = copy.deepcopy(lines)\nchecks = [\n    (\"no_coupon\", order_total(lines) == 30.00),\n    (\"ten_percent\", order_total(lines,10) == 27.00),\n    (\"zero\", order_total(lines,0) == 30.00),\n    (\"over_100\", order_total(lines,150) == 0.00),\n    (\"negative\", order_total(lines,-20) == 30.00),\n    (\"rounding\", order_total([{\"unit_price\": 3.335, \"quantity\": 3}], 10) == 9.00),\n    (\"unchanged\", lines == before),\n]\npassed = sum(ok for _, ok in checks)\nprint(json.dumps({\"status\":\"pass\" if passed == len(checks) else (\"partial\" if passed else \"fail\"),\"passed\":passed,\"total\":len(checks),\"checks\":checks}))\nraise SystemExit(0 if passed == len(checks) else 1)\n",
+      "difficulty": "easy"
+    },
+    {
+      "id": "swe-06",
+      "category": "parsing",
+      "difficulty": "medium",
+      "issue": "`parse_bool(value, default=False)` handles configuration strings incorrectly. After stripping whitespace and lowercasing, `true`, `1`, `yes`, and `on` must return True; `false`, `0`, `no`, and `off` must return False. Unknown values return `default`. Existing bool inputs should be returned unchanged. Fix the implementation.",
+      "files": {
+        "settings/__init__.py": "",
+        "settings/parser.py": "def parse_bool(value, default=False):\n    if value:\n        return True\n    return False\n"
+      },
+      "hidden_tests": "import json, sys\nsys.path.insert(0, \"/work\")\nfrom settings.parser import parse_bool\n\nchecks = [\n    (\"true\", parse_bool(\" true \") is True),\n    (\"yes\", parse_bool(\"YES\") is True),\n    (\"one\", parse_bool(\"1\") is True),\n    (\"on\", parse_bool(\"on\") is True),\n    (\"false\", parse_bool(\" false \") is False),\n    (\"no\", parse_bool(\"NO\") is False),\n    (\"zero\", parse_bool(\"0\") is False),\n    (\"off\", parse_bool(\"off\") is False),\n    (\"unknown_false\", parse_bool(\"maybe\") is False),\n    (\"unknown_true\", parse_bool(\"maybe\", True) is True),\n    (\"bool_true\", parse_bool(True) is True),\n    (\"bool_false\", parse_bool(False) is False),\n]\npassed = sum(ok for _, ok in checks)\nprint(json.dumps({\"status\":\"pass\" if passed == len(checks) else (\"partial\" if passed else \"fail\"),\"passed\":passed,\"total\":len(checks),\"checks\":checks}))\nraise SystemExit(0 if passed == len(checks) else 1)\n"
+    },
+    {
+      "id": "swe-07",
+      "category": "caching",
+      "difficulty": "medium",
+      "issue": "`get_or_compute(cache, key, factory)` recomputes cached falsy values such as 0, False, None, and ''. If the key already exists in the dictionary, return the stored value without calling `factory`. Otherwise call factory once, store its result, and return it. Do not replace the cache dictionary itself.",
+      "files": {
+        "cachelib/__init__.py": "",
+        "cachelib/service.py": "def get_or_compute(cache, key, factory):\n    value = cache.get(key)\n    if value:\n        return value\n    value = factory()\n    cache[key] = value\n    return value\n"
+      },
+      "hidden_tests": "import json, sys\nsys.path.insert(0, \"/work\")\nfrom cachelib.service import get_or_compute\n\nchecks = []\n\nfor stored in [0, False, None, \"\"]:\n    cache = {\"x\": stored}\n    calls = []\n    def factory():\n        calls.append(1)\n        return \"new\"\n    got = get_or_compute(cache, \"x\", factory)\n    checks.append((\"cached_\" + repr(stored), got == stored and calls == []))\n\ncache = {}\ncalls = []\ndef factory():\n    calls.append(1)\n    return 42\n\ngot = get_or_compute(cache, \"missing\", factory)\nchecks.append((\"compute\", got == 42))\nchecks.append((\"stored\", cache == {\"missing\": 42}))\nchecks.append((\"called_once\", len(calls) == 1))\n\npassed = sum(ok for _, ok in checks)\nprint(json.dumps({\"status\":\"pass\" if passed == len(checks) else (\"partial\" if passed else \"fail\"),\"passed\":passed,\"total\":len(checks),\"checks\":checks}))\nraise SystemExit(0 if passed == len(checks) else 1)\n"
+    },
+    {
+      "id": "swe-08",
+      "category": "authorization",
+      "difficulty": "medium",
+      "issue": "`can_access(role, action)` ignores the role definitions. `viewer` may read; `editor` may read and write; `admin` may read, write, and delete. Unknown roles and unknown actions must return False. Use the existing ROLE_ACTIONS mapping.",
+      "files": {
+        "access/__init__.py": "",
+        "access/roles.py": "ROLE_ACTIONS = {\n    \"viewer\": {\"read\"},\n    \"editor\": {\"read\", \"write\"},\n    \"admin\": {\"read\", \"write\", \"delete\"},\n}\n",
+        "access/permissions.py": "from .roles import ROLE_ACTIONS\n\ndef can_access(role, action):\n    return role == \"admin\"\n"
+      },
+      "hidden_tests": "import json, sys\nsys.path.insert(0, \"/work\")\nfrom access.permissions import can_access\nfrom access.roles import ROLE_ACTIONS\n\nbefore = {k: set(v) for k, v in ROLE_ACTIONS.items()}\nchecks = [\n    (\"viewer_read\", can_access(\"viewer\", \"read\") is True),\n    (\"viewer_write\", can_access(\"viewer\", \"write\") is False),\n    (\"editor_read\", can_access(\"editor\", \"read\") is True),\n    (\"editor_write\", can_access(\"editor\", \"write\") is True),\n    (\"editor_delete\", can_access(\"editor\", \"delete\") is False),\n    (\"admin_delete\", can_access(\"admin\", \"delete\") is True),\n    (\"unknown_role\", can_access(\"owner\", \"read\") is False),\n    (\"unknown_action\", can_access(\"admin\", \"publish\") is False),\n    (\"mapping_unchanged\", ROLE_ACTIONS == before),\n]\npassed = sum(ok for _, ok in checks)\nprint(json.dumps({\"status\":\"pass\" if passed == len(checks) else (\"partial\" if passed else \"fail\"),\"passed\":passed,\"total\":len(checks),\"checks\":checks}))\nraise SystemExit(0 if passed == len(checks) else 1)\n"
+    },
+    {
+      "id": "swe-09",
+      "category": "aggregation",
+      "difficulty": "medium",
+      "issue": "`group_by_status(records)` must return a dictionary with exactly the known statuses `new`, `active`, and `closed`, each mapped to a new list of matching records. Ignore unknown statuses. Preserve record order and do not mutate the input records or the status list.",
+      "files": {
+        "tickets/__init__.py": "",
+        "tickets/constants.py": "STATUSES = [\"new\", \"active\", \"closed\"]\n",
+        "tickets/service.py": "from .constants import STATUSES\n\ndef group_by_status(records):\n    result = {}\n    for record in records:\n        result.setdefault(record[\"status\"], []).append(record)\n    return result\n"
+      },
+      "hidden_tests": "import copy, json, sys\nsys.path.insert(0, \"/work\")\nfrom tickets.service import group_by_status\nfrom tickets.constants import STATUSES\n\nrecords = [\n    {\"id\":1,\"status\":\"active\"},\n    {\"id\":2,\"status\":\"new\"},\n    {\"id\":3,\"status\":\"mystery\"},\n    {\"id\":4,\"status\":\"active\"},\n]\nbefore = copy.deepcopy(records)\nstatuses_before = list(STATUSES)\ngot = group_by_status(records)\n\nchecks = [\n    (\"keys\", list(got.keys()) == [\"new\", \"active\", \"closed\"]),\n    (\"new\", [r[\"id\"] for r in got[\"new\"]] == [2]),\n    (\"active\", [r[\"id\"] for r in got[\"active\"]] == [1,4]),\n    (\"closed\", got[\"closed\"] == []),\n    (\"unknown_ignored\", all(r[\"id\"] != 3 for group in got.values() for r in group)),\n    (\"records_unchanged\", records == before),\n    (\"statuses_unchanged\", STATUSES == statuses_before),\n]\npassed = sum(ok for _, ok in checks)\nprint(json.dumps({\"status\":\"pass\" if passed == len(checks) else (\"partial\" if passed else \"fail\"),\"passed\":passed,\"total\":len(checks),\"checks\":checks}))\nraise SystemExit(0 if passed == len(checks) else 1)\n"
+    },
+    {
+      "id": "swe-10",
+      "category": "normalization",
+      "difficulty": "medium",
+      "issue": "`slugify(text)` must lowercase ASCII letters, convert every run of one or more non-ASCII-alphanumeric characters to a single `-`, and remove leading/trailing `-`. ASCII letters and digits are kept. Non-ASCII letters count as separators. Fix the implementation.",
+      "files": {
+        "content/__init__.py": "",
+        "content/slug.py": "def slugify(text):\n    return text.lower().replace(\" \", \"-\")\n"
+      },
+      "hidden_tests": "import json, sys\nsys.path.insert(0, \"/work\")\nfrom content.slug import slugify\n\ncases = [\n    (\"Hello World\", \"hello-world\"),\n    (\"  Hello   World! \", \"hello-world\"),\n    (\"API_v2 Test\", \"api-v2-test\"),\n    (\"Already-Slugged\", \"already-slugged\"),\n    (\"caf\u00e9 menu\", \"caf-menu\"),\n    (\"123 -- 456\", \"123-456\"),\n    (\"---\", \"\"),\n    (\"\", \"\"),\n]\nchecks = [(src, slugify(src) == expected) for src, expected in cases]\npassed = sum(ok for _, ok in checks)\nprint(json.dumps({\"status\":\"pass\" if passed == len(checks) else (\"partial\" if passed else \"fail\"),\"passed\":passed,\"total\":len(checks),\"checks\":checks}, ensure_ascii=False))\nraise SystemExit(0 if passed == len(checks) else 1)\n"
+    },
+    {
+      "id": "swe-11",
+      "category": "multi_file_business_logic",
+      "difficulty": "hard",
+      "issue": "`invoice_total(lines, discount_percent, tax_rate)` is wrong. Each line subtotal is produced by `line_total`. Clamp `discount_percent` to 0..100, apply that discount to the subtotal first, then apply `tax_rate` as a decimal fraction to the discounted amount. A negative tax_rate is treated as 0. Return the result rounded to 2 decimals. Do not mutate lines.",
+      "files": {
+        "billing/__init__.py": "",
+        "billing/pricing.py": "def line_total(price, quantity):\n    return round(price * quantity, 2)\n",
+        "billing/invoice.py": "from .pricing import line_total\n\ndef invoice_total(lines, discount_percent=0, tax_rate=0):\n    subtotal = sum(line_total(x[\"price\"], x[\"quantity\"]) for x in lines)\n    subtotal += subtotal * tax_rate\n    subtotal -= discount_percent\n    return round(subtotal, 2)\n"
+      },
+      "hidden_tests": "import copy, json, sys\nsys.path.insert(0, \"/work\")\nfrom billing.invoice import invoice_total\n\nlines = [{\"price\":10.0,\"quantity\":2},{\"price\":5.0,\"quantity\":1}]\nbefore = copy.deepcopy(lines)\n\nchecks = [\n    (\"plain\", invoice_total(lines) == 25.00),\n    (\"discount\", invoice_total(lines, 20, 0) == 20.00),\n    (\"tax\", invoice_total(lines, 0, 0.10) == 27.50),\n    (\"order\", invoice_total(lines, 20, 0.10) == 22.00),\n    (\"discount_floor\", invoice_total(lines, -20, 0) == 25.00),\n    (\"discount_cap\", invoice_total(lines, 150, 0.25) == 0.00),\n    (\"negative_tax\", invoice_total(lines, 0, -0.5) == 25.00),\n    (\"unchanged\", lines == before),\n]\npassed = sum(ok for _, ok in checks)\nprint(json.dumps({\"status\":\"pass\" if passed == len(checks) else (\"partial\" if passed else \"fail\"),\"passed\":passed,\"total\":len(checks),\"checks\":checks}))\nraise SystemExit(0 if passed == len(checks) else 1)\n"
+    },
+    {
+      "id": "swe-12",
+      "category": "state_aggregation",
+      "difficulty": "hard",
+      "issue": "`order_summary(orders)` must return counts for every known status from STATUS_ORDER, plus `paid_revenue`. Unknown statuses are ignored entirely. Revenue includes only orders whose status is `paid`; use their numeric `total` values and round paid_revenue to 2 decimals. Do not mutate orders or STATUS_ORDER.",
+      "files": {
+        "orders/__init__.py": "",
+        "orders/status.py": "STATUS_ORDER = [\"pending\", \"paid\", \"cancelled\"]\n",
+        "orders/report.py": "from .status import STATUS_ORDER\n\ndef order_summary(orders):\n    result = {\"paid_revenue\": 0}\n    for order in orders:\n        status = order[\"status\"]\n        result[status] = result.get(status, 0) + 1\n        result[\"paid_revenue\"] += order[\"total\"]\n    return result\n"
+      },
+      "hidden_tests": "import copy, json, sys\nsys.path.insert(0, \"/work\")\nfrom orders.report import order_summary\nfrom orders.status import STATUS_ORDER\n\norders = [\n    {\"id\":1,\"status\":\"pending\",\"total\":10.0},\n    {\"id\":2,\"status\":\"paid\",\"total\":12.345},\n    {\"id\":3,\"status\":\"paid\",\"total\":7.655},\n    {\"id\":4,\"status\":\"cancelled\",\"total\":100},\n    {\"id\":5,\"status\":\"unknown\",\"total\":999},\n]\nbefore = copy.deepcopy(orders)\nstatuses_before = list(STATUS_ORDER)\ngot = order_summary(orders)\n\nchecks = [\n    (\"exact_keys\", set(got) == {\"pending\",\"paid\",\"cancelled\",\"paid_revenue\"}),\n    (\"pending\", got[\"pending\"] == 1),\n    (\"paid\", got[\"paid\"] == 2),\n    (\"cancelled\", got[\"cancelled\"] == 1),\n    (\"revenue\", got[\"paid_revenue\"] == 20.00),\n    (\"unchanged_orders\", orders == before),\n    (\"unchanged_statuses\", STATUS_ORDER == statuses_before),\n]\npassed = sum(ok for _, ok in checks)\nprint(json.dumps({\"status\":\"pass\" if passed == len(checks) else (\"partial\" if passed else \"fail\"),\"passed\":passed,\"total\":len(checks),\"checks\":checks}))\nraise SystemExit(0 if passed == len(checks) else 1)\n"
+    },
+    {
+      "id": "swe-13",
+      "category": "boundary_logic",
+      "difficulty": "hard",
+      "issue": "`allow_request(timestamps, now, limit, window)` implements a sliding-window rate limit. `timestamps` contains past request times. A timestamp is inside the active window when `now - timestamp < window`. If fewer than `limit` active timestamps exist, return True; otherwise False. limit <= 0 or window <= 0 always returns False. Do not mutate or reorder timestamps.",
+      "files": {
+        "ratelimit/__init__.py": "",
+        "ratelimit/core.py": "def allow_request(timestamps, now, limit, window):\n    recent = [t for t in timestamps if now - t <= window]\n    timestamps[:] = recent\n    return len(recent) <= limit\n"
+      },
+      "hidden_tests": "import json, sys\nsys.path.insert(0, \"/work\")\nfrom ratelimit.core import allow_request\n\nchecks = []\n\ndef check_case(name, timestamps, now, limit, window, expected):\n    before = list(timestamps)\n    got = allow_request(timestamps, now, limit, window)\n    checks.append((name, got is expected))\n    checks.append((name + \"_unchanged\", timestamps == before))\n\ncheck_case(\"empty\", [], 100, 3, 10, True)\ncheck_case(\"under\", [95,96], 100, 3, 10, True)\ncheck_case(\"at_limit\", [95,96,99], 100, 3, 10, False)\ncheck_case(\"boundary_excluded\", [90,95,96], 100, 3, 10, True)\ncheck_case(\"old_ignored\", [1,2,99], 100, 2, 10, True)\ncheck_case(\"zero_limit\", [], 100, 0, 10, False)\ncheck_case(\"zero_window\", [], 100, 3, 0, False)\n\npassed = sum(ok for _, ok in checks)\nprint(json.dumps({\"status\":\"pass\" if passed == len(checks) else (\"partial\" if passed else \"fail\"),\"passed\":passed,\"total\":len(checks),\"checks\":checks}))\nraise SystemExit(0 if passed == len(checks) else 1)\n"
+    },
+    {
+      "id": "swe-14",
+      "category": "multi_file_search",
+      "difficulty": "hard",
+      "issue": "`search_products(products, query)` should normalize both query and product names using `normalize_text`. Ignore products whose normalized name does not contain the normalized query. Return a new list sorted first by the index where the query appears in the normalized name, then by normalized name, then by numeric id. An empty normalized query returns []. Do not mutate products.",
+      "files": {
+        "catalog/__init__.py": "",
+        "catalog/text.py": "def normalize_text(value):\n    return \" \".join(value.strip().lower().split())\n",
+        "catalog/search.py": "def search_products(products, query):\n    return [p for p in products if query in p[\"name\"]]\n"
+      },
+      "hidden_tests": "import copy, json, sys\nsys.path.insert(0, \"/work\")\nfrom catalog.search import search_products\n\nproducts = [\n    {\"id\":3,\"name\":\"  Red   Apple \"},\n    {\"id\":2,\"name\":\"Apple Juice\"},\n    {\"id\":1,\"name\":\"Green Apple\"},\n    {\"id\":4,\"name\":\"Banana\"},\n]\nbefore = copy.deepcopy(products)\n\ngot = search_products(products, \" APPLE \")\n\nchecks = [\n    (\"ids\", [x[\"id\"] for x in got] == [2,3,1]),\n    (\"case_space\", [x[\"id\"] for x in search_products(products, \"red  apple\")] == [3]),\n    (\"no_match\", search_products(products, \"pear\") == []),\n    (\"empty\", search_products(products, \"   \") == []),\n    (\"new_list\", got is not products),\n    (\"unchanged\", products == before),\n]\npassed = sum(ok for _, ok in checks)\nprint(json.dumps({\"status\":\"pass\" if passed == len(checks) else (\"partial\" if passed else \"fail\"),\"passed\":passed,\"total\":len(checks),\"checks\":checks}))\nraise SystemExit(0 if passed == len(checks) else 1)\n"
+    },
+    {
+      "id": "swe-15",
+      "category": "scheduling",
+      "difficulty": "hard",
+      "issue": "`select_jobs(jobs, now, limit)` must select only jobs with `run_at <= now`. Sort ready jobs by priority descending, then `run_at` ascending, then numeric id ascending. Return at most `limit` jobs as a new list. limit <= 0 returns []. Do not mutate jobs or job dictionaries.",
+      "files": {
+        "scheduler/__init__.py": "",
+        "scheduler/models.py": "DEFAULT_PRIORITY = 0\n",
+        "scheduler/service.py": "from .models import DEFAULT_PRIORITY\n\ndef select_jobs(jobs, now, limit):\n    ready = [job for job in jobs if job[\"run_at\"] < now]\n    ready.sort(key=lambda job: job.get(\"priority\", DEFAULT_PRIORITY))\n    return ready[:limit]\n"
+      },
+      "hidden_tests": "import copy, json, sys\nsys.path.insert(0, \"/work\")\nfrom scheduler.service import select_jobs\n\njobs = [\n    {\"id\":4,\"run_at\":10,\"priority\":1},\n    {\"id\":2,\"run_at\":10,\"priority\":3},\n    {\"id\":3,\"run_at\":8,\"priority\":3},\n    {\"id\":1,\"run_at\":12,\"priority\":9},\n    {\"id\":5,\"run_at\":10},\n]\nbefore = copy.deepcopy(jobs)\n\nchecks = [\n    (\"order\", [x[\"id\"] for x in select_jobs(jobs,10,10)] == [3,2,4,5]),\n    (\"limit\", [x[\"id\"] for x in select_jobs(jobs,10,2)] == [3,2]),\n    (\"future\", all(x[\"id\"] != 1 for x in select_jobs(jobs,10,10))),\n    (\"boundary\", any(x[\"id\"] == 2 for x in select_jobs(jobs,10,10))),\n    (\"zero\", select_jobs(jobs,10,0) == []),\n    (\"negative\", select_jobs(jobs,10,-1) == []),\n    (\"unchanged\", jobs == before),\n]\npassed = sum(ok for _, ok in checks)\nprint(json.dumps({\"status\":\"pass\" if passed == len(checks) else (\"partial\" if passed else \"fail\"),\"passed\":passed,\"total\":len(checks),\"checks\":checks}))\nraise SystemExit(0 if passed == len(checks) else 1)\n"
+    }
+  ],
+  "corrections": [
+    {
+      "version": "phase4-v1.2.1",
+      "task": "swe-14",
+      "reason": "Corrected expected search ordering. Sorting by query-position requires Apple Juice (0), Red Apple (4), Green Apple (6), therefore IDs [2,3,1]."
+    }
+  ]
+}

@@ -1,0 +1,920 @@
+{
+  "methodology": {
+    "context": 4096,
+    "max_completion_tokens": 512,
+    "models": 4,
+    "reasoning_budget_tokens": 256,
+    "requests": 144,
+    "seed": 42,
+    "tasks": 36,
+    "temperature": 0.0,
+    "threads": 4,
+    "unparsed_answers_count_as_incorrect": true
+  },
+  "models": [
+    {
+      "accuracy": 47.22,
+      "categories": {
+        "algebra": {
+          "accuracy": 0.0,
+          "correct": 0,
+          "total": 1
+        },
+        "algorithms": {
+          "accuracy": 100.0,
+          "correct": 1,
+          "total": 1
+        },
+        "ambiguity": {
+          "accuracy": 100.0,
+          "correct": 1,
+          "total": 1
+        },
+        "api_design": {
+          "accuracy": 0.0,
+          "correct": 0,
+          "total": 1
+        },
+        "arithmetic": {
+          "accuracy": 100.0,
+          "correct": 1,
+          "total": 1
+        },
+        "biology": {
+          "accuracy": 100.0,
+          "correct": 1,
+          "total": 1
+        },
+        "commonsense": {
+          "accuracy": 100.0,
+          "correct": 1,
+          "total": 1
+        },
+        "concurrency": {
+          "accuracy": 100.0,
+          "correct": 1,
+          "total": 1
+        },
+        "conditional": {
+          "accuracy": 0.0,
+          "correct": 0,
+          "total": 1
+        },
+        "conflicting_evidence": {
+          "accuracy": 100.0,
+          "correct": 1,
+          "total": 1
+        },
+        "databases": {
+          "accuracy": 0.0,
+          "correct": 0,
+          "total": 1
+        },
+        "distance": {
+          "accuracy": 0.0,
+          "correct": 0,
+          "total": 1
+        },
+        "fractions": {
+          "accuracy": 0.0,
+          "correct": 0,
+          "total": 2
+        },
+        "git": {
+          "accuracy": 100.0,
+          "correct": 1,
+          "total": 1
+        },
+        "http": {
+          "accuracy": 100.0,
+          "correct": 1,
+          "total": 1
+        },
+        "multi_step": {
+          "accuracy": 0.0,
+          "correct": 0,
+          "total": 1
+        },
+        "networking": {
+          "accuracy": 100.0,
+          "correct": 1,
+          "total": 1
+        },
+        "ordering": {
+          "accuracy": 0.0,
+          "correct": 0,
+          "total": 2
+        },
+        "percentage": {
+          "accuracy": 50.0,
+          "correct": 1,
+          "total": 2
+        },
+        "physics": {
+          "accuracy": 50.0,
+          "correct": 1,
+          "total": 2
+        },
+        "probability": {
+          "accuracy": 0.0,
+          "correct": 0,
+          "total": 1
+        },
+        "python": {
+          "accuracy": 0.0,
+          "correct": 0,
+          "total": 1
+        },
+        "rate": {
+          "accuracy": 100.0,
+          "correct": 1,
+          "total": 1
+        },
+        "ratio": {
+          "accuracy": 0.0,
+          "correct": 0,
+          "total": 1
+        },
+        "reference_resolution": {
+          "accuracy": 0.0,
+          "correct": 0,
+          "total": 1
+        },
+        "set_logic": {
+          "accuracy": 0.0,
+          "correct": 0,
+          "total": 1
+        },
+        "syllogism": {
+          "accuracy": 100.0,
+          "correct": 1,
+          "total": 1
+        },
+        "temporal": {
+          "accuracy": 0.0,
+          "correct": 0,
+          "total": 1
+        },
+        "testing": {
+          "accuracy": 100.0,
+          "correct": 1,
+          "total": 1
+        },
+        "truthfulness": {
+          "accuracy": 0.0,
+          "correct": 0,
+          "total": 1
+        },
+        "uncertainty": {
+          "accuracy": 100.0,
+          "correct": 1,
+          "total": 1
+        },
+        "work_rate": {
+          "accuracy": 100.0,
+          "correct": 1,
+          "total": 1
+        }
+      },
+      "correct": 17,
+      "difficulties": {
+        "easy": {
+          "accuracy": 58.33,
+          "correct": 7,
+          "total": 12
+        },
+        "hard": {
+          "accuracy": 50.0,
+          "correct": 6,
+          "total": 12
+        },
+        "medium": {
+          "accuracy": 33.33,
+          "correct": 4,
+          "total": 12
+        }
+      },
+      "domains": {
+        "commonsense_ambiguity": {
+          "accuracy": 66.67,
+          "correct": 4,
+          "total": 6
+        },
+        "logic": {
+          "accuracy": 16.67,
+          "correct": 1,
+          "total": 6
+        },
+        "multi_step": {
+          "accuracy": 33.33,
+          "correct": 2,
+          "total": 6
+        },
+        "quantitative": {
+          "accuracy": 33.33,
+          "correct": 2,
+          "total": 6
+        },
+        "science_technical": {
+          "accuracy": 66.67,
+          "correct": 4,
+          "total": 6
+        },
+        "software_engineering": {
+          "accuracy": 66.67,
+          "correct": 4,
+          "total": 6
+        }
+      },
+      "elapsed_mean_seconds": 16.258,
+      "elapsed_total_seconds": 585.292,
+      "failures": 0,
+      "model": "Qwen3.5-0.8B",
+      "model_id": "qwen35-0.8b-q4km",
+      "parse_rate": 91.67,
+      "parsed": 33,
+      "phase2_score": 47.22,
+      "quant": "Q4_K_M",
+      "total": 36
+    },
+    {
+      "accuracy": 86.11,
+      "categories": {
+        "algebra": {
+          "accuracy": 0.0,
+          "correct": 0,
+          "total": 1
+        },
+        "algorithms": {
+          "accuracy": 100.0,
+          "correct": 1,
+          "total": 1
+        },
+        "ambiguity": {
+          "accuracy": 100.0,
+          "correct": 1,
+          "total": 1
+        },
+        "api_design": {
+          "accuracy": 100.0,
+          "correct": 1,
+          "total": 1
+        },
+        "arithmetic": {
+          "accuracy": 100.0,
+          "correct": 1,
+          "total": 1
+        },
+        "biology": {
+          "accuracy": 100.0,
+          "correct": 1,
+          "total": 1
+        },
+        "commonsense": {
+          "accuracy": 100.0,
+          "correct": 1,
+          "total": 1
+        },
+        "concurrency": {
+          "accuracy": 100.0,
+          "correct": 1,
+          "total": 1
+        },
+        "conditional": {
+          "accuracy": 100.0,
+          "correct": 1,
+          "total": 1
+        },
+        "conflicting_evidence": {
+          "accuracy": 100.0,
+          "correct": 1,
+          "total": 1
+        },
+        "databases": {
+          "accuracy": 100.0,
+          "correct": 1,
+          "total": 1
+        },
+        "distance": {
+          "accuracy": 100.0,
+          "correct": 1,
+          "total": 1
+        },
+        "fractions": {
+          "accuracy": 50.0,
+          "correct": 1,
+          "total": 2
+        },
+        "git": {
+          "accuracy": 100.0,
+          "correct": 1,
+          "total": 1
+        },
+        "http": {
+          "accuracy": 100.0,
+          "correct": 1,
+          "total": 1
+        },
+        "multi_step": {
+          "accuracy": 0.0,
+          "correct": 0,
+          "total": 1
+        },
+        "networking": {
+          "accuracy": 100.0,
+          "correct": 1,
+          "total": 1
+        },
+        "ordering": {
+          "accuracy": 100.0,
+          "correct": 2,
+          "total": 2
+        },
+        "percentage": {
+          "accuracy": 100.0,
+          "correct": 2,
+          "total": 2
+        },
+        "physics": {
+          "accuracy": 100.0,
+          "correct": 2,
+          "total": 2
+        },
+        "probability": {
+          "accuracy": 100.0,
+          "correct": 1,
+          "total": 1
+        },
+        "python": {
+          "accuracy": 100.0,
+          "correct": 1,
+          "total": 1
+        },
+        "rate": {
+          "accuracy": 0.0,
+          "correct": 0,
+          "total": 1
+        },
+        "ratio": {
+          "accuracy": 100.0,
+          "correct": 1,
+          "total": 1
+        },
+        "reference_resolution": {
+          "accuracy": 0.0,
+          "correct": 0,
+          "total": 1
+        },
+        "set_logic": {
+          "accuracy": 100.0,
+          "correct": 1,
+          "total": 1
+        },
+        "syllogism": {
+          "accuracy": 100.0,
+          "correct": 1,
+          "total": 1
+        },
+        "temporal": {
+          "accuracy": 100.0,
+          "correct": 1,
+          "total": 1
+        },
+        "testing": {
+          "accuracy": 100.0,
+          "correct": 1,
+          "total": 1
+        },
+        "truthfulness": {
+          "accuracy": 100.0,
+          "correct": 1,
+          "total": 1
+        },
+        "uncertainty": {
+          "accuracy": 100.0,
+          "correct": 1,
+          "total": 1
+        },
+        "work_rate": {
+          "accuracy": 100.0,
+          "correct": 1,
+          "total": 1
+        }
+      },
+      "correct": 31,
+      "difficulties": {
+        "easy": {
+          "accuracy": 83.33,
+          "correct": 10,
+          "total": 12
+        },
+        "hard": {
+          "accuracy": 83.33,
+          "correct": 10,
+          "total": 12
+        },
+        "medium": {
+          "accuracy": 91.67,
+          "correct": 11,
+          "total": 12
+        }
+      },
+      "domains": {
+        "commonsense_ambiguity": {
+          "accuracy": 83.33,
+          "correct": 5,
+          "total": 6
+        },
+        "logic": {
+          "accuracy": 100.0,
+          "correct": 6,
+          "total": 6
+        },
+        "multi_step": {
+          "accuracy": 66.67,
+          "correct": 4,
+          "total": 6
+        },
+        "quantitative": {
+          "accuracy": 66.67,
+          "correct": 4,
+          "total": 6
+        },
+        "science_technical": {
+          "accuracy": 100.0,
+          "correct": 6,
+          "total": 6
+        },
+        "software_engineering": {
+          "accuracy": 100.0,
+          "correct": 6,
+          "total": 6
+        }
+      },
+      "elapsed_mean_seconds": 33.321,
+      "elapsed_total_seconds": 1199.564,
+      "failures": 0,
+      "model": "Qwen3.5-2B",
+      "model_id": "qwen35-2b-q4km",
+      "parse_rate": 100.0,
+      "parsed": 36,
+      "phase2_score": 86.11,
+      "quant": "Q4_K_M",
+      "total": 36
+    },
+    {
+      "accuracy": 94.44,
+      "categories": {
+        "algebra": {
+          "accuracy": 100.0,
+          "correct": 1,
+          "total": 1
+        },
+        "algorithms": {
+          "accuracy": 100.0,
+          "correct": 1,
+          "total": 1
+        },
+        "ambiguity": {
+          "accuracy": 0.0,
+          "correct": 0,
+          "total": 1
+        },
+        "api_design": {
+          "accuracy": 100.0,
+          "correct": 1,
+          "total": 1
+        },
+        "arithmetic": {
+          "accuracy": 100.0,
+          "correct": 1,
+          "total": 1
+        },
+        "biology": {
+          "accuracy": 100.0,
+          "correct": 1,
+          "total": 1
+        },
+        "commonsense": {
+          "accuracy": 100.0,
+          "correct": 1,
+          "total": 1
+        },
+        "concurrency": {
+          "accuracy": 100.0,
+          "correct": 1,
+          "total": 1
+        },
+        "conditional": {
+          "accuracy": 100.0,
+          "correct": 1,
+          "total": 1
+        },
+        "conflicting_evidence": {
+          "accuracy": 100.0,
+          "correct": 1,
+          "total": 1
+        },
+        "databases": {
+          "accuracy": 100.0,
+          "correct": 1,
+          "total": 1
+        },
+        "distance": {
+          "accuracy": 100.0,
+          "correct": 1,
+          "total": 1
+        },
+        "fractions": {
+          "accuracy": 100.0,
+          "correct": 2,
+          "total": 2
+        },
+        "git": {
+          "accuracy": 100.0,
+          "correct": 1,
+          "total": 1
+        },
+        "http": {
+          "accuracy": 100.0,
+          "correct": 1,
+          "total": 1
+        },
+        "multi_step": {
+          "accuracy": 100.0,
+          "correct": 1,
+          "total": 1
+        },
+        "networking": {
+          "accuracy": 100.0,
+          "correct": 1,
+          "total": 1
+        },
+        "ordering": {
+          "accuracy": 100.0,
+          "correct": 2,
+          "total": 2
+        },
+        "percentage": {
+          "accuracy": 100.0,
+          "correct": 2,
+          "total": 2
+        },
+        "physics": {
+          "accuracy": 100.0,
+          "correct": 2,
+          "total": 2
+        },
+        "probability": {
+          "accuracy": 100.0,
+          "correct": 1,
+          "total": 1
+        },
+        "python": {
+          "accuracy": 100.0,
+          "correct": 1,
+          "total": 1
+        },
+        "rate": {
+          "accuracy": 100.0,
+          "correct": 1,
+          "total": 1
+        },
+        "ratio": {
+          "accuracy": 100.0,
+          "correct": 1,
+          "total": 1
+        },
+        "reference_resolution": {
+          "accuracy": 100.0,
+          "correct": 1,
+          "total": 1
+        },
+        "set_logic": {
+          "accuracy": 100.0,
+          "correct": 1,
+          "total": 1
+        },
+        "syllogism": {
+          "accuracy": 100.0,
+          "correct": 1,
+          "total": 1
+        },
+        "temporal": {
+          "accuracy": 100.0,
+          "correct": 1,
+          "total": 1
+        },
+        "testing": {
+          "accuracy": 100.0,
+          "correct": 1,
+          "total": 1
+        },
+        "truthfulness": {
+          "accuracy": 0.0,
+          "correct": 0,
+          "total": 1
+        },
+        "uncertainty": {
+          "accuracy": 100.0,
+          "correct": 1,
+          "total": 1
+        },
+        "work_rate": {
+          "accuracy": 100.0,
+          "correct": 1,
+          "total": 1
+        }
+      },
+      "correct": 34,
+      "difficulties": {
+        "easy": {
+          "accuracy": 100.0,
+          "correct": 12,
+          "total": 12
+        },
+        "hard": {
+          "accuracy": 91.67,
+          "correct": 11,
+          "total": 12
+        },
+        "medium": {
+          "accuracy": 91.67,
+          "correct": 11,
+          "total": 12
+        }
+      },
+      "domains": {
+        "commonsense_ambiguity": {
+          "accuracy": 83.33,
+          "correct": 5,
+          "total": 6
+        },
+        "logic": {
+          "accuracy": 83.33,
+          "correct": 5,
+          "total": 6
+        },
+        "multi_step": {
+          "accuracy": 100.0,
+          "correct": 6,
+          "total": 6
+        },
+        "quantitative": {
+          "accuracy": 100.0,
+          "correct": 6,
+          "total": 6
+        },
+        "science_technical": {
+          "accuracy": 100.0,
+          "correct": 6,
+          "total": 6
+        },
+        "software_engineering": {
+          "accuracy": 100.0,
+          "correct": 6,
+          "total": 6
+        }
+      },
+      "elapsed_mean_seconds": 19.324,
+      "elapsed_total_seconds": 695.676,
+      "failures": 0,
+      "model": "MiniCPM5-2B",
+      "model_id": "minicpm5-2b-q4km",
+      "parse_rate": 100.0,
+      "parsed": 36,
+      "phase2_score": 94.44,
+      "quant": "Q4_K_M",
+      "total": 36
+    },
+    {
+      "accuracy": 66.67,
+      "categories": {
+        "algebra": {
+          "accuracy": 100.0,
+          "correct": 1,
+          "total": 1
+        },
+        "algorithms": {
+          "accuracy": 100.0,
+          "correct": 1,
+          "total": 1
+        },
+        "ambiguity": {
+          "accuracy": 0.0,
+          "correct": 0,
+          "total": 1
+        },
+        "api_design": {
+          "accuracy": 100.0,
+          "correct": 1,
+          "total": 1
+        },
+        "arithmetic": {
+          "accuracy": 0.0,
+          "correct": 0,
+          "total": 1
+        },
+        "biology": {
+          "accuracy": 100.0,
+          "correct": 1,
+          "total": 1
+        },
+        "commonsense": {
+          "accuracy": 100.0,
+          "correct": 1,
+          "total": 1
+        },
+        "concurrency": {
+          "accuracy": 100.0,
+          "correct": 1,
+          "total": 1
+        },
+        "conditional": {
+          "accuracy": 100.0,
+          "correct": 1,
+          "total": 1
+        },
+        "conflicting_evidence": {
+          "accuracy": 100.0,
+          "correct": 1,
+          "total": 1
+        },
+        "databases": {
+          "accuracy": 0.0,
+          "correct": 0,
+          "total": 1
+        },
+        "distance": {
+          "accuracy": 100.0,
+          "correct": 1,
+          "total": 1
+        },
+        "fractions": {
+          "accuracy": 0.0,
+          "correct": 0,
+          "total": 2
+        },
+        "git": {
+          "accuracy": 100.0,
+          "correct": 1,
+          "total": 1
+        },
+        "http": {
+          "accuracy": 100.0,
+          "correct": 1,
+          "total": 1
+        },
+        "multi_step": {
+          "accuracy": 100.0,
+          "correct": 1,
+          "total": 1
+        },
+        "networking": {
+          "accuracy": 100.0,
+          "correct": 1,
+          "total": 1
+        },
+        "ordering": {
+          "accuracy": 100.0,
+          "correct": 2,
+          "total": 2
+        },
+        "percentage": {
+          "accuracy": 50.0,
+          "correct": 1,
+          "total": 2
+        },
+        "physics": {
+          "accuracy": 100.0,
+          "correct": 2,
+          "total": 2
+        },
+        "probability": {
+          "accuracy": 0.0,
+          "correct": 0,
+          "total": 1
+        },
+        "python": {
+          "accuracy": 100.0,
+          "correct": 1,
+          "total": 1
+        },
+        "rate": {
+          "accuracy": 0.0,
+          "correct": 0,
+          "total": 1
+        },
+        "ratio": {
+          "accuracy": 0.0,
+          "correct": 0,
+          "total": 1
+        },
+        "reference_resolution": {
+          "accuracy": 0.0,
+          "correct": 0,
+          "total": 1
+        },
+        "set_logic": {
+          "accuracy": 100.0,
+          "correct": 1,
+          "total": 1
+        },
+        "syllogism": {
+          "accuracy": 100.0,
+          "correct": 1,
+          "total": 1
+        },
+        "temporal": {
+          "accuracy": 100.0,
+          "correct": 1,
+          "total": 1
+        },
+        "testing": {
+          "accuracy": 100.0,
+          "correct": 1,
+          "total": 1
+        },
+        "truthfulness": {
+          "accuracy": 0.0,
+          "correct": 0,
+          "total": 1
+        },
+        "uncertainty": {
+          "accuracy": 100.0,
+          "correct": 1,
+          "total": 1
+        },
+        "work_rate": {
+          "accuracy": 0.0,
+          "correct": 0,
+          "total": 1
+        }
+      },
+      "correct": 24,
+      "difficulties": {
+        "easy": {
+          "accuracy": 75.0,
+          "correct": 9,
+          "total": 12
+        },
+        "hard": {
+          "accuracy": 58.33,
+          "correct": 7,
+          "total": 12
+        },
+        "medium": {
+          "accuracy": 66.67,
+          "correct": 8,
+          "total": 12
+        }
+      },
+      "domains": {
+        "commonsense_ambiguity": {
+          "accuracy": 66.67,
+          "correct": 4,
+          "total": 6
+        },
+        "logic": {
+          "accuracy": 83.33,
+          "correct": 5,
+          "total": 6
+        },
+        "multi_step": {
+          "accuracy": 33.33,
+          "correct": 2,
+          "total": 6
+        },
+        "quantitative": {
+          "accuracy": 33.33,
+          "correct": 2,
+          "total": 6
+        },
+        "science_technical": {
+          "accuracy": 83.33,
+          "correct": 5,
+          "total": 6
+        },
+        "software_engineering": {
+          "accuracy": 100.0,
+          "correct": 6,
+          "total": 6
+        }
+      },
+      "elapsed_mean_seconds": 8.549,
+      "elapsed_total_seconds": 307.753,
+      "failures": 0,
+      "model": "SmolLM3-3B",
+      "model_id": "smollm3-3b-iq4xs",
+      "parse_rate": 100.0,
+      "parsed": 36,
+      "phase2_score": 66.67,
+      "quant": "IQ4_XS",
+      "total": 36
+    }
+  ],
+  "phase": "v1.2-phase2",
+  "source_file": "results/v12/phase2/phase2-v12-20260914T141244Z.json",
+  "source_run": "20260914T141244Z",
+  "status": "frozen"
+}

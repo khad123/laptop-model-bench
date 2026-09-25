@@ -40,3 +40,8 @@ models/
 !results/v11/
 !results/v11/*.json
 !results/v11/*.csv
+
+# Local accidental/nongenerated content
+arkesia-northstar/
+**/__pycache__/
+*.pyc

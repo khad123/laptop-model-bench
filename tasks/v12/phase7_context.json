@@ -1,0 +1,223 @@
+{
+  "benchmark_version": "phase7-v1.2",
+  "status": "frozen",
+  "description": "Paired deterministic long-context benchmark at 8K, 16K, 32K and 64K context windows.",
+  "system_prompt": "Use only the supplied reference text. Answer the question with the shortest correct answer you can. Do not invent information.",
+  "task_design": {
+    "tasks": 12,
+    "buckets": [
+      "8k",
+      "16k",
+      "32k",
+      "64k"
+    ],
+    "tasks_per_bucket": 3,
+    "modes": [
+      "direct",
+      "compose",
+      "relational"
+    ]
+  },
+  "tasks": [
+    {
+      "id": "ctx-8k-01",
+      "bucket": "8k",
+      "target_chars": 28000,
+      "mode": "direct",
+      "needles": [
+        {
+          "fraction": 0.91,
+          "text": "Authoritative note: Project Aster's access code is VX-417."
+        }
+      ],
+      "question": "What is Project Aster's access code?",
+      "expected_answer": "VX-417"
+    },
+    {
+      "id": "ctx-8k-02",
+      "bucket": "8k",
+      "target_chars": 28000,
+      "mode": "compose",
+      "needles": [
+        {
+          "fraction": 0.42,
+          "text": "Authoritative note: Cedar stores 14 blue modules."
+        },
+        {
+          "fraction": 0.58,
+          "text": "Authoritative note: Cedar stores 9 red modules. For this question, total modules means blue plus red."
+        }
+      ],
+      "question": "How many blue and red modules does Cedar store in total?",
+      "expected_answer": "23"
+    },
+    {
+      "id": "ctx-8k-03",
+      "bucket": "8k",
+      "target_chars": 28000,
+      "mode": "relational",
+      "needles": [
+        {
+          "fraction": 0.08,
+          "text": "Authoritative note: Mira reports directly to Nadir."
+        },
+        {
+          "fraction": 0.22,
+          "text": "Authoritative note: Nadir's office is Atlas."
+        }
+      ],
+      "question": "What is the office of the person Mira reports to?",
+      "expected_answer": "Atlas"
+    },
+    {
+      "id": "ctx-16k-01",
+      "bucket": "16k",
+      "target_chars": 56000,
+      "mode": "direct",
+      "needles": [
+        {
+          "fraction": 0.91,
+          "text": "Authoritative note: Project Aster's access code is VX-417."
+        }
+      ],
+      "question": "What is Project Aster's access code?",
+      "expected_answer": "VX-417"
+    },
+    {
+      "id": "ctx-16k-02",
+      "bucket": "16k",
+      "target_chars": 56000,
+      "mode": "compose",
+      "needles": [
+        {
+          "fraction": 0.42,
+          "text": "Authoritative note: Cedar stores 14 blue modules."
+        },
+        {
+          "fraction": 0.58,
+          "text": "Authoritative note: Cedar stores 9 red modules. For this question, total modules means blue plus red."
+        }
+      ],
+      "question": "How many blue and red modules does Cedar store in total?",
+      "expected_answer": "23"
+    },
+    {
+      "id": "ctx-16k-03",
+      "bucket": "16k",
+      "target_chars": 56000,
+      "mode": "relational",
+      "needles": [
+        {
+          "fraction": 0.08,
+          "text": "Authoritative note: Mira reports directly to Nadir."
+        },
+        {
+          "fraction": 0.22,
+          "text": "Authoritative note: Nadir's office is Atlas."
+        }
+      ],
+      "question": "What is the office of the person Mira reports to?",
+      "expected_answer": "Atlas"
+    },
+    {
+      "id": "ctx-32k-01",
+      "bucket": "32k",
+      "target_chars": 112000,
+      "mode": "direct",
+      "needles": [
+        {
+          "fraction": 0.91,
+          "text": "Authoritative note: Project Aster's access code is VX-417."
+        }
+      ],
+      "question": "What is Project Aster's access code?",
+      "expected_answer": "VX-417"
+    },
+    {
+      "id": "ctx-32k-02",
+      "bucket": "32k",
+      "target_chars": 112000,
+      "mode": "compose",
+      "needles": [
+        {
+          "fraction": 0.42,
+          "text": "Authoritative note: Cedar stores 14 blue modules."
+        },
+        {
+          "fraction": 0.58,
+          "text": "Authoritative note: Cedar stores 9 red modules. For this question, total modules means blue plus red."
+        }
+      ],
+      "question": "How many blue and red modules does Cedar store in total?",
+      "expected_answer": "23"
+    },
+    {
+      "id": "ctx-32k-03",
+      "bucket": "32k",
+      "target_chars": 112000,
+      "mode": "relational",
+      "needles": [
+        {
+          "fraction": 0.08,
+          "text": "Authoritative note: Mira reports directly to Nadir."
+        },
+        {
+          "fraction": 0.22,
+          "text": "Authoritative note: Nadir's office is Atlas."
+        }
+      ],
+      "question": "What is the office of the person Mira reports to?",
+      "expected_answer": "Atlas"
+    },
+    {
+      "id": "ctx-64k-01",
+      "bucket": "64k",
+      "target_chars": 224000,
+      "mode": "direct",
+      "needles": [
+        {
+          "fraction": 0.91,
+          "text": "Authoritative note: Project Aster's access code is VX-417."
+        }
+      ],
+      "question": "What is Project Aster's access code?",
+      "expected_answer": "VX-417"
+    },
+    {
+      "id": "ctx-64k-02",
+      "bucket": "64k",
+      "target_chars": 224000,
+      "mode": "compose",
+      "needles": [
+        {
+          "fraction": 0.42,
+          "text": "Authoritative note: Cedar stores 14 blue modules."
+        },
+        {
+          "fraction": 0.58,
+          "text": "Authoritative note: Cedar stores 9 red modules. For this question, total modules means blue plus red."
+        }
+      ],
+      "question": "How many blue and red modules does Cedar store in total?",
+      "expected_answer": "23"
+    },
+    {
+      "id": "ctx-64k-03",
+      "bucket": "64k",
+      "target_chars": 224000,
+      "mode": "relational",
+      "needles": [
+        {
+          "fraction": 0.08,
+          "text": "Authoritative note: Mira reports directly to Nadir."
+        },
+        {
+          "fraction": 0.22,
+          "text": "Authoritative note: Nadir's office is Atlas."
+        }
+      ],
+      "question": "What is the office of the person Mira reports to?",
+      "expected_answer": "Atlas"
+    }
+  ]
+}

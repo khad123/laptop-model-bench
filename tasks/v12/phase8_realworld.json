@@ -1,0 +1,316 @@
+{
+  "benchmark_version": "phase8-v1.2",
+  "status": "frozen",
+  "description": "Deterministic practical laptop workload benchmark covering troubleshooting, code review, data work, and everyday developer workflows.",
+  "system_prompt": "Solve the practical task accurately and concisely. Follow any requested output format exactly. Do not add Markdown or commentary unless requested.",
+  "task_design": {
+    "total": 12,
+    "categories": {
+      "troubleshooting": 3,
+      "code_review": 3,
+      "data_work": 3,
+      "workflow": 3
+    }
+  },
+  "tasks": [
+    {
+      "id": "real-01",
+      "category": "troubleshooting",
+      "difficulty": "easy",
+      "prompt": "You are troubleshooting this server log:\n\nINFO starting local API\nINFO binding 127.0.0.1:8080\nERROR bind tcp 127.0.0.1:8080: address already in use\nFATAL server startup failed\n\nIn one short line, identify the root cause and include the port number.",
+      "checks": [
+        {
+          "type": "regex_fullmatch",
+          "pattern": "(?is)(?=.*8080)(?=.*(?:already in use|port.*in use|occupied)).+"
+        },
+        {
+          "type": "line_count",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "id": "real-02",
+      "category": "troubleshooting",
+      "difficulty": "easy",
+      "prompt": "A Python program fails with:\n\nTraceback (most recent call last):\n  File \"app.py\", line 4, in <module>\n    import requests\nModuleNotFoundError: No module named 'requests'\n\nReturn exactly one shell command that installs the missing package using Python's pip module.",
+      "checks": [
+        {
+          "type": "regex_fullmatch",
+          "pattern": "(?:python|python3) -m pip install requests"
+        }
+      ]
+    },
+    {
+      "id": "real-03",
+      "category": "troubleshooting",
+      "difficulty": "medium",
+      "prompt": "On Linux:\n\n$ ./deploy.sh\nbash: ./deploy.sh: Permission denied\n\n`ls -l deploy.sh` shows:\n-rw-r--r-- 1 user user 421 deploy.sh\n\nReturn exactly one shell command that adds execute permission to deploy.sh.",
+      "checks": [
+        {
+          "type": "equals",
+          "value": "chmod +x deploy.sh"
+        }
+      ]
+    },
+    {
+      "id": "real-04",
+      "category": "code_review",
+      "difficulty": "medium",
+      "prompt": "Review this Python function:\n\ndef add_item(item, items=[]):\n    items.append(item)\n    return items\n\nThe list unexpectedly persists between calls.\n\nReturn exactly three lines:\n1. The corrected function signature.\n2. The guard that checks for the missing list.\n3. The line that creates a new empty list.\n\nDo not include indentation or Markdown.",
+      "checks": [
+        {
+          "type": "equals",
+          "value": "def add_item(item, items=None):\nif items is None:\nitems = []"
+        }
+      ]
+    },
+    {
+      "id": "real-05",
+      "category": "code_review",
+      "difficulty": "easy",
+      "prompt": "This Python loop accidentally skips the final item:\n\nfor i in range(len(items) - 1):\n    process(items[i])\n\nReturn only the corrected `for` line.",
+      "checks": [
+        {
+          "type": "equals",
+          "value": "for i in range(len(items)):"
+        }
+      ]
+    },
+    {
+      "id": "real-06",
+      "category": "code_review",
+      "difficulty": "medium",
+      "prompt": "This SQLite query is vulnerable because user input is inserted directly:\n\ncursor.execute(f\"SELECT * FROM users WHERE email = '{email}'\")\n\nReturn only the safer parameterized SQLite execute line using `?`.",
+      "checks": [
+        {
+          "type": "equals",
+          "value": "cursor.execute(\"SELECT * FROM users WHERE email = ?\", (email,))"
+        }
+      ]
+    },
+    {
+      "id": "real-07",
+      "category": "data_work",
+      "difficulty": "easy",
+      "prompt": "Extract this configuration:\n\nhost = 127.0.0.1\nport = 8081\ndebug = false\n\nReturn only valid JSON with exactly the keys host, port, debug.\nhost must be a string, port an integer, and debug a boolean.",
+      "checks": [
+        {
+          "type": "json_valid"
+        },
+        {
+          "type": "json_object"
+        },
+        {
+          "type": "json_keys_exact",
+          "keys": [
+            "host",
+            "port",
+            "debug"
+          ]
+        },
+        {
+          "type": "json_value",
+          "path": [
+            "host"
+          ],
+          "value": "127.0.0.1"
+        },
+        {
+          "type": "json_value",
+          "path": [
+            "port"
+          ],
+          "value": 8081
+        },
+        {
+          "type": "json_value",
+          "path": [
+            "debug"
+          ],
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": "real-08",
+      "category": "data_work",
+      "difficulty": "medium",
+      "prompt": "A job processed these batches:\n\nbatch A: 17 successful, 3 failed\nbatch B: 21 successful, 4 failed\nbatch C: 12 successful, 3 failed\n\nReturn only valid JSON with exactly:\nsuccessful = total successful jobs\nfailed = total failed jobs\ntotal = all jobs combined.",
+      "checks": [
+        {
+          "type": "json_valid"
+        },
+        {
+          "type": "json_keys_exact",
+          "keys": [
+            "successful",
+            "failed",
+            "total"
+          ]
+        },
+        {
+          "type": "json_value",
+          "path": [
+            "successful"
+          ],
+          "value": 50
+        },
+        {
+          "type": "json_value",
+          "path": [
+            "failed"
+          ],
+          "value": 10
+        },
+        {
+          "type": "json_value",
+          "path": [
+            "total"
+          ],
+          "value": 60
+        }
+      ]
+    },
+    {
+      "id": "real-09",
+      "category": "data_work",
+      "difficulty": "medium",
+      "prompt": "Count the log levels:\n\nINFO boot\nWARN cache slow\nERROR database timeout\nINFO retry\nERROR database timeout\nWARN memory pressure\nINFO recovered\n\nReturn only valid JSON with exactly the keys info, warn, error and their integer counts.",
+      "checks": [
+        {
+          "type": "json_valid"
+        },
+        {
+          "type": "json_keys_exact",
+          "keys": [
+            "info",
+            "warn",
+            "error"
+          ]
+        },
+        {
+          "type": "json_value",
+          "path": [
+            "info"
+          ],
+          "value": 3
+        },
+        {
+          "type": "json_value",
+          "path": [
+            "warn"
+          ],
+          "value": 2
+        },
+        {
+          "type": "json_value",
+          "path": [
+            "error"
+          ],
+          "value": 2
+        }
+      ]
+    },
+    {
+      "id": "real-10",
+      "category": "workflow",
+      "difficulty": "hard",
+      "prompt": "Incident notes:\n\n- API stopped responding at 14:20.\n- Monitoring showed the database connection pool was exhausted.\n- The pool limit was raised and the service restarted.\n- API responses returned to normal at 14:32.\n\nReturn only valid JSON with exactly these keys:\nservice, cause, duration_minutes, resolution\n\nUse:\nservice = \"API\"\ncause = \"database_connection_pool_exhausted\"\nduration_minutes = the calculated integer duration\nresolution = \"raise_pool_limit_and_restart\".",
+      "checks": [
+        {
+          "type": "json_valid"
+        },
+        {
+          "type": "json_keys_exact",
+          "keys": [
+            "service",
+            "cause",
+            "duration_minutes",
+            "resolution"
+          ]
+        },
+        {
+          "type": "json_value",
+          "path": [
+            "service"
+          ],
+          "value": "API"
+        },
+        {
+          "type": "json_value",
+          "path": [
+            "cause"
+          ],
+          "value": "database_connection_pool_exhausted"
+        },
+        {
+          "type": "json_value",
+          "path": [
+            "duration_minutes"
+          ],
+          "value": 12
+        },
+        {
+          "type": "json_value",
+          "path": [
+            "resolution"
+          ],
+          "value": "raise_pool_limit_and_restart"
+        }
+      ]
+    },
+    {
+      "id": "real-11",
+      "category": "workflow",
+      "difficulty": "hard",
+      "prompt": "Meeting notes:\n\nOmar will update the API tests by Friday.\nMina will investigate the memory regression by Wednesday.\nLea will update the README by Monday.\nThe team also discussed next month's roadmap, but no owner was assigned.\n\nReturn only valid JSON with exactly one top-level key: tasks.\ntasks must be an array in the same order as the notes.\nEach item must contain exactly owner, task, due.\n\nUse these task strings exactly:\n\"update API tests\"\n\"investigate memory regression\"\n\"update README\".",
+      "checks": [
+        {
+          "type": "json_valid"
+        },
+        {
+          "type": "json_keys_exact",
+          "keys": [
+            "tasks"
+          ]
+        },
+        {
+          "type": "json_value",
+          "path": [
+            "tasks"
+          ],
+          "value": [
+            {
+              "owner": "Omar",
+              "task": "update API tests",
+              "due": "Friday"
+            },
+            {
+              "owner": "Mina",
+              "task": "investigate memory regression",
+              "due": "Wednesday"
+            },
+            {
+              "owner": "Lea",
+              "task": "update README",
+              "due": "Monday"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "real-12",
+      "category": "workflow",
+      "difficulty": "hard",
+      "prompt": "You are in a Linux project directory.\n\nYou want to inspect, not delete, every `.log` file older than 7 days anywhere below the current directory.\n\nReturn exactly this command and nothing else:\n\nfind . -type f -name '*.log' -mtime +7 -print",
+      "checks": [
+        {
+          "type": "equals",
+          "value": "find . -type f -name '*.log' -mtime +7 -print"
+        }
+      ]
+    }
+  ]
+}

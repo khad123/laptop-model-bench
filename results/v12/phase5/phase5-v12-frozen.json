@@ -1,0 +1,93 @@
+{
+  "benchmark_version": "phase5-v1.2",
+  "difficulty": {
+    "minicpm5-2b-q4km": {
+      "hard": 94.05,
+      "legacy": 89.58
+    },
+    "qwen35-0.8b-q4km": {
+      "hard": 93.75,
+      "legacy": 72.08
+    },
+    "qwen35-2b-q4km": {
+      "hard": 93.75,
+      "legacy": 83.33
+    },
+    "smollm3-3b-iq4xs": {
+      "hard": 50.59,
+      "legacy": 44.06
+    }
+  },
+  "models": 4,
+  "official_run": "20260915T030326Z",
+  "phase": "v1.2-phase5",
+  "requests": 96,
+  "results": [
+    {
+      "categories": {
+        "json_schema": 100.0,
+        "ordering": 83.33,
+        "required_forbidden": 80.95,
+        "strict_format": 100.0
+      },
+      "model": "MiniCPM5-2B",
+      "model_id": "minicpm5-2b-q4km",
+      "phase5_score": 91.07,
+      "quant": "Q4_K_M",
+      "solved": 20,
+      "tasks": 24
+    },
+    {
+      "categories": {
+        "json_schema": 100.0,
+        "ordering": 66.67,
+        "required_forbidden": 80.55,
+        "strict_format": 100.0
+      },
+      "model": "Qwen3.5-2B",
+      "model_id": "qwen35-2b-q4km",
+      "phase5_score": 86.81,
+      "quant": "Q4_K_M",
+      "solved": 20,
+      "tasks": 24
+    },
+    {
+      "categories": {
+        "json_schema": 86.67,
+        "ordering": 66.67,
+        "required_forbidden": 80.55,
+        "strict_format": 83.33
+      },
+      "model": "Qwen3.5-0.8B",
+      "model_id": "qwen35-0.8b-q4km",
+      "phase5_score": 79.31,
+      "quant": "Q4_K_M",
+      "solved": 18,
+      "tasks": 24
+    },
+    {
+      "categories": {
+        "json_schema": 100.0,
+        "ordering": 27.22,
+        "required_forbidden": 57.74,
+        "strict_format": 0.0
+      },
+      "model": "SmolLM3-3B",
+      "model_id": "smollm3-3b-iq4xs",
+      "phase5_score": 46.24,
+      "quant": "IQ4_XS",
+      "solved": 6,
+      "tasks": 24
+    }
+  ],
+  "status": "frozen",
+  "task_design": {
+    "json_schema": 6,
+    "legacy": 16,
+    "new_hard": 8,
+    "ordering": 6,
+    "required_forbidden": 6,
+    "strict_format": 6
+  },
+  "tasks": 24
+}

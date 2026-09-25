@@ -1,0 +1,19 @@
+{
+  "models": {
+    "minicpm5-2b-q4km": {
+      "changed_tasks": [],
+      "exact_task_match": true,
+      "tasks": 15
+    },
+    "qwen35-2b-q4km": {
+      "changed_tasks": [],
+      "exact_task_match": true,
+      "tasks": 15
+    }
+  },
+  "official_run": "20260915T014755Z",
+  "phase": "v1.2-phase9a",
+  "status": "frozen",
+  "test": "MiniSWE deterministic repeatability",
+  "validation_run": "20260916T120317Z"
+}
