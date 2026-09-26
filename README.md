@@ -1,5 +1,6 @@
 # Laptop Model Bench
 
+
 A compact, reproducible benchmark suite for comparing small local LLMs on an **8 GB CPU-only laptop**.
 
 The project is designed to answer practical questions rather than reproduce giant industry benchmark suites:
@@ -189,3 +190,16 @@ The v1 benchmark is frozen. New models or task-set changes should normally be pu
 A local model should not be judged only by benchmark accuracy or only by tokens per second. On an 8 GB laptop, responsiveness, memory use, software-engineering reliability, structured behavior, and model size all matter.
 
 Laptop Model Bench therefore keeps **capability**, **developer usefulness**, **speed**, and **resource efficiency** visible as separate measurements, then combines them only through documented practical leaderboards.
+
+## v1.2 Recommended CPU Runtime Settings
+
+For the Phase 9B CPU profile on the benchmark laptop:
+
+    -t 4
+    -b 512
+    -ub 512
+    -ctk f16
+    -ctv f16
+    -ngl 0
+
+See [Phase 9B Runtime Optimization](docs/V1_2_PHASE9B_OPTIMIZATION.md) for measurements and rationale.
