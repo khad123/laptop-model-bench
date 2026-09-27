@@ -176,6 +176,10 @@ See [`docs/BENCHMARK_PROTOCOL.md`](docs/BENCHMARK_PROTOCOL.md) for the full prot
 
 The v1 benchmark is frozen. New models or task-set changes should normally be published as a new benchmark/report version instead of rewriting historical v1 results.
 
+## Prompt-driven app trials
+
+The [local app prompt pack](docs/LOCAL_APP_PROMPTS.md) contains five standalone prompts for generating browser games and a small business app. Use one prompt per fresh model conversation. Keep these results separate from the frozen v1 phase scores, and record the hardware and runtime used for each run.
+
 ## Project documents
 
 - [Project plan](docs/PLAN.md)
