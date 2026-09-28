@@ -1,205 +1,128 @@
 # Laptop Model Bench
 
+This repository contains two things: the frozen Laptop Model Bench benchmark suite, and a small Python launcher for comparing local models on self-contained browser-app prompts. The launcher runs one prompt with `llama-cli`, saves the full response and timing log, and saves HTML output when the model produces it.
 
-A compact, reproducible benchmark suite for comparing small local LLMs on an **8 GB CPU-only laptop**.
+## Quick start
 
-The project is designed to answer practical questions rather than reproduce giant industry benchmark suites:
+You need Python 3.10 or newer, a local GGUF model, and a working `llama-cli` executable. The launcher uses Python's standard library only; it does not install packages or download models.
 
-- Which model is actually usable on an older laptop?
-- Which model is fastest?
-- Which model is strongest for coding and repository-level software engineering?
-- Which model is best at tool/agent workflows?
-- Which model follows instructions reliably?
-- Which quantization gives the best quality/resource trade-off?
-
-## v1 result
-
-**Best overall laptop model: `Qwen3.5-2B Q4_K_M`**
-
-It wins the frozen v1 overall recommendation with an **overall laptop score of 79.15**, combining the strongest MiniSWE and agent results with high general capability while remaining practical on the target machine.
-
-The winner is robust: Qwen3.5-2B Q4_K_M remains #1 under every tested sensitivity profile, including equal capability weighting, capability-only weighting, developer-heavy weighting, and a more general-purpose mix.
-
-### Recommended-quant overall leaderboard
-
-| Rank | Model | Overall | Capability | Efficiency | Developer |
-|---:|---|---:|---:|---:|---:|
-| 1 | **Qwen3.5-2B Q4_K_M** | **79.15** | **85.13** | 45.25 | **87.02** |
-| 2 | Qwen3.5-0.8B Q4_K_M | 59.53 | 52.41 | **99.88** | 39.40 |
-| 3 | K2-Horizon-0.9B Q4_K_M | 57.05 | 51.85 | 86.46 | 44.63 |
-| 4 | SmolLM3-3B IQ4_XS | 56.81 | 61.30 | 31.37 | 57.30 |
-| 5 | LFM2.5-1.2B-Instruct Q4_K_M | 52.56 | 47.63 | 80.51 | 35.93 |
-| 6 | Gemma 3 1B IT Q4_K_M | 49.05 | 44.51 | 74.75 | 46.33 |
-| 7 | Llama 3.2 1B Instruct Q4_K_M | 43.92 | 38.07 | 77.09 | 26.70 |
-
-### Category winners
-
-| Category | Winner | Score |
-|---|---|---:|
-| Smartest / reasoning + knowledge | SmolLM3-3B IQ4_XS | 82.50 |
-| Developer | **Qwen3.5-2B Q4_K_M** | **87.02** |
-| MiniSWE | **Qwen3.5-2B Q4_K_M** | **86.29** |
-| Tool / agent | **Qwen3.5-2B Q4_K_M** | **100.00** |
-| Instruction following | K2-Horizon-0.9B Q6_K | 87.50 |
-| Context | SmolLM3-3B IQ4_XS | 100.00 |
-| Fastest | Qwen3.5-0.8B Q4_K_M | 100.00 normalized speed score |
-| Quality per GiB | Qwen3.5-0.8B Q4_K_M | 97.10 |
-
-See [`docs/PHASE9_SCORING.md`](docs/PHASE9_SCORING.md) for the frozen overall scoring method and sensitivity review, and [`docs/PHASE8_QUANTIZATION.md`](docs/PHASE8_QUANTIZATION.md) for same-base quant decisions.
-
-## Target hardware
-
-The v1 machine profile is intentionally modest:
-
-- CPU: Intel Core i5, 8th generation
-- RAM: 8 GB
-- GPU: CPU-only benchmark target
-- OS: Linux
-- Runtime: `llama.cpp`
-- Default CPU threads: `4`
-- Standard capability context: `4096`
-- Dedicated Phase 7 context runtime: `8192`
-
-The benchmark records machine/runtime metadata with results so future machine profiles can be compared without changing the frozen task set.
-
-## What is tested
-
-1. **Speed & efficiency** — prompt processing, generation speed, model size, load time, peak benchmark RSS.
-2. **Reasoning + knowledge** — 32 compact deterministic multiple-choice tasks.
-3. **Coding** — 12 executable Python function-generation tasks with hidden tests.
-4. **MiniSWE** — 5 tiny repository-level bug-fixing tasks with hidden tests and partial scoring.
-5. **Instruction following** — 16 strict, automatically checked constraint tasks.
-6. **Tool / agent ability** — 10 deterministic local-tool tasks including disambiguation and multi-step sequences.
-7. **Context handling** — paired direct, composition, and relational tasks at approximately 1K, 2K, and 4K prompt lengths.
-8. **Quantization trade-offs** — five same-base quant pairs compared across speed, RAM, size, and capability.
-
-## Final v1 scoring
-
-The overall laptop score is transparent and secondary to the standalone category leaderboards.
-
-### Capability — 85%
-
-- Reasoning + knowledge: 12%
-- Isolated coding: 15%
-- MiniSWE: 20%
-- Instruction following: 10%
-- Tool / agent: 20%
-- Context: 8%
-
-### Laptop efficiency — 15%
-
-- Prompt-processing speed: 4%
-- Generation speed: 5%
-- Peak benchmark RSS: 4%
-- Model size: 2%
-
-Full details are in [`docs/PHASE9_SCORING.md`](docs/PHASE9_SCORING.md).
-
-## Recommended quant per base model
-
-| Base model | v1 recommendation |
-|---|---|
-| K2-Horizon-0.9B | **Q4_K_M** |
-| Qwen3.5-2B | **Q4_K_M** |
-| SmolLM3-3B | **IQ4_XS** |
-| Gemma 3 1B IT | **Q4_K_M** |
-| Llama 3.2 1B Instruct | **Q4_K_M** |
-
-The full reasoning is documented in [`docs/PHASE8_QUANTIZATION.md`](docs/PHASE8_QUANTIZATION.md).
-
-## Reproducing the report
-
-The benchmark phases save timestamped JSON/CSV summaries and raw audit artifacts. Phase 9 intentionally reads **explicit frozen run IDs**, not `*-latest.json`, because latest aliases can point to pilots or validation subsets.
-
-Generate the consolidated final report:
+From Linux or macOS:
 
 ```bash
-python3 scripts/build_phase9_report.py
+git clone --branch v1.2 https://github.com/khad123/laptop-model-bench.git
+cd laptop-model-bench
+python3 scripts/local_app_benchmark.py
 ```
 
-This writes:
+From Windows PowerShell:
 
-```text
-results/phase9-consolidated.json
-results/phase9-consolidated.csv
-results/phase9-report.md
+```powershell
+git clone --branch v1.2 https://github.com/khad123/laptop-model-bench.git
+Set-Location laptop-model-bench
+py -3 .\scripts\local_app_benchmark.py
 ```
 
-Generate dependency-free SVG charts:
+Choose **Normal** or **ECC**, then choose an installed model and prompt. To run non-interactively or use a model file outside the Hugging Face cache, pass `--model` and `--task` as shown below.
+
+## Windows setup with an NVIDIA GPU
+
+For an RTX 3060, use a CUDA-enabled Windows x64 build of `llama.cpp`:
+
+1. Install Git for Windows and Python 3.10+ (enable the Python launcher during installation).
+2. Download a current Windows x64 **CUDA 12** build and its matching CUDA DLL archive from the [official llama.cpp releases](https://github.com/ggml-org/llama.cpp/releases). Extract both archives so the required DLLs are available beside the executables. A Windows x64 CPU build also works, but will not use the 3060.
+3. Put a GGUF model file on the desktop PC. Model files are not included in this GitHub repository.
+4. From the repository folder, launch one model and prompt. Replace the paths with the locations on your PC:
+
+```powershell
+$LlamaCli = "C:\AI\llama.cpp\llama-cli.exe"
+$Model = "D:\Models\Qwen_Qwen3.5-2B-Q4_K_M.gguf"
+
+py -3 .\scripts\local_app_benchmark.py `
+  --llama-cli $LlamaCli `
+  --model $Model `
+  --task pocket-courier `
+  --mode normal `
+  --gpu-layers all
+```
+
+The defaults remain **32,768 context tokens**, **8,192 output tokens**, **4 CPU threads**, temperature 0, and seed 42. `--gpu-layers all` asks llama.cpp to offload as many layers as it can; if the model does not fit in VRAM, use a number such as `--gpu-layers 20`, or omit the option to run CPU-only. Check CUDA/GPU detection in PowerShell with `& $LlamaCli --list-devices`.
+
+## Linux desktop setup with an NVIDIA GPU
+
+On Ubuntu x64, the [official llama.cpp releases](https://github.com/ggml-org/llama.cpp/releases) provide Ubuntu CUDA builds and matching CUDA libraries. Download a matching CUDA 12 build/library pair, extract them, and point the launcher to its `llama-cli` binary. Alternatively, build from source using the [official CUDA build instructions](https://github.com/ggml-org/llama.cpp/blob/master/docs/build.md). Then, from this repository:
 
 ```bash
-python3 scripts/generate_phase10_charts.py
+python3 scripts/local_app_benchmark.py \
+  --llama-cli "$HOME/Models/llama.cpp/build/bin/llama-cli" \
+  --model "$HOME/Models/example.gguf" \
+  --task pocket-courier --mode normal --gpu-layers all
 ```
 
-This writes charts under:
+Use `--list-devices` with the selected binary to check whether it sees the GPU. For other Linux distributions, use a compatible build or follow llama.cpp's source-build instructions.
+
+## Compare baseline with DRY
+
+DRY is off by default. To make a controlled comparison, run the same model and prompt twice with the same settings. The first run is the baseline; add `--dry-multiplier 0.8` only to the second run:
+
+```powershell
+$Common = @(
+  "--llama-cli", $LlamaCli,
+  "--model", $Model,
+  "--task", "pocket-courier",
+  "--mode", "normal",
+  "--gpu-layers", "all",
+  "--run-root", ".\results\desktop-dry-comparison"
+)
+
+py -3 .\scripts\local_app_benchmark.py @Common
+py -3 .\scripts\local_app_benchmark.py @Common --dry-multiplier 0.8
+```
+
+The shared run folder keeps the pair together. Context, output limit, temperature, and seed stay unchanged; the only difference is DRY. The second run may be saved in an `attempt-*` subfolder to avoid overwriting the first.
+
+On Linux or macOS, use the same flags with `python3` and POSIX paths. Set `--gpu-layers all` only with a GPU-enabled build; use `0` for the CPU-only baseline:
+
+```bash
+python3 scripts/local_app_benchmark.py \
+  --llama-cli "$HOME/Models/llama.cpp/build/bin/llama-cli" \
+  --model "$HOME/Models/example.gguf" \
+  --task pocket-courier --mode normal --gpu-layers 0
+
+python3 scripts/local_app_benchmark.py \
+  --llama-cli "$HOME/Models/llama.cpp/build/bin/llama-cli" \
+  --model "$HOME/Models/example.gguf" \
+  --task pocket-courier --mode normal --gpu-layers 0 --dry-multiplier 0.8
+```
+
+## Prompts
+
+The prompt pack is [`tasks/local-app-prompts.md`](tasks/local-app-prompts.md). It contains 14 standalone prompts:
+
+- Games: Pocket Dodge, Switchyard, Workshop Queue, Tower Defense, Fuel Stop, Pocket Courier, Sudoku, Tic-Tac-Toe.
+- Apps: Soundboard Studio, Budget Tracker, Kanban Board, Study Cards, E-commerce Store, Movie Catalog.
+
+Select a prompt by its ID, for example `--task pocket-courier` or `--task budget-tracker`. Each asks for one self-contained HTML document. Normal mode is the prompt-only baseline. ECC mode prepends selected frontend and accessibility guidance; it remains one-shot generation and does not give the model tools to edit files or run tests.
+
+ECC is optional. To install the guidance checkout in the default location on Windows, run `git clone https://github.com/affaan-m/ECC.git "$HOME\Models\ECC"` in PowerShell; on Linux/macOS use `git clone https://github.com/affaan-m/ECC.git "$HOME/Models/ECC"`. Then select ECC in the menu or pass `--mode ecc` (and `--ecc-dir PATH` if it is elsewhere).
+
+## Results
+
+Runs are saved under `results/` unless `--run-root` is specified. Each run folder contains the prompt, `response.txt`, the llama.cpp transcript and log, and `run-metadata.json`. HTML output is saved as a project/model/mode-named `.html` file, including partial output. `index.html` is written only when the output has a closing HTML tag. A completed run means `llama-cli` exited successfully; it does not mean the generated app is complete or playable.
+
+## Useful options
 
 ```text
-results/charts/
+--model PATH             Use a specific GGUF file
+--task ID                Select a saved prompt
+--mode normal|ecc        Select the run mode
+--llama-cli PATH         Select llama-cli (use llama-cli.exe on Windows)
+--context N              Context size; default 32768
+--max-tokens N           Output cap; default 8192
+--threads N              CPU threads; default 4
+--gpu-layers N|auto|all  GPU layers; default 0 (CPU-only)
+--dry-multiplier N       Optional DRY repetition control; default 0 (off)
+--timeout-minutes N      Override the prompt's time limit
+--run-root PATH          Put repeated runs under a shared folder
 ```
 
-## Benchmark entry points
-
-```text
-./bench.sh          Phase 1 — speed/resources
-./capability.sh     Phase 2 — reasoning/knowledge
-./coding.sh         Phase 3 — executable coding
-./miniswe.sh        Phase 4 — MiniSWE
-./instruction.sh    Phase 5 — instruction following
-./agent.sh          Phase 6 — tool/agent benchmark
-./context.sh        Phase 7 — context handling
-```
-
-Each phase has a dedicated runner document under `docs/`.
-
-## Fair-test rules
-
-Unless a phase explicitly requires something different:
-
-- same laptop
-- same runtime
-- 4 CPU threads
-- deterministic decoding / temperature 0 where supported
-- fixed seed where supported
-- identical prompts across models
-- same output limit within a phase
-- native chat template
-- no internet during evaluation
-- raw outputs saved before scoring
-- no model-specific prompt fixes after seeing results
-
-See [`docs/BENCHMARK_PROTOCOL.md`](docs/BENCHMARK_PROTOCOL.md) for the full protocol.
-
-## Adding models or tasks
-
-- [Adding a model](docs/ADDING_MODELS.md)
-- [Adding benchmark tasks](docs/ADDING_TASKS.md)
-- [Model registry](docs/MODEL_REGISTRY.md)
-
-The v1 benchmark is frozen. New models or task-set changes should normally be published as a new benchmark/report version instead of rewriting historical v1 results.
-
-## Project documents
-
-- [Project plan](docs/PLAN.md)
-- [Checklist](docs/CHECKLIST.md)
-- [Benchmark protocol](docs/BENCHMARK_PROTOCOL.md)
-- [Phase 8 quantization analysis](docs/PHASE8_QUANTIZATION.md)
-- [Phase 9 final scoring](docs/PHASE9_SCORING.md)
-
-## Philosophy
-
-A local model should not be judged only by benchmark accuracy or only by tokens per second. On an 8 GB laptop, responsiveness, memory use, software-engineering reliability, structured behavior, and model size all matter.
-
-Laptop Model Bench therefore keeps **capability**, **developer usefulness**, **speed**, and **resource efficiency** visible as separate measurements, then combines them only through documented practical leaderboards.
-
-## v1.2 Recommended CPU Runtime Settings
-
-For the Phase 9B CPU profile on the benchmark laptop:
-
-    -t 4
-    -b 512
-    -ub 512
-    -ctk f16
-    -ctv f16
-    -ngl 0
-
-See [Phase 9B Runtime Optimization](docs/V1_2_PHASE9B_OPTIMIZATION.md) for measurements and rationale.
+See [`docs/LOCAL_APP_PYTHON_LAUNCHER.md`](docs/LOCAL_APP_PYTHON_LAUNCHER.md) for menu navigation, ECC setup, and saved-file details. The original benchmark phases and results are documented in the `docs/` directory; the main benchmark entry points are `bench.sh`, `capability.sh`, `coding.sh`, `miniswe.sh`, `instruction.sh`, `agent.sh`, and `context.sh`.
