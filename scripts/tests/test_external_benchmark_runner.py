@@ -1,6 +1,7 @@
 import importlib.util
 import json
 import os
+import sys
 import tempfile
 import unittest
 from pathlib import Path
@@ -137,6 +138,65 @@ class PlanTests(unittest.TestCase):
             )
             with self.assertRaisesRegex(ValueError, "Unknown HumanEval task ID"):
                 scorer.load_subset_samples(samples, {"HumanEval/0", "HumanEval/18"})
+
+    def test_evalplus_generation_timeout_kills_child_and_restarts_server(self):
+        with tempfile.TemporaryDirectory() as temp:
+            log = Path(temp) / "task.log"
+            restarts = []
+            code, timed_out, output = runner.run_command_with_timeout(
+                [sys.executable, "-c", "import time; print('request started', flush=True); time.sleep(5)"],
+                log,
+                timeout_seconds=0.1,
+                on_timeout=lambda: restarts.append("restarted"),
+            )
+            self.assertEqual(code, 124)
+            self.assertTrue(timed_out)
+            self.assertIn("request started", output)
+            self.assertEqual(restarts, ["restarted"])
+            self.assertIn("request started", log.read_text())
+
+    def test_evalplus_worker_command_is_scoped_to_one_task_and_has_a_request_timeout(self):
+        command = runner.evalplus_worker_command(
+            "HumanEval/56", "model-id", "http://127.0.0.1:8080/v1",
+            Path("/tmp/samples.jsonl"), Path("/tmp/raw.jsonl"), 290,
+        )
+        self.assertIn("--task-id", command)
+        self.assertIn("HumanEval/56", command)
+        self.assertIn("--request-timeout", command)
+        self.assertIn("290", command)
+
+    def test_evalplus_partial_samples_can_be_resumed_without_redoing_saved_ids(self):
+        with tempfile.TemporaryDirectory() as temp:
+            samples = Path(temp) / "samples.jsonl"
+            samples.write_text(json.dumps({"task_id": "HumanEval/55", "solution": "ok"}) + "\n")
+            self.assertEqual(
+                runner.evalplus_saved_task_ids(samples, ["HumanEval/55", "HumanEval/56"]),
+                {"HumanEval/55"},
+            )
+
+    def test_evalplus_skipped_task_is_saved_as_failed_sample_and_failure_record(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            samples = root / "samples.jsonl"
+            raw = root / "samples.raw.jsonl"
+            failures = root / "generation_failures.jsonl"
+            runner.record_evalplus_skipped_task(
+                task_id="HumanEval/56",
+                sample_file=samples,
+                raw_sample_file=raw,
+                failure_file=failures,
+                reason="generation timed out",
+                timeout_seconds=300,
+            )
+            self.assertEqual(
+                runner.evalplus_saved_task_ids(samples, ["HumanEval/56"]),
+                {"HumanEval/56"},
+            )
+            self.assertEqual(json.loads(samples.read_text()) ["solution"], "")
+            self.assertEqual(json.loads(raw.read_text()) ["solution"], "")
+            failure = json.loads(failures.read_text())
+            self.assertEqual(failure["task_id"], "HumanEval/56")
+            self.assertEqual(failure["timeout_seconds"], 300)
 
 
 if __name__ == "__main__":

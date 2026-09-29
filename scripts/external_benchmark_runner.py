@@ -31,6 +31,7 @@ TOOL_PATHS = {
     "lm-eval": TOOLS_DIR / "lm-evaluation-harness" / ".venv" / "bin" / "lm_eval",
 }
 EVALPLUS_PYTHON = TOOLS_DIR / "evalplus" / ".venv" / "bin" / "python"
+EVALPLUS_GENERATE_TASK = ROOT / "scripts" / "evalplus_generate_task.py"
 LLM_BENCH_TASKS = (
     "math_001",
     "math_003",
@@ -41,6 +42,7 @@ LLM_BENCH_TASKS = (
 )
 EVALPLUS_TASK_COUNT = 10
 LM_EVAL_TASK_LIMIT = 50
+EVALPLUS_TASK_TIMEOUT = 300
 
 
 def slug(value: str) -> str:
@@ -157,6 +159,17 @@ def evalplus_codegen_source() -> str:
     )
 
 
+def evalplus_worker_command(task_id: str, alias: str, base_url: str,
+                            sample_file: Path, raw_sample_file: Path,
+                            request_timeout: int) -> list[str]:
+    return [
+        str(EVALPLUS_PYTHON), str(EVALPLUS_GENERATE_TASK),
+        "--task-id", task_id, "--model", alias, "--base-url", base_url,
+        "--samples", str(sample_file), "--raw-samples", str(raw_sample_file),
+        "--request-timeout", str(request_timeout),
+    ]
+
+
 def evalplus_samples_complete(sample_file: Path, task_ids: list[str]) -> bool:
     """Only reuse saved samples when there is exactly one valid record per task."""
     try:
@@ -172,6 +185,90 @@ def evalplus_samples_complete(sample_file: Path, task_ids: list[str]) -> bool:
         and {sample.get("task_id") for sample in samples} == set(task_ids)
         and all(isinstance(sample.get("solution"), str) for sample in samples)
     )
+
+
+def evalplus_saved_task_ids(sample_file: Path, task_ids: list[str]) -> set[str]:
+    """Validate and return already saved task IDs so interrupted runs can resume."""
+    if not sample_file.is_file():
+        return set()
+    saved: set[str] = set()
+    allowed = set(task_ids)
+    with sample_file.open(encoding="utf-8") as stream:
+        for line_number, line in enumerate(stream, start=1):
+            if not line.strip():
+                continue
+            try:
+                item = json.loads(line)
+            except json.JSONDecodeError as exc:
+                raise ValueError(f"Invalid EvalPlus sample on line {line_number}: {exc}") from exc
+            task_id = item.get("task_id") if isinstance(item, dict) else None
+            if task_id not in allowed:
+                raise ValueError(f"Unexpected EvalPlus task ID on line {line_number}: {task_id!r}")
+            if task_id in saved:
+                raise ValueError(f"Duplicate EvalPlus sample for {task_id}")
+            if not isinstance(item.get("solution"), str):
+                raise ValueError(f"EvalPlus sample for {task_id} has no solution string")
+            saved.add(task_id)
+    return saved
+
+
+def record_evalplus_skipped_task(task_id: str, sample_file: Path,
+                                 raw_sample_file: Path, failure_file: Path,
+                                 reason: str, timeout_seconds: int) -> None:
+    """Write an empty failed solution so subset scoring can continue through all tasks."""
+    sample = {"task_id": task_id, "solution": ""}
+    for path in (sample_file, raw_sample_file):
+        path.parent.mkdir(parents=True, exist_ok=True)
+        with path.open("a", encoding="utf-8") as stream:
+            stream.write(json.dumps(sample) + "\n")
+    failure_file.parent.mkdir(parents=True, exist_ok=True)
+    with failure_file.open("a", encoding="utf-8") as stream:
+        stream.write(json.dumps({
+            "task_id": task_id,
+            "reason": reason,
+            "timeout_seconds": timeout_seconds,
+            "recorded_at": dt.datetime.now().astimezone().isoformat(),
+        }) + "\n")
+
+
+def run_command_with_timeout(command: list[str], log_path: Path, timeout_seconds: float,
+                             on_timeout=None, label: str = "task") -> tuple[int, bool, str]:
+    """Run a task worker with a hard wall-clock cap and retain its output."""
+    log_path.parent.mkdir(parents=True, exist_ok=True)
+    with log_path.open("a", encoding="utf-8") as log:
+        log.write("$ " + " ".join(command) + "\n")
+        log.flush()
+        process = subprocess.Popen(
+            command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True,
+            bufsize=1,
+        )
+        started = time.monotonic()
+        while True:
+            remaining = timeout_seconds - (time.monotonic() - started)
+            if remaining <= 0:
+                process.kill()
+                output, _ = process.communicate()
+                output = output or ""
+                log.write(output)
+                log.write(f"\nTask worker exceeded {timeout_seconds:g}s and was terminated.\n")
+                print(output, end="" if output.endswith("\n") or not output else "\n", flush=True)
+                if on_timeout is not None:
+                    on_timeout()
+                return 124, True, output
+            try:
+                output, _ = process.communicate(timeout=min(30.0, remaining))
+                break
+            except subprocess.TimeoutExpired:
+                elapsed = int(time.monotonic() - started)
+                print(
+                    f"Still waiting for {label} ({max(1, elapsed)}/{max(1, int(timeout_seconds))}s)...",
+                    flush=True,
+                )
+        output = output or ""
+        log.write(output)
+        log.flush()
+        print(output, end="" if output.endswith("\n") or not output else "\n", flush=True)
+        return process.returncode, False, output
 
 
 def evalplus_image_tag() -> str:
@@ -282,30 +379,64 @@ def sha256_file(path: Path) -> str:
     return digest.hexdigest()
 
 
+class LlamaServerSession:
+    """Own a llama-server process and restart it after an interrupted request."""
+
+    def __init__(self, model: Path, alias: str, port: int, context: int,
+                 threads: int, log_path: Path):
+        self.model = model
+        self.alias = alias
+        self.port = port
+        self.context = context
+        self.threads = threads
+        self.log_path = log_path
+        self.process = None
+        self.handle = None
+        self.base_url = f"http://127.0.0.1:{port}"
+
+    def start(self):
+        command = [
+            str(llama_binary("llama-server")), "-m", str(self.model), "-t", str(self.threads),
+            "-ngl", "0", "-c", str(self.context), "--parallel", "1", "--alias", self.alias,
+            "--host", "127.0.0.1", "--port", str(self.port), "--temp", "0", "--seed", "42",
+        ]
+        self.log_path.parent.mkdir(parents=True, exist_ok=True)
+        self.handle = self.log_path.open("a", encoding="utf-8")
+        print(f"Loading {self.model.name} into llama-server...", flush=True)
+        self.process = subprocess.Popen(command, stdout=self.handle, stderr=subprocess.STDOUT, text=True)
+        try:
+            wait_for_server(self.port, self.process)
+        except Exception:
+            self.stop()
+            raise
+
+    def stop(self):
+        if self.process is not None and self.process.poll() is None:
+            self.process.terminate()
+            try:
+                self.process.wait(timeout=10)
+            except subprocess.TimeoutExpired:
+                self.process.kill()
+                self.process.wait()
+        if self.handle is not None:
+            self.handle.close()
+            self.handle = None
+
+    def restart(self):
+        print("Restarting llama-server after a timed-out task...", flush=True)
+        self.stop()
+        self.start()
+
+
 @contextlib.contextmanager
 def run_server(model: Path, alias: str, port: int, context: int, threads: int, log_path: Path):
     """Start one local llama-server and always stop it when its model batch ends."""
-    command = [
-        str(llama_binary("llama-server")), "-m", str(model), "-t", str(threads),
-        "-ngl", "0", "-c", str(context), "--parallel", "1", "--alias", alias,
-        "--host", "127.0.0.1", "--port", str(port), "--temp", "0", "--seed", "42",
-    ]
-    log_path.parent.mkdir(parents=True, exist_ok=True)
-    handle = log_path.open("w", encoding="utf-8")
-    print(f"Loading {model.name} into llama-server...", flush=True)
-    process = subprocess.Popen(command, stdout=handle, stderr=subprocess.STDOUT, text=True)
+    session = LlamaServerSession(model, alias, port, context, threads, log_path)
+    session.start()
     try:
-        wait_for_server(port, process)
-        yield process, f"http://127.0.0.1:{port}"
+        yield session
     finally:
-        if process.poll() is None:
-            process.terminate()
-            try:
-                process.wait(timeout=10)
-            except subprocess.TimeoutExpired:
-                process.kill()
-                process.wait()
-        handle.close()
+        session.stop()
 
 
 def llm_bench_config(base_url: str) -> str:
@@ -313,7 +444,8 @@ def llm_bench_config(base_url: str) -> str:
 
 
 def run_one_tool(tool: str, model: Path, alias: str, base_url: str | None, tool_dir: Path,
-                 threads: int, context: int) -> tuple[int, str]:
+                 threads: int, context: int, server: LlamaServerSession | None = None,
+                 evalplus_task_timeout: int = EVALPLUS_TASK_TIMEOUT) -> tuple[int, str]:
     """Run one tool's fixed, bounded slice and retain its native artifacts."""
     tool_dir.mkdir(parents=True, exist_ok=True)
     if tool == "llama-bench":
@@ -333,26 +465,63 @@ def run_one_tool(tool: str, model: Path, alias: str, base_url: str | None, tool_
         samples = tool_dir / "generated"
         sample_file = samples / "humaneval" / f"{alias}_openai_temp_0.0.jsonl"
         sample_file.parent.mkdir(parents=True, exist_ok=True)
+        raw_sample_file = samples / "humaneval" / f"{alias}_openai_temp_0.0.raw.jsonl"
         task_ids = evalplus_task_ids(EVALPLUS_TASK_COUNT)
-        if sample_file.is_file():
-            if not evalplus_samples_complete(sample_file, task_ids):
-                return 2, (
-                    f"Existing EvalPlus samples are incomplete or invalid: {sample_file}. "
-                    "They were left untouched; use a new output directory to regenerate them."
+        try:
+            saved_ids = evalplus_saved_task_ids(sample_file, task_ids)
+            raw_ids = evalplus_saved_task_ids(raw_sample_file, task_ids)
+            if saved_ids != raw_ids:
+                return 2, "EvalPlus raw/sanitized partial samples disagree; files left untouched."
+        except (ValueError, OSError) as exc:
+            return 2, f"Existing EvalPlus samples are invalid and were left untouched: {exc}"
+        if saved_ids:
+            print(f"Resuming EvalPlus: {len(saved_ids)}/{len(task_ids)} task samples already saved.", flush=True)
+        failure_file = tool_dir / "generation_failures.jsonl"
+        for task_id in task_ids:
+            if task_id in saved_ids:
+                continue
+            print(f"Generating {task_id} (task limit {evalplus_task_timeout}s)...", flush=True)
+            command = evalplus_worker_command(
+                task_id, alias, f"{base_url}/v1", sample_file, raw_sample_file,
+                max(1, evalplus_task_timeout - 10),
+            )
+            code, timed_out, output = run_command_with_timeout(
+                command, tool_dir / "generate.log", evalplus_task_timeout,
+                on_timeout=server.restart if server is not None else None,
+                label=task_id,
+            )
+            if not timed_out and code == 0:
+                saved_ids = evalplus_saved_task_ids(sample_file, task_ids)
+                if task_id in saved_ids:
+                    continue
+            if code == 124 and not timed_out and server is not None:
+                # Worker-level HTTP timeout may leave an inference slot occupied too.
+                server.restart()
+            reason = (
+                f"generation exceeded the {evalplus_task_timeout}s task limit"
+                if timed_out or code == 124 else
+                (output.strip()[-1000:] or f"worker exited with code {code}")
+            )
+            saved_ids = evalplus_saved_task_ids(sample_file, task_ids)
+            if task_id not in saved_ids:
+                record_evalplus_skipped_task(
+                    task_id, sample_file, raw_sample_file, failure_file,
+                    reason, evalplus_task_timeout,
                 )
-            print("Reusing the complete saved EvalPlus sample set.", flush=True)
-        else:
-            codegen_command = [
-                str(EVALPLUS_PYTHON), "-c", evalplus_codegen_source(), alias, f"{base_url}/v1",
-                json.dumps(task_ids), str(sample_file),
-            ]
-            code = run_logged(codegen_command, tool_dir / "generate.log", env)
-            if code:
-                return code, "EvalPlus HumanEval+ sample generation failed."
+                print(f"Skipped {task_id}: {reason.splitlines()[-1]}", flush=True)
         if not sample_file.is_file():
             return 2, f"Expected EvalPlus samples not found: {sample_file}"
         if not evalplus_samples_complete(sample_file, task_ids):
             return 2, f"EvalPlus did not produce exactly one valid sample per task: {sample_file}"
+        try:
+            skipped_count = sum(
+                1 for line in failure_file.read_text(encoding="utf-8").splitlines()
+                if line.strip()
+            )
+        except OSError:
+            skipped_count = 0
+        if skipped_count:
+            print(f"Generation skips recorded: {skipped_count}; scoring all {len(task_ids)} tasks.", flush=True)
         if not docker_accessible():
             return 2, "EvalPlus samples were generated, but Docker is unavailable; refusing to execute model-generated code unsandboxed."
         try:
@@ -363,7 +532,12 @@ def run_one_tool(tool: str, model: Path, alias: str, base_url: str | None, tool_
             samples, dataset, ROOT / "scripts" / "evalplus_subset_score.py",
             alias, os.getuid(), os.getgid(), evalplus_image_tag()
         )
-        return run_logged(docker_command, tool_dir / "score-sandboxed.log"), ""
+        score_code = run_logged(docker_command, tool_dir / "score-sandboxed.log")
+        detail = (
+            f"scored with {skipped_count} generation task(s) skipped; see {failure_file}"
+            if skipped_count else ""
+        )
+        return score_code, detail
 
     if tool == "llm-benchmark":
         config = tool_dir / "llm-benchmark-config.yaml"
@@ -430,12 +604,16 @@ def run_model(entry: dict[str, object], output_root: Path, tools: list[str], arg
     if api_tools:
         port = reserve_port()
         try:
-            with run_server(model, alias, port, args.context, args.threads, model_dir / "llama-server.log") as (_, base_url):
+            with run_server(model, alias, port, args.context, args.threads, model_dir / "llama-server.log") as server:
                 for tool in api_tools:
                     print(f"\n[{alias}] {tool}", flush=True)
                     marker = model_dir / tool / "status.json"
                     try:
-                        code, detail = run_one_tool(tool, model, alias, base_url, marker.parent, args.threads, args.context)
+                        code, detail = run_one_tool(
+                            tool, model, alias, server.base_url, marker.parent,
+                            args.threads, args.context, server=server,
+                            evalplus_task_timeout=args.evalplus_task_timeout,
+                        )
                     except Exception as exc:
                         code, detail = 1, str(exc)
                     status = "completed" if code == 0 else "failed"
@@ -462,6 +640,8 @@ def main() -> int:
     parser.add_argument("--threads", type=int, default=4)
     parser.add_argument("--context", type=int, default=4096)
     parser.add_argument("--evalplus-tasks", type=int, default=10, help="number of HumanEval+ tasks, selected by a fixed task-ID range")
+    parser.add_argument("--evalplus-task-timeout", type=int, default=EVALPLUS_TASK_TIMEOUT,
+                        help="hard wall-clock seconds allowed per EvalPlus generation task (default: 300)")
     parser.add_argument("--hellaswag-limit", type=int, default=LM_EVAL_TASK_LIMIT)
     parser.add_argument("--output", type=Path, default=None)
     args = parser.parse_args()
@@ -485,12 +665,14 @@ def main() -> int:
         parser.error("--evalplus-tasks must be between 1 and 164")
     if args.hellaswag_limit < 1:
         parser.error("--hellaswag-limit must be positive")
+    if args.evalplus_task_timeout < 1:
+        parser.error("--evalplus-task-timeout must be positive")
     EVALPLUS_TASK_COUNT = args.evalplus_tasks
     LM_EVAL_TASK_LIMIT = args.hellaswag_limit
     plan = [{"model": p, "model_id": model_id(p), "tool": name} for p in models for name in tools]
     output_root = (args.output or RESULTS_DIR / dt.datetime.now().strftime("%Y%m%dT%H%M%S")).expanduser()
     print(f"Models: {len(models)} | Tools: {', '.join(tools)} | Planned model/tool runs: {len(plan)}")
-    print(f"Settings: threads={args.threads}, context={args.context}, GPU layers=0")
+    print(f"Settings: threads={args.threads}, context={args.context}, GPU layers=0, EvalPlus task timeout={args.evalplus_task_timeout}s")
     print(f"Results: {output_root}")
     for entry in plan:
         print(f"  {entry['model_id']}  ·  {entry['tool']}")
@@ -527,6 +709,7 @@ def main() -> int:
         "llama_cpp_dir": str(llama_binary("llama-server").parent),
         "evalplus_humaneval_plus_tasks": args.evalplus_tasks,
         "evalplus_sampling": "evenly spaced task IDs across HumanEval+",
+        "evalplus_task_timeout_seconds": args.evalplus_task_timeout,
         "lm_eval_hellaswag_limit": args.hellaswag_limit,
         "llm_benchmark_task_ids": list(LLM_BENCH_TASKS),
     }

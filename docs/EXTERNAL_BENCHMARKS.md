@@ -54,6 +54,24 @@ rtk python3 scripts/external_benchmark_runner.py --resume --output results/exter
 
 You can override the size of the bounded samples with `--evalplus-tasks 20` or `--hellaswag-limit 100`. Larger values take longer. A single-model pilot is a good way to update the time estimate before running the remaining models.
 
+For the full 164-task EvalPlus run, select one model at a time and set a task
+timeout. The default is 300 seconds per generated answer:
+
+```bash
+rtk python3 scripts/external_benchmark_runner.py \
+  --model "HuggingFaceTB_SmolLM3-3B-IQ4_XS.gguf" \
+  --tool evalplus --evalplus-tasks 164 \
+  --evalplus-task-timeout 300 \
+  --output results/external-four-suite/evalplus-164-all-models --resume
+```
+
+If a generation exceeds the limit or fails, the runner records an empty failed
+sample and the reason in `<model>/evalplus/generation_failures.jsonl`, restarts
+`llama-server`, and continues to the next task. Skipped answers remain in the
+score as failures, so tasks are not silently removed. Completed task samples
+are reused when resuming. You can change the limit with
+`--evalplus-task-timeout SECONDS`.
+
 ## Result folders
 
 Each run has a `run.json` and `summary.json`, then one folder per model and one subfolder per tool:
