@@ -70,7 +70,9 @@ sample and the reason in `<model>/evalplus/generation_failures.jsonl`, restarts
 `llama-server`, and continues to the next task. Skipped answers remain in the
 score as failures, so tasks are not silently removed. Completed task samples
 are reused when resuming. You can change the limit with
-`--evalplus-task-timeout SECONDS`.
+`--evalplus-task-timeout SECONDS`. Reasoning is disabled consistently for this
+benchmark; empty model responses are recorded as failed tasks instead of being
+accepted as generated answers.
 
 ## Result folders
 

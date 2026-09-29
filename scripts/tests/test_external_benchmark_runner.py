@@ -165,6 +165,18 @@ class PlanTests(unittest.TestCase):
         self.assertIn("--request-timeout", command)
         self.assertIn("290", command)
 
+    def test_empty_evalplus_chat_content_is_not_accepted_as_a_generated_sample(self):
+        self.assertTrue(runner.evalplus_solution_is_usable("def f(): return 1"))
+        self.assertFalse(runner.evalplus_solution_is_usable(""))
+        self.assertFalse(runner.evalplus_solution_is_usable(" \n\t "))
+
+    def test_llama_server_uses_reasoning_off_for_consistent_evalplus_answers(self):
+        command = runner.llama_server_command(
+            Path("/model.gguf"), "model-id", 12345, 4096, 4,
+        )
+        self.assertIn("--reasoning", command)
+        self.assertEqual(command[command.index("--reasoning") + 1], "off")
+
     def test_evalplus_partial_samples_can_be_resumed_without_redoing_saved_ids(self):
         with tempfile.TemporaryDirectory() as temp:
             samples = Path(temp) / "samples.jsonl"

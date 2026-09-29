@@ -14,6 +14,7 @@ import openai
 from evalplus.data import get_human_eval_plus
 from evalplus.provider.openai import OpenAIChatDecoder
 from evalplus.sanitize import sanitize
+from external_benchmark_runner import evalplus_solution_is_usable
 
 
 class BoundedOpenAIChatDecoder(OpenAIChatDecoder):
@@ -81,6 +82,13 @@ def main() -> int:
         print("No completion was returned by llama-server.", file=sys.stderr, flush=True)
         return 1
     solution = outputs[0]
+    if not evalplus_solution_is_usable(solution):
+        print(
+            "llama-server returned empty answer content; recording this task as failed.",
+            file=sys.stderr,
+            flush=True,
+        )
+        return 1
     append_jsonl(args.samples, {
         "task_id": args.task_id,
         "solution": sanitize(solution, entrypoint=task["entry_point"]),

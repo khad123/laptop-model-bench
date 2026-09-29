@@ -170,6 +170,10 @@ def evalplus_worker_command(task_id: str, alias: str, base_url: str,
     ]
 
 
+def evalplus_solution_is_usable(solution: str | None) -> bool:
+    return isinstance(solution, str) and bool(solution.strip())
+
+
 def evalplus_samples_complete(sample_file: Path, task_ids: list[str]) -> bool:
     """Only reuse saved samples when there is exactly one valid record per task."""
     try:
@@ -379,6 +383,16 @@ def sha256_file(path: Path) -> str:
     return digest.hexdigest()
 
 
+def llama_server_command(model: Path, alias: str, port: int, context: int,
+                         threads: int) -> list[str]:
+    return [
+        str(llama_binary("llama-server")), "-m", str(model), "-t", str(threads),
+        "-ngl", "0", "-c", str(context), "--parallel", "1", "--alias", alias,
+        "--host", "127.0.0.1", "--port", str(port), "--temp", "0", "--seed", "42",
+        "--reasoning", "off",
+    ]
+
+
 class LlamaServerSession:
     """Own a llama-server process and restart it after an interrupted request."""
 
@@ -395,11 +409,9 @@ class LlamaServerSession:
         self.base_url = f"http://127.0.0.1:{port}"
 
     def start(self):
-        command = [
-            str(llama_binary("llama-server")), "-m", str(self.model), "-t", str(self.threads),
-            "-ngl", "0", "-c", str(self.context), "--parallel", "1", "--alias", self.alias,
-            "--host", "127.0.0.1", "--port", str(self.port), "--temp", "0", "--seed", "42",
-        ]
+        command = llama_server_command(
+            self.model, self.alias, self.port, self.context, self.threads,
+        )
         self.log_path.parent.mkdir(parents=True, exist_ok=True)
         self.handle = self.log_path.open("a", encoding="utf-8")
         print(f"Loading {self.model.name} into llama-server...", flush=True)
@@ -579,6 +591,7 @@ def run_model(entry: dict[str, object], output_root: Path, tools: list[str], arg
         "gpu_layers": 0,
         "temperature": 0,
         "seed": 42,
+        "reasoning": "off",
     }
     (model_dir / "model.json").write_text(json.dumps(metadata, indent=2) + "\n", encoding="utf-8")
     statuses: dict[str, str] = {}
@@ -672,7 +685,10 @@ def main() -> int:
     plan = [{"model": p, "model_id": model_id(p), "tool": name} for p in models for name in tools]
     output_root = (args.output or RESULTS_DIR / dt.datetime.now().strftime("%Y%m%dT%H%M%S")).expanduser()
     print(f"Models: {len(models)} | Tools: {', '.join(tools)} | Planned model/tool runs: {len(plan)}")
-    print(f"Settings: threads={args.threads}, context={args.context}, GPU layers=0, EvalPlus task timeout={args.evalplus_task_timeout}s")
+    print(
+        f"Settings: threads={args.threads}, context={args.context}, GPU layers=0, "
+        f"reasoning=off, EvalPlus task timeout={args.evalplus_task_timeout}s"
+    )
     print(f"Results: {output_root}")
     for entry in plan:
         print(f"  {entry['model_id']}  ·  {entry['tool']}")
@@ -710,6 +726,7 @@ def main() -> int:
         "evalplus_humaneval_plus_tasks": args.evalplus_tasks,
         "evalplus_sampling": "evenly spaced task IDs across HumanEval+",
         "evalplus_task_timeout_seconds": args.evalplus_task_timeout,
+        "reasoning": "off",
         "lm_eval_hellaswag_limit": args.hellaswag_limit,
         "llm_benchmark_task_ids": list(LLM_BENCH_TASKS),
     }
