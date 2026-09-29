@@ -8,6 +8,7 @@ venv/
 results/raw/
 results/tmp/
 logs/
+bench-tools/
 
 # Keep only frozen v1 release summaries/charts in Git.
 results/*

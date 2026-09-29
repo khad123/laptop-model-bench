@@ -109,6 +109,18 @@ ECC is optional. To install the guidance checkout in the default location on Win
 
 Runs are saved under `results/` unless `--run-root` is specified. Each run folder contains the prompt, `response.txt`, the llama.cpp transcript and log, and `run-metadata.json`. HTML output is saved as a project/model/mode-named `.html` file, including partial output. `index.html` is written only when the output has a closing HTML tag. A completed run means `llama-cli` exited successfully; it does not mean the generated app is complete or playable.
 
+## Four-tool model comparison
+
+To compare all installed GGUF models with `llama-bench`, EvalPlus, `llm-benchmark`, and EleutherAI's `lm-evaluation-harness`, install the pinned tools and use the sequential runner:
+
+```bash
+rtk bash scripts/setup_external_benchmarks.sh
+rtk python3 scripts/external_benchmark_runner.py --dry-run
+rtk python3 scripts/external_benchmark_runner.py
+```
+
+The runner uses bounded, fixed samples and saves results under `results/external-four-suite/`. It checks the current Hugging Face cache each time and loads models one by one. EvalPlus requires Docker to safely evaluate generated code. See [`docs/EXTERNAL_BENCHMARKS.md`](docs/EXTERNAL_BENCHMARKS.md) for exact coverage, settings, resume and model-selection options, result paths, and runtime estimates.
+
 ## Useful options
 
 ```text

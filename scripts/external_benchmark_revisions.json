@@ -1,0 +1,14 @@
+{
+  "evalplus": {
+    "remote": "https://github.com/evalplus/evalplus.git",
+    "revision": "26d6d00bb1fd0fa37f39c99d5290da67891d1c5e"
+  },
+  "llm-benchmark": {
+    "remote": "https://github.com/eric-rolph/llm-benchmark.git",
+    "revision": "60bbc52bd52492796e848eec1d48811496e8cc66"
+  },
+  "lm-evaluation-harness": {
+    "remote": "https://github.com/EleutherAI/lm-evaluation-harness.git",
+    "revision": "d6de81643928d653435c431bae19945d41d32520"
+  }
+}
