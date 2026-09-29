@@ -1,4 +1,5 @@
 import importlib.util
+import json
 import os
 import tempfile
 import unittest
@@ -80,6 +81,23 @@ class PlanTests(unittest.TestCase):
         self.assertIn(
             f"{dataset.resolve()}:/bench-data/HumanEvalPlus.jsonl:ro", command
         )
+
+    def test_evalplus_reuses_only_a_complete_one_sample_per_task_file(self):
+        with tempfile.TemporaryDirectory() as temp:
+            samples = Path(temp) / "samples.jsonl"
+            task_ids = ["HumanEval/0", "HumanEval/18"]
+            samples.write_text(
+                "".join(
+                    json.dumps({"task_id": task_id, "solution": "def f(): pass"}) + "\n"
+                    for task_id in task_ids
+                )
+            )
+            self.assertTrue(runner.evalplus_samples_complete(samples, task_ids))
+
+            samples.write_text(
+                json.dumps({"task_id": task_ids[0], "solution": "def f(): pass"}) + "\n"
+            )
+            self.assertFalse(runner.evalplus_samples_complete(samples, task_ids))
 
 
 if __name__ == "__main__":

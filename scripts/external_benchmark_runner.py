@@ -157,6 +157,23 @@ def evalplus_codegen_source() -> str:
     )
 
 
+def evalplus_samples_complete(sample_file: Path, task_ids: list[str]) -> bool:
+    """Only reuse saved samples when there is exactly one valid record per task."""
+    try:
+        samples = [
+            json.loads(line)
+            for line in sample_file.read_text(encoding="utf-8").splitlines()
+            if line.strip()
+        ]
+    except (OSError, json.JSONDecodeError):
+        return False
+    return (
+        len(samples) == len(task_ids)
+        and {sample.get("task_id") for sample in samples} == set(task_ids)
+        and all(isinstance(sample.get("solution"), str) for sample in samples)
+    )
+
+
 def evalplus_image_tag() -> str:
     versions = json.loads((TOOLS_DIR / "tool-versions.json").read_text(encoding="utf-8"))
     revision = versions["evalplus"]["revision"]
@@ -312,15 +329,26 @@ def run_one_tool(tool: str, model: Path, alias: str, base_url: str | None, tool_
         samples = tool_dir / "generated"
         sample_file = samples / "humaneval" / f"{alias}_openai_temp_0.0.jsonl"
         sample_file.parent.mkdir(parents=True, exist_ok=True)
-        codegen_command = [
-            str(EVALPLUS_PYTHON), "-c", evalplus_codegen_source(), alias, f"{base_url}/v1",
-            json.dumps(evalplus_task_ids(EVALPLUS_TASK_COUNT)), str(sample_file),
-        ]
-        code = run_logged(codegen_command, tool_dir / "generate.log", env)
-        if code:
-            return code, "EvalPlus HumanEval+ sample generation failed."
+        task_ids = evalplus_task_ids(EVALPLUS_TASK_COUNT)
+        if sample_file.is_file():
+            if not evalplus_samples_complete(sample_file, task_ids):
+                return 2, (
+                    f"Existing EvalPlus samples are incomplete or invalid: {sample_file}. "
+                    "They were left untouched; use a new output directory to regenerate them."
+                )
+            print("Reusing the complete saved EvalPlus sample set.", flush=True)
+        else:
+            codegen_command = [
+                str(EVALPLUS_PYTHON), "-c", evalplus_codegen_source(), alias, f"{base_url}/v1",
+                json.dumps(task_ids), str(sample_file),
+            ]
+            code = run_logged(codegen_command, tool_dir / "generate.log", env)
+            if code:
+                return code, "EvalPlus HumanEval+ sample generation failed."
         if not sample_file.is_file():
             return 2, f"Expected EvalPlus samples not found: {sample_file}"
+        if not evalplus_samples_complete(sample_file, task_ids):
+            return 2, f"EvalPlus did not produce exactly one valid sample per task: {sample_file}"
         if not docker_accessible():
             return 2, "EvalPlus samples were generated, but Docker is unavailable; refusing to execute model-generated code unsandboxed."
         try:
