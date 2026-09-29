@@ -77,6 +77,8 @@ class PlanTests(unittest.TestCase):
             image="evalplus:test",
         )
         self.assertIn("--network=none", command)
+        self.assertIn("XDG_CACHE_HOME=/tmp/.cache", command)
+        self.assertIn("/tmp:rw,noexec,nosuid,size=256m", command)
         self.assertIn("HUMANEVAL_OVERRIDE_PATH=/bench-data/HumanEvalPlus.jsonl", command)
         self.assertIn(
             f"{dataset.resolve()}:/bench-data/HumanEvalPlus.jsonl:ro", command
