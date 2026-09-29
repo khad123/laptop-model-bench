@@ -10,6 +10,10 @@ SCRIPT = Path(__file__).resolve().parents[1] / "external_benchmark_runner.py"
 SPEC = importlib.util.spec_from_file_location("external_benchmark_runner", SCRIPT)
 runner = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(runner)
+SCORER_SCRIPT = SCRIPT.with_name("evalplus_subset_score.py")
+SCORER_SPEC = importlib.util.spec_from_file_location("evalplus_subset_score", SCORER_SCRIPT)
+scorer = importlib.util.module_from_spec(SCORER_SPEC)
+SCORER_SPEC.loader.exec_module(scorer)
 
 
 class ModelDiscoveryTests(unittest.TestCase):
@@ -71,6 +75,7 @@ class PlanTests(unittest.TestCase):
         command = runner.evalplus_docker_command(
             samples=Path("/tmp/generated"),
             dataset=dataset,
+            scorer=Path("/tmp/evalplus_subset_score.py"),
             alias="model-id",
             uid=1000,
             gid=1000,
@@ -80,6 +85,12 @@ class PlanTests(unittest.TestCase):
         self.assertIn("XDG_CACHE_HOME=/tmp/.cache", command)
         self.assertIn("/tmp:rw,noexec,nosuid,size=256m", command)
         self.assertIn("HUMANEVAL_OVERRIDE_PATH=/bench-data/HumanEvalPlus.jsonl", command)
+        self.assertIn(
+            "/tmp/evalplus_subset_score.py:/bench-scripts/evalplus_subset_score.py:ro",
+            command,
+        )
+        self.assertIn("/bench-scripts/evalplus_subset_score.py", command)
+        self.assertNotIn("evalplus.evaluate", command)
         self.assertIn(
             f"{dataset.resolve()}:/bench-data/HumanEvalPlus.jsonl:ro", command
         )
@@ -100,6 +111,32 @@ class PlanTests(unittest.TestCase):
                 json.dumps({"task_id": task_ids[0], "solution": "def f(): pass"}) + "\n"
             )
             self.assertFalse(runner.evalplus_samples_complete(samples, task_ids))
+
+    def test_evalplus_subset_scorer_accepts_only_present_known_tasks(self):
+        with tempfile.TemporaryDirectory() as temp:
+            samples = Path(temp) / "samples.jsonl"
+            samples.write_text(
+                json.dumps({"task_id": "HumanEval/18", "solution": "def f(): return 1"})
+                + "\n"
+            )
+            loaded = scorer.load_subset_samples(samples, {"HumanEval/0", "HumanEval/18"})
+            self.assertEqual([item["task_id"] for item in loaded], ["HumanEval/18"])
+
+            samples.write_text(
+                json.dumps({"task_id": "HumanEval/18", "solution": "def f(): return 1"})
+                + "\n"
+                + json.dumps({"task_id": "HumanEval/18", "solution": "def f(): return 2"})
+                + "\n"
+            )
+            with self.assertRaisesRegex(ValueError, "Duplicate sample"):
+                scorer.load_subset_samples(samples, {"HumanEval/18"})
+
+            samples.write_text(
+                json.dumps({"task_id": "HumanEval/999", "solution": "def f(): pass"})
+                + "\n"
+            )
+            with self.assertRaisesRegex(ValueError, "Unknown HumanEval task ID"):
+                scorer.load_subset_samples(samples, {"HumanEval/0", "HumanEval/18"})
 
 
 if __name__ == "__main__":

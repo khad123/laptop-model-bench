@@ -199,10 +199,11 @@ def evalplus_dataset_path() -> Path:
     return dataset
 
 
-def evalplus_docker_command(samples: Path, dataset: Path, alias: str,
+def evalplus_docker_command(samples: Path, dataset: Path, scorer: Path, alias: str,
                             uid: int, gid: int, image: str) -> list[str]:
-    """Score generated code offline, with the benchmark dataset mounted read-only."""
+    """Score the selected HumanEval+ subset offline in the sandbox."""
     dataset_in_container = "/bench-data/HumanEvalPlus.jsonl"
+    scorer_in_container = "/bench-scripts/evalplus_subset_score.py"
     return [
         "docker", "run", "--rm", "--pull=missing", "--network=none", "--cpus=2",
         "--memory=2g", "--pids-limit=128", "--read-only", "--tmpfs",
@@ -210,9 +211,11 @@ def evalplus_docker_command(samples: Path, dataset: Path, alias: str,
         "--env", "XDG_CACHE_HOME=/tmp/.cache",
         "--env", f"HUMANEVAL_OVERRIDE_PATH={dataset_in_container}",
         "--volume", f"{dataset.resolve()}:{dataset_in_container}:ro",
+        "--volume", f"{scorer.resolve()}:{scorer_in_container}:ro",
         "--volume", f"{samples.resolve()}:/results:rw", "--workdir", "/tmp",
-        image, "evalplus.evaluate", "--dataset", "humaneval",
-        "--samples", f"/results/humaneval/{alias}_openai_temp_0.0.jsonl", "--parallel", "1",
+        image, "python", scorer_in_container,
+        "--samples", f"/results/humaneval/{alias}_openai_temp_0.0.jsonl",
+        "--output", f"/results/humaneval/{alias}_openai_temp_0.0.subset_eval_results.json",
     ]
 
 
@@ -357,7 +360,8 @@ def run_one_tool(tool: str, model: Path, alias: str, base_url: str | None, tool_
         except Exception as exc:
             return 2, f"Could not locate the cached HumanEval+ dataset: {exc}"
         docker_command = evalplus_docker_command(
-            samples, dataset, alias, os.getuid(), os.getgid(), evalplus_image_tag()
+            samples, dataset, ROOT / "scripts" / "evalplus_subset_score.py",
+            alias, os.getuid(), os.getgid(), evalplus_image_tag()
         )
         return run_logged(docker_command, tool_dir / "score-sandboxed.log"), ""
 
