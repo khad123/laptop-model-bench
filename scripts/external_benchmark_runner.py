@@ -163,6 +163,41 @@ def evalplus_image_tag() -> str:
     return f"local-lmb-evalplus:{revision[:12]}"
 
 
+def evalplus_dataset_path() -> Path:
+    """Return the pinned HumanEval+ cache file used by this EvalPlus install."""
+    env = os.environ.copy()
+    env["XDG_CACHE_HOME"] = str(TOOLS_DIR / "cache")
+    code = (
+        "from evalplus.data.humaneval import HUMANEVAL_PLUS_VERSION; "
+        "from evalplus.data.utils import get_dataset_metadata; "
+        "print(get_dataset_metadata('HumanEvalPlus', HUMANEVAL_PLUS_VERSION, False)[1])"
+    )
+    result = subprocess.run(
+        [str(EVALPLUS_PYTHON), "-c", code], env=env,
+        capture_output=True, text=True, check=True,
+    )
+    dataset = Path(result.stdout.strip().splitlines()[-1])
+    if not dataset.is_file():
+        raise FileNotFoundError(f"HumanEval+ cache file not found: {dataset}")
+    return dataset
+
+
+def evalplus_docker_command(samples: Path, dataset: Path, alias: str,
+                            uid: int, gid: int, image: str) -> list[str]:
+    """Score generated code offline, with the benchmark dataset mounted read-only."""
+    dataset_in_container = "/bench-data/HumanEvalPlus.jsonl"
+    return [
+        "docker", "run", "--rm", "--pull=missing", "--network=none", "--cpus=2",
+        "--memory=2g", "--pids-limit=128", "--read-only", "--tmpfs",
+        "/tmp:rw,noexec,nosuid,size=256m", "--user", f"{uid}:{gid}",
+        "--env", f"HUMANEVAL_OVERRIDE_PATH={dataset_in_container}",
+        "--volume", f"{dataset.resolve()}:{dataset_in_container}:ro",
+        "--volume", f"{samples.resolve()}:/results:rw", "--workdir", "/tmp",
+        image, "evalplus.evaluate", "--dataset", "humaneval",
+        "--samples", f"/results/humaneval/{alias}_openai_temp_0.0.jsonl", "--parallel", "1",
+    ]
+
+
 def ensure_evalplus_image(output_root: Path) -> None:
     image = evalplus_image_tag()
     present = subprocess.run(["docker", "image", "inspect", image], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=False)
@@ -288,15 +323,13 @@ def run_one_tool(tool: str, model: Path, alias: str, base_url: str | None, tool_
             return 2, f"Expected EvalPlus samples not found: {sample_file}"
         if not docker_accessible():
             return 2, "EvalPlus samples were generated, but Docker is unavailable; refusing to execute model-generated code unsandboxed."
-        uid, gid = os.getuid(), os.getgid()
-        docker_command = [
-            "docker", "run", "--rm", "--pull=missing", "--network=none", "--cpus=2",
-            "--memory=2g", "--pids-limit=128", "--read-only", "--tmpfs",
-            "/tmp:rw,noexec,nosuid,size=256m", "--user", f"{uid}:{gid}",
-            "--volume", f"{samples.resolve()}:/results:rw", "--workdir", "/tmp",
-            evalplus_image_tag(), "evalplus.evaluate", "--dataset", "humaneval",
-            "--samples", f"/results/humaneval/{alias}_openai_temp_0.0.jsonl", "--parallel", "1",
-        ]
+        try:
+            dataset = evalplus_dataset_path()
+        except Exception as exc:
+            return 2, f"Could not locate the cached HumanEval+ dataset: {exc}"
+        docker_command = evalplus_docker_command(
+            samples, dataset, alias, os.getuid(), os.getgid(), evalplus_image_tag()
+        )
         return run_logged(docker_command, tool_dir / "score-sandboxed.log"), ""
 
     if tool == "llm-benchmark":

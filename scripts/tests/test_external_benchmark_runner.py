@@ -65,6 +65,22 @@ class PlanTests(unittest.TestCase):
         code = runner.evalplus_codegen_source()
         self.assertIn("instruction_prefix=''", code)
 
+    def test_evalplus_scoring_mounts_cached_dataset_read_only_offline(self):
+        dataset = Path("/tmp/HumanEvalPlus-v0.1.10.jsonl")
+        command = runner.evalplus_docker_command(
+            samples=Path("/tmp/generated"),
+            dataset=dataset,
+            alias="model-id",
+            uid=1000,
+            gid=1000,
+            image="evalplus:test",
+        )
+        self.assertIn("--network=none", command)
+        self.assertIn("HUMANEVAL_OVERRIDE_PATH=/bench-data/HumanEvalPlus.jsonl", command)
+        self.assertIn(
+            f"{dataset.resolve()}:/bench-data/HumanEvalPlus.jsonl:ro", command
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
