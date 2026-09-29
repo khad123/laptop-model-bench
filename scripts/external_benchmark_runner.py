@@ -143,6 +143,20 @@ def evalplus_task_ids(count: int) -> list[str]:
     return json.loads(result.stdout.strip().splitlines()[-1])
 
 
+def evalplus_codegen_source() -> str:
+    """Build EvalPlus samples through its OpenAI-compatible decoder."""
+    return (
+        "from evalplus.data import get_human_eval_plus; "
+        "from evalplus.provider import make_model; "
+        "from evalplus.codegen import codegen; "
+        "import json,sys; "
+        "tasks=get_human_eval_plus(); selected={task_id:tasks[task_id] for task_id in json.loads(sys.argv[3])}; "
+        "model=make_model(model=sys.argv[1], backend='openai', dataset='humaneval', "
+        "base_url=sys.argv[2], batch_size=1, temperature=0.0, instruction_prefix=''); "
+        "codegen(target_path=sys.argv[4], model=model, dataset=selected, greedy=True, n_samples=1, resume=True)"
+    )
+
+
 def evalplus_image_tag() -> str:
     versions = json.loads((TOOLS_DIR / "tool-versions.json").read_text(encoding="utf-8"))
     revision = versions["evalplus"]["revision"]
@@ -260,21 +274,11 @@ def run_one_tool(tool: str, model: Path, alias: str, base_url: str | None, tool_
         env = os.environ.copy()
         env["OPENAI_API_KEY"] = "local-llama-server"
         env["XDG_CACHE_HOME"] = str(TOOLS_DIR / "cache")
-        codegen = (
-            "from evalplus.data import get_human_eval_plus; "
-            "from evalplus.provider import make_model; "
-            "from evalplus.codegen import codegen; "
-            "import json,sys; "
-            "tasks=get_human_eval_plus(); selected={task_id:tasks[task_id] for task_id in json.loads(sys.argv[3])}; "
-            "model=make_model(model=sys.argv[1], backend='openai', dataset='humaneval', "
-            "base_url=sys.argv[2], batch_size=1, temperature=0.0); "
-            "codegen(target_path=sys.argv[4], model=model, dataset=selected, greedy=True, n_samples=1, resume=True)"
-        )
         samples = tool_dir / "generated"
         sample_file = samples / "humaneval" / f"{alias}_openai_temp_0.0.jsonl"
         sample_file.parent.mkdir(parents=True, exist_ok=True)
         codegen_command = [
-            str(EVALPLUS_PYTHON), "-c", codegen, alias, f"{base_url}/v1",
+            str(EVALPLUS_PYTHON), "-c", evalplus_codegen_source(), alias, f"{base_url}/v1",
             json.dumps(evalplus_task_ids(EVALPLUS_TASK_COUNT)), str(sample_file),
         ]
         code = run_logged(codegen_command, tool_dir / "generate.log", env)

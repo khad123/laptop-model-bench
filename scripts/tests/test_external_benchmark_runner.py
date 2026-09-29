@@ -61,6 +61,10 @@ class PlanTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             runner.evenly_spaced_indices(10, 11)
 
+    def test_evalplus_codegen_sets_a_string_instruction_prefix(self):
+        code = runner.evalplus_codegen_source()
+        self.assertIn("instruction_prefix=''", code)
+
 
 if __name__ == "__main__":
     unittest.main()
