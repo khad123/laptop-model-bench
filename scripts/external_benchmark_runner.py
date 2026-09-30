@@ -19,6 +19,14 @@ from pathlib import Path
 from urllib.error import URLError
 from urllib.request import urlopen
 
+from benchmark_telemetry import (
+    estimate_remaining_seconds,
+    finalize_run_timing,
+    format_duration,
+    progress_line,
+    summarize_task_metrics,
+)
+
 
 ROOT = Path(__file__).resolve().parents[1]
 TOOLS_DIR = ROOT / "bench-tools"
@@ -161,11 +169,12 @@ def evalplus_codegen_source() -> str:
 
 def evalplus_worker_command(task_id: str, alias: str, base_url: str,
                             sample_file: Path, raw_sample_file: Path,
-                            request_timeout: int) -> list[str]:
+                            metrics_file: Path, request_timeout: int) -> list[str]:
     return [
         str(EVALPLUS_PYTHON), str(EVALPLUS_GENERATE_TASK),
         "--task-id", task_id, "--model", alias, "--base-url", base_url,
         "--samples", str(sample_file), "--raw-samples", str(raw_sample_file),
+        "--metrics", str(metrics_file),
         "--request-timeout", str(request_timeout),
     ]
 
@@ -218,7 +227,8 @@ def evalplus_saved_task_ids(sample_file: Path, task_ids: list[str]) -> set[str]:
 
 def record_evalplus_skipped_task(task_id: str, sample_file: Path,
                                  raw_sample_file: Path, failure_file: Path,
-                                 reason: str, timeout_seconds: int) -> None:
+                                 reason: str, timeout_seconds: int,
+                                 elapsed_seconds: float | None = None) -> None:
     """Write an empty failed solution so subset scoring can continue through all tasks."""
     sample = {"task_id": task_id, "solution": ""}
     for path in (sample_file, raw_sample_file):
@@ -231,12 +241,13 @@ def record_evalplus_skipped_task(task_id: str, sample_file: Path,
             "task_id": task_id,
             "reason": reason,
             "timeout_seconds": timeout_seconds,
+            "elapsed_seconds": round(elapsed_seconds, 3) if elapsed_seconds is not None else None,
             "recorded_at": dt.datetime.now().astimezone().isoformat(),
         }) + "\n")
 
 
 def run_command_with_timeout(command: list[str], log_path: Path, timeout_seconds: float,
-                             on_timeout=None, label: str = "task") -> tuple[int, bool, str]:
+                             on_timeout=None, label: str = "task") -> tuple[int, bool, str, float]:
     """Run a task worker with a hard wall-clock cap and retain its output."""
     log_path.parent.mkdir(parents=True, exist_ok=True)
     with log_path.open("a", encoding="utf-8") as log:
@@ -253,12 +264,13 @@ def run_command_with_timeout(command: list[str], log_path: Path, timeout_seconds
                 process.kill()
                 output, _ = process.communicate()
                 output = output or ""
+                elapsed = min(timeout_seconds, time.monotonic() - started)
                 log.write(output)
                 log.write(f"\nTask worker exceeded {timeout_seconds:g}s and was terminated.\n")
                 print(output, end="" if output.endswith("\n") or not output else "\n", flush=True)
                 if on_timeout is not None:
                     on_timeout()
-                return 124, True, output
+                return 124, True, output, elapsed
             try:
                 output, _ = process.communicate(timeout=min(30.0, remaining))
                 break
@@ -272,7 +284,35 @@ def run_command_with_timeout(command: list[str], log_path: Path, timeout_seconds
         log.write(output)
         log.flush()
         print(output, end="" if output.endswith("\n") or not output else "\n", flush=True)
-        return process.returncode, False, output
+        return process.returncode, False, output, time.monotonic() - started
+
+
+def read_jsonl(path: Path) -> list[dict]:
+    try:
+        items = []
+        for line in path.read_text(encoding="utf-8").splitlines():
+            if not line.strip():
+                continue
+            try:
+                item = json.loads(line)
+            except json.JSONDecodeError:
+                continue
+            if isinstance(item, dict):
+                items.append(item)
+        return items
+    except FileNotFoundError:
+        return []
+
+
+def process_peak_rss_kib(pid: int, proc_root: Path = Path("/proc")) -> int | None:
+    """Read Linux's high-water resident memory for a live process."""
+    try:
+        for line in (proc_root / str(pid) / "status").read_text(encoding="utf-8").splitlines():
+            if line.startswith("VmHWM:"):
+                return int(line.split()[1])
+    except (OSError, ValueError, IndexError):
+        pass
+    return None
 
 
 def evalplus_image_tag() -> str:
@@ -367,10 +407,21 @@ def run_logged(command: list[str], log_path: Path, env: dict[str, str] | None = 
         return process.wait()
 
 
-def write_result(path: Path, status: str, detail: str = "") -> None:
+def write_result(path: Path, status: str, detail: str = "",
+                 started_at: str | None = None,
+                 elapsed_seconds: float | None = None) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
+    result = {
+        "status": status,
+        "detail": detail,
+        "finished_at": dt.datetime.now().astimezone().isoformat(),
+    }
+    if started_at is not None:
+        result["started_at"] = started_at
+    if elapsed_seconds is not None:
+        result["elapsed_seconds"] = round(max(0.0, elapsed_seconds), 3)
     path.write_text(
-        json.dumps({"status": status, "detail": detail, "finished_at": dt.datetime.now().astimezone().isoformat()}, indent=2) + "\n",
+        json.dumps(result, indent=2) + "\n",
         encoding="utf-8",
     )
 
@@ -406,9 +457,12 @@ class LlamaServerSession:
         self.log_path = log_path
         self.process = None
         self.handle = None
+        self.peak_rss_kib = None
+        self.server_startup_seconds = 0.0
         self.base_url = f"http://127.0.0.1:{port}"
 
     def start(self):
+        started = time.monotonic()
         command = llama_server_command(
             self.model, self.alias, self.port, self.context, self.threads,
         )
@@ -418,12 +472,17 @@ class LlamaServerSession:
         self.process = subprocess.Popen(command, stdout=self.handle, stderr=subprocess.STDOUT, text=True)
         try:
             wait_for_server(self.port, self.process)
+            self.server_startup_seconds += time.monotonic() - started
         except Exception:
+            self.server_startup_seconds += time.monotonic() - started
             self.stop()
             raise
 
     def stop(self):
         if self.process is not None and self.process.poll() is None:
+            measured_rss = process_peak_rss_kib(self.process.pid)
+            if measured_rss is not None:
+                self.peak_rss_kib = max(self.peak_rss_kib or 0, measured_rss)
             self.process.terminate()
             try:
                 self.process.wait(timeout=10)
@@ -478,6 +537,7 @@ def run_one_tool(tool: str, model: Path, alias: str, base_url: str | None, tool_
         sample_file = samples / "humaneval" / f"{alias}_openai_temp_0.0.jsonl"
         sample_file.parent.mkdir(parents=True, exist_ok=True)
         raw_sample_file = samples / "humaneval" / f"{alias}_openai_temp_0.0.raw.jsonl"
+        metrics_file = tool_dir / "task_metrics.jsonl"
         task_ids = evalplus_task_ids(EVALPLUS_TASK_COUNT)
         try:
             saved_ids = evalplus_saved_task_ids(sample_file, task_ids)
@@ -489,38 +549,59 @@ def run_one_tool(tool: str, model: Path, alias: str, base_url: str | None, tool_
         if saved_ids:
             print(f"Resuming EvalPlus: {len(saved_ids)}/{len(task_ids)} task samples already saved.", flush=True)
         failure_file = tool_dir / "generation_failures.jsonl"
+        metric_records = read_jsonl(metrics_file)
+        failure_records = read_jsonl(failure_file)
+        if saved_ids:
+            print(f"EvalPlus progress: {len(saved_ids)}/{len(task_ids)} tasks already saved.", flush=True)
         for task_id in task_ids:
             if task_id in saved_ids:
                 continue
             print(f"Generating {task_id} (task limit {evalplus_task_timeout}s)...", flush=True)
             command = evalplus_worker_command(
                 task_id, alias, f"{base_url}/v1", sample_file, raw_sample_file,
-                max(1, evalplus_task_timeout - 10),
+                metrics_file, max(1, evalplus_task_timeout - 10),
             )
-            code, timed_out, output = run_command_with_timeout(
+            code, timed_out, output, elapsed = run_command_with_timeout(
                 command, tool_dir / "generate.log", evalplus_task_timeout,
                 on_timeout=server.restart if server is not None else None,
                 label=task_id,
             )
+            outcome = "done"
+            task_metrics = None
             if not timed_out and code == 0:
                 saved_ids = evalplus_saved_task_ids(sample_file, task_ids)
                 if task_id in saved_ids:
-                    continue
-            if code == 124 and not timed_out and server is not None:
-                # Worker-level HTTP timeout may leave an inference slot occupied too.
-                server.restart()
-            reason = (
-                f"generation exceeded the {evalplus_task_timeout}s task limit"
-                if timed_out or code == 124 else
-                (output.strip()[-1000:] or f"worker exited with code {code}")
-            )
-            saved_ids = evalplus_saved_task_ids(sample_file, task_ids)
+                    task_metrics = next(
+                        (item for item in reversed(read_jsonl(metrics_file)) if item.get("task_id") == task_id),
+                        None,
+                    )
+                else:
+                    code = 1
             if task_id not in saved_ids:
+                if code == 124 and not timed_out and server is not None:
+                    # Worker-level HTTP timeout may leave an inference slot occupied too.
+                    server.restart()
+                reason = (
+                    f"generation exceeded the {evalplus_task_timeout}s task limit"
+                    if timed_out or code == 124 else
+                    (output.strip()[-1000:] or f"worker exited with code {code}")
+                )
                 record_evalplus_skipped_task(
                     task_id, sample_file, raw_sample_file, failure_file,
-                    reason, evalplus_task_timeout,
+                    reason, evalplus_task_timeout, elapsed_seconds=elapsed,
                 )
-                print(f"Skipped {task_id}: {reason.splitlines()[-1]}", flush=True)
+                failure_records = read_jsonl(failure_file)
+                saved_ids = evalplus_saved_task_ids(sample_file, task_ids)
+                outcome = "skipped"
+            metric_records = read_jsonl(metrics_file)
+            failure_records = read_jsonl(failure_file)
+            durations = [item.get("task_elapsed_seconds", item.get("request_elapsed_seconds"))
+                         for item in metric_records]
+            durations.extend(item.get("elapsed_seconds") for item in failure_records)
+            eta = estimate_remaining_seconds(durations, len(task_ids) - len(saved_ids))
+            print(progress_line(
+                task_id, len(saved_ids), len(task_ids), elapsed, task_metrics, eta, outcome,
+            ), flush=True)
         if not sample_file.is_file():
             return 2, f"Expected EvalPlus samples not found: {sample_file}"
         if not evalplus_samples_complete(sample_file, task_ids):
@@ -534,6 +615,19 @@ def run_one_tool(tool: str, model: Path, alias: str, base_url: str | None, tool_
             skipped_count = 0
         if skipped_count:
             print(f"Generation skips recorded: {skipped_count}; scoring all {len(task_ids)} tasks.", flush=True)
+        telemetry_summary = summarize_task_metrics(
+            read_jsonl(metrics_file), read_jsonl(failure_file), len(task_ids),
+        )
+        (tool_dir / "telemetry.json").write_text(
+            json.dumps(telemetry_summary, indent=2) + "\n", encoding="utf-8",
+        )
+        rate = telemetry_summary["generation_tokens_per_second_average"]
+        print(
+            f"EvalPlus generation summary: {telemetry_summary['tasks_generated']}/{len(task_ids)} generated, "
+            f"{skipped_count} failed/skipped, average generation rate "
+            f"{f'{rate:.1f} tok/s' if rate is not None else 'not reported'}.",
+            flush=True,
+        )
         if not docker_accessible():
             return 2, "EvalPlus samples were generated, but Docker is unavailable; refusing to execute model-generated code unsandboxed."
         try:
@@ -577,7 +671,14 @@ def run_model(entry: dict[str, object], output_root: Path, tools: list[str], arg
     alias = str(entry["model_id"])
     model_dir = output_root / alias
     model_dir.mkdir(parents=True, exist_ok=True)
+    previous_model_metadata = {}
+    if args.resume:
+        try:
+            previous_model_metadata = json.loads((model_dir / "model.json").read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            previous_model_metadata = {}
     metadata = {
+        **previous_model_metadata,
         "model_file": str(model),
         "resolved_file": str(model.resolve()),
         "bytes": model.stat().st_size,
@@ -605,22 +706,31 @@ def run_model(entry: dict[str, object], output_root: Path, tools: list[str], arg
     if "llama-bench" in pending:
         print(f"\n[{alias}] llama-bench", flush=True)
         marker = model_dir / "llama-bench" / "status.json"
+        tool_started_at = dt.datetime.now().astimezone().isoformat()
+        tool_started = time.monotonic()
         try:
             code, detail = run_one_tool("llama-bench", model, alias, None, marker.parent, args.threads, args.context)
         except Exception as exc:
             code, detail = 1, str(exc)
         status = "completed" if code == 0 else "failed"
-        write_result(marker, status, detail or f"exit code {code}")
+        write_result(marker, status, detail or f"exit code {code}", tool_started_at,
+                     time.monotonic() - tool_started)
         statuses["llama-bench"] = status
 
     api_tools = [tool for tool in pending if tool != "llama-bench"]
     if api_tools:
         port = reserve_port()
+        server_session = None
+        tool_start_data = {}
         try:
             with run_server(model, alias, port, args.context, args.threads, model_dir / "llama-server.log") as server:
+                server_session = server
                 for tool in api_tools:
                     print(f"\n[{alias}] {tool}", flush=True)
                     marker = model_dir / tool / "status.json"
+                    tool_start_data[tool] = (
+                        dt.datetime.now().astimezone().isoformat(), time.monotonic(),
+                    )
                     try:
                         code, detail = run_one_tool(
                             tool, model, alias, server.base_url, marker.parent,
@@ -630,13 +740,28 @@ def run_model(entry: dict[str, object], output_root: Path, tools: list[str], arg
                     except Exception as exc:
                         code, detail = 1, str(exc)
                     status = "completed" if code == 0 else "failed"
-                    write_result(marker, status, detail or f"exit code {code}")
+                    write_result(
+                        marker, status, detail or f"exit code {code}",
+                        tool_start_data[tool][0], time.monotonic() - tool_start_data[tool][1],
+                    )
                     statuses[tool] = status
+            metadata["llama_server_peak_rss_kib"] = server_session.peak_rss_kib
+            metadata["llama_server_startup_seconds"] = round(server_session.server_startup_seconds, 3)
+            metadata["llama_server_peak_rss_mib"] = (
+                round(server_session.peak_rss_kib / 1024, 1)
+                if server_session.peak_rss_kib is not None else None
+            )
+            (model_dir / "model.json").write_text(json.dumps(metadata, indent=2) + "\n", encoding="utf-8")
         except Exception as exc:
             for tool in api_tools:
                 if tool not in statuses:
                     marker = model_dir / tool / "status.json"
-                    write_result(marker, "failed", str(exc))
+                    started = tool_start_data.get(tool)
+                    write_result(
+                        marker, "failed", str(exc),
+                        started[0] if started else None,
+                        time.monotonic() - started[1] if started else None,
+                    )
                     statuses[tool] = "failed"
     return statuses
 
@@ -715,8 +840,26 @@ def main() -> int:
         versions = json.loads(versions_path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError):
         versions = {}
+    run_path = output_root / "run.json"
+    previous = {}
+    if args.resume:
+        try:
+            previous = json.loads(run_path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            previous = {}
+    invocation_started_at = dt.datetime.now().astimezone()
+    invocation_started = time.monotonic()
+    sessions = previous.get("sessions", [])
+    if not isinstance(sessions, list):
+        sessions = []
+    session = {"started_at": invocation_started_at.isoformat(), "finished_at": None}
+    sessions.append(session)
     metadata = {
-        "started_at": dt.datetime.now().astimezone().isoformat(),
+        **previous,
+        "started_at": previous.get("started_at", invocation_started_at.isoformat()),
+        "last_resumed_at": invocation_started_at.isoformat(),
+        "status": "running",
+        "sessions": sessions,
         "tools": tools,
         "source_revisions": versions,
         "models": [str(p) for p in models],
@@ -729,24 +872,49 @@ def main() -> int:
         "reasoning": "off",
         "lm_eval_hellaswag_limit": args.hellaswag_limit,
         "llm_benchmark_task_ids": list(LLM_BENCH_TASKS),
+        "invocation_count": len(sessions),
     }
+    metadata.pop("finished_at", None)
+    metadata.pop("total_elapsed_seconds", None)
     if "evalplus" in tools:
         metadata["evalplus_task_ids"] = evalplus_task_ids(args.evalplus_tasks)
     (output_root / "run.json").write_text(json.dumps(metadata, indent=2) + "\n", encoding="utf-8")
-    if "evalplus" in tools:
-        try:
-            ensure_evalplus_image(output_root)
-        except Exception as exc:
-            print(f"EvalPlus sandbox setup failed: {exc}", file=sys.stderr)
-            return 2
     summaries: dict[str, dict[str, str]] = {}
-    for model in models:
-        entry = {"model": model, "model_id": model_id(model)}
-        summaries[model_id(model)] = run_model(entry, output_root, tools, args)
+    exit_code = 0
+    run_status = "completed"
+    try:
+        if "evalplus" in tools:
+            ensure_evalplus_image(output_root)
+        for model in models:
+            entry = {"model": model, "model_id": model_id(model)}
+            summaries[model_id(model)] = run_model(entry, output_root, tools, args)
+        if not all(
+            status == "completed" or status.startswith("skipped")
+            for row in summaries.values() for status in row.values()
+        ):
+            exit_code = 1
+            run_status = "completed_with_errors"
+    except KeyboardInterrupt:
+        run_status = "interrupted"
+        exit_code = 130
+        print("\nRun interrupted; completed results and timing data were saved.", file=sys.stderr)
+    except Exception as exc:
+        run_status = "failed"
+        exit_code = 2
+        print(f"Benchmark run failed: {exc}", file=sys.stderr)
+    finally:
+        finished_at = dt.datetime.now().astimezone()
+        invocation_seconds = time.monotonic() - invocation_started
+        metadata["status"] = run_status
+        finalize_run_timing(metadata, invocation_seconds, finished_at)
+        run_path.write_text(json.dumps(metadata, indent=2) + "\n", encoding="utf-8")
+        (output_root / "summary.json").write_text(json.dumps(summaries, indent=2) + "\n", encoding="utf-8")
     summary_path = output_root / "summary.json"
-    summary_path.write_text(json.dumps(summaries, indent=2) + "\n", encoding="utf-8")
-    print(f"\nAll requested models processed. Summary: {summary_path}")
-    return 0 if all(status == "completed" or status.startswith("skipped") for row in summaries.values() for status in row.values()) else 1
+    print(
+        f"\nRun {run_status}. Elapsed: {format_duration(metadata['total_elapsed_seconds'])} total; "
+        f"{format_duration(metadata['active_elapsed_seconds'])} active. Summary: {summary_path}"
+    )
+    return exit_code
 
 
 if __name__ == "__main__":

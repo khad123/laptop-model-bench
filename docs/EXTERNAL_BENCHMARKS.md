@@ -88,6 +88,8 @@ results/external-four-suite/<run>/
     llama-bench/status.json
     llama-bench/llama-bench.csv
     evalplus/status.json
+    evalplus/task_metrics.jsonl
+    evalplus/telemetry.json
     evalplus/generate.log
     evalplus/score-sandboxed.log
     llm-benchmark/status.json
@@ -96,7 +98,18 @@ results/external-four-suite/<run>/
     lm-eval/results.json
 ```
 
-`status.json` records success or failure independently for each tool. The runner streams logs to the screen as well as saving them.
+`status.json` records success or failure independently for each tool, with start and elapsed times. During EvalPlus generation, the terminal shows completed task count, each task's elapsed time, token counts and llama.cpp prompt/generation rates when available, plus an ETA based on observed tasks. The estimate updates as the run proceeds.
+
+Timing and performance details are saved here:
+
+- `run.json`: start/finish timestamps, total wall-clock seconds, accumulated active seconds, and one duration per invocation. Wall-clock time includes time between resumed sessions; active time does not.
+- `<model>/model.json`: llama-server startup duration and its peak resident memory (RSS), when Linux exposes it through `/proc`.
+- `<model>/<tool>/status.json`: tool start and elapsed seconds.
+- `<model>/evalplus/task_metrics.jsonl`: one record per generated answer, with prompt/output/context token counts and llama.cpp's measured prompt-processing and generation rates.
+- `<model>/evalplus/telemetry.json`: generated/skipped counts, token totals, maximum context usage, average measured rates, and failed task IDs.
+- `<model>/llama-bench/llama-bench.csv`: llama-bench's own repeated prompt and generation speed measurements.
+
+`task_metrics.jsonl` and `telemetry.json` use the llama.cpp rates returned by the server. If the server or another suite does not report token counts or rates, those fields remain unavailable rather than being guessed. The ETA is an estimate from task durations observed so far. Active time is persisted when the runner exits normally or is stopped with Ctrl+C; a forced kill may leave the last session's active time incomplete.
 
 ## EvalPlus safety requirement
 
